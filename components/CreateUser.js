@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import 'firebase/auth';
 import { Button } from 'react-bootstrap';
-// import { signIn } from '../utils/auth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import firebase from 'firebase';
+import { firebase } from '../utils/client';
 
-
-function Signin() {
+function CreateUser() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const signIn = (e) => {
+  const createUser = (e) => {
     e.preventDefault();
-    const fbauth = firebase.auth();
-    signInWithEmailAndPassword(fbauth, email, password)
+    const auth = firebase.auth();
+    firebase
+      .createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         // const user = userCredential.user;
@@ -36,18 +35,18 @@ function Signin() {
         margin: '0 auto',
       }}
     >
-      <form onSubmit={signIn}>
-        <h1 id="login-header">Log In</h1>
+      <form onSubmit={createUser}>
+        <h1 id="login-header">Add an Account to Practice</h1>
         <label htmlFor="email">Email:</label>
         <input name="email" type="email" id="email-login" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="password">Password: </label>
         <input name="password" type="password" id="password-login" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button type="submit" size="lg" className="copy-btn">
-          Log In
+          Add Account
         </Button>
       </form>
     </div>
   );
 }
 
-export default Signin;
+export default CreateUser;

@@ -27,7 +27,7 @@ module.exports = {
     'no-console': [
       1,
       {
-        allow: ['error', 'warn'],
+        allow: ['error', 'warn', 'log'],
       },
     ],
     'comma-dangle': ['error'],
