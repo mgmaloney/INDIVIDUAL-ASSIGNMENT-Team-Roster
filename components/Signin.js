@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import firebase from 'firebase';
 
-
 function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
