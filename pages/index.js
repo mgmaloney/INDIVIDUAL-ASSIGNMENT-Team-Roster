@@ -4,12 +4,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
-import { useAuth } from '../utils/context/authContext';
+// import { useAuth } from '../utils/context/authContext';
 
 function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   // if (user.metadata.creationTime === user.metadata.lastSignInTime) {
   //   return (
