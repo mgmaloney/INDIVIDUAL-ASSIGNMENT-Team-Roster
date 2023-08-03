@@ -1,0 +1,23 @@
+{
+  "-MityumyWFEU-yluJkL-": {
+    "client_id": "-MityumyWFEU-yluJkL-",
+    "firstName": "Rachael",
+    "lastName": "T-Smiths",
+    "email": "JD@scrubs.com",
+    "supervisees": ["ZGzdytaw13b2BqINZb0RwVgyHKp1"]
+  },
+  "-MiBsmfttupFEU-yluJkM-": {
+    "client_id": "-MiBsmfttupFEU-yluJkM-",
+    "firstName": "Sarah",
+    "lastName": "Rodgeman",
+    "email": "artman@gmail.com",
+    "supervisees": ["C2PughWQnZegggQLhjfarN3Y5xv1"]
+  },
+  "-MiBsWMPFEU-pimJkN-": {
+    "client_id": "-MiBsWMPFEU-pimJkN-",
+    "firstName": "Andrew",
+    "lastName": "Chapper",
+    "email": "crouchingtiger@gmail.com",
+    "supervisees": ["TTJAJxBoKXQnpzv8yMxQ9w0Nbfv2"]
+  }
+}
