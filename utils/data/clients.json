@@ -1,0 +1,29 @@
+{
+  "-MiBsjmyWFEU-yluJkL-": {
+    "client_id": "-MiBsjmyWFEU-yluJkL-",
+    "firstName": "Zach",
+    "lastName": "Braff",
+    "phone": "555-555-5555",
+    "email": "JD@scrubs.com",
+    "address": "234 Scared Heart Way",
+    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+  },
+  "-MiBsmftWFEU-yluJkM-": {
+    "client_id": "-MiBsmftWFEU-yluJkM-",
+    "firstName": "Matthew",
+    "lastName": "Bomer",
+    "phone": "555-555-5555",
+    "email": "artman@gmail.com",
+    "address": "234 Thievery Way",
+    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+  },
+  "-MiBsWMPFEU-yluJkN-": {
+    "client_id": "-MiBsWMPFEU-yluJkN-",
+    "firstName": "Michelle",
+    "lastName": "Yeoh",
+    "phone": "555-555-5555",
+    "email": "crouchingtiger@gmail.com",
+    "address": "234 Everything Way",
+    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+  }
+}

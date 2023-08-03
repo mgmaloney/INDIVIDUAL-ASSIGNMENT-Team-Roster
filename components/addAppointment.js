@@ -50,14 +50,11 @@ export default function AddAppointment({ openModal, setOpenModal }) {
               label="Start Date"
               onChange={(newValue) => setStartDate(newValue.toString())}
             />
-            {console.warn('startdate', startDate)}
-
+            {console.warn(startDate, endDate)}
             <DateTimePicker
               label="End Date"
               onChange={(newValue) => setEndDate(newValue.toString())}
             />
-
-            {console.warn('enddate', endDate)}
           </Box>
         </>
       </StyledModal>

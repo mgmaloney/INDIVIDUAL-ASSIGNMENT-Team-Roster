@@ -34,8 +34,6 @@ export default function CalendarComp({
     getAppointments().then(setAppointments);
   }, []);
 
-  console.warn(appointments);
-
   return (
     <>
       {appointments.length && (
@@ -49,11 +47,10 @@ export default function CalendarComp({
             selectable
             onSelectSlot={(slotInfo) => {
               setSelectedCalDate(slotInfo.slots[0]);
-              console.warn(selectedCalDate);
               setOpenModal(true);
-              console.warn(openModal);
             }}
           />
+          {console.warn(openModal, selectedCalDate)}
         </div>
       )}
     </>
