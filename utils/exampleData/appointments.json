@@ -1,26 +1,26 @@
 {
   "-MiBsBKGWFEU-yluJkL-": {
-    "appointment_id": "-MiBsBKGWFEU-yluJkL-",
+    "appointmentId": "-MiBsBKGWFEU-yluJkL-",
     "title": "Zack B. Appointment",
     "start": "2023-07-18T18:00:00-0600",
     "end": "2023-07-18T18:00:00-0600",
-    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
-    "client_id": "-MiBsjmyWFEU-yluJkL-"
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "clientId": "-MiBsjmyWFEU-yluJkL-"
   },
   "-MiBsBKGWFEU-yluJkM-": {
-    "appointment_id": "-MiBsBKGWFEU-yluJkM-",
+    "appointmentId": "-MiBsBKGWFEU-yluJkM-",
     "title": "Matt B.",
     "start": "2023-07-14T18:00:00-0600",
     "end": "2023-07-14T18:00:00-0600",
-    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
     "client_id": "-MiBsmftWFEU-yluJkM-"
   },
   "-MiBsBKGWFEU-yluJkN-": {
-    "appointment_id": "-MiBsBKGWFEU-yluJkN-",
+    "appointmentId": "-MiBsBKGWFEU-yluJkN-",
     "title": "Michelle Y. Appointment",
     "start": "2023-07-04T18:00:00-0600",
     "end": "2023-07-04T18:00:00-0600",
-    "therapist_id": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
     "client_id": "-MiBsWMPFEU-yluJkN-"
   }
 }
