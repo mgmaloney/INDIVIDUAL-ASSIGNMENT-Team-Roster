@@ -11,7 +11,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['prettier/prettier', 'react'],
   rules: {
     'no-unused-vars': 'error',
     'react/jsx-props-no-spreading': 'off',

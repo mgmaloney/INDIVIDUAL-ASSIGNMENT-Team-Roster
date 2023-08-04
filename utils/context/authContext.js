@@ -1,6 +1,12 @@
 // Context API Docs: https://beta.reactjs.org/learn/passing-data-deeply-with-context
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { firebase } from '../client';
 
 const AuthContext = createContext();
@@ -29,8 +35,7 @@ const AuthProvider = (props) => {
     // https://reactjs.org/docs/hooks-reference.html#usememo
     () => ({
       user,
-      userLoading: user === null,
-      // as long as user === null, will be true
+      userLoading: user === null, // as long as user === null, will be true
       // As soon as the user value !== null, value will be false
     }),
     [user]

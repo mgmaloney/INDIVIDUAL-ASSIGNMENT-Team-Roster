@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useAuth } from '../../utils/context/authContext';
+import { getAllSupervisors } from '../../utils/databaseCalls.js/supervisorData';
 
-export default function CreateTherapistUser() {
+export default function CreateTherapistUser({ setUserCreated }) {
   const { user } = useAuth();
-  //   const [supervisors, setSuperVisors] = useState([]);
+  const [supervisors, setSuperVisors] = useState([]);
 
-  //   useEffect(() => {
-  //     getAllSuperVisors().then(setSuperVisors);
-  //   }, []);
+  useEffect(() => {
+    getAllSupervisors().then(setSuperVisors);
+  }, []);
 
   const [formData, setFormData] = useState({
     therapist_id: user.uid,
@@ -31,6 +32,7 @@ export default function CreateTherapistUser() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setUserCreated(true);
   };
 
   return (
@@ -68,7 +70,7 @@ export default function CreateTherapistUser() {
           value={formData.supervisor_id} // FIXME: modify code to remove error
           required
         >
-          {/* <option value="">Select a Supervisor</option>
+          <option value="">Select a Supervisor</option>
           {supervisors.map((supervisor) => (
             <option
               key={supervisor.supervisor_id}
@@ -76,7 +78,7 @@ export default function CreateTherapistUser() {
             >
               {`${supervisor.firstName} ${supervisor.lastName}`}
             </option>
-          ))} */}
+          ))}
         </Form.Select>
       </Form.Group>
 
@@ -88,6 +90,7 @@ export default function CreateTherapistUser() {
 }
 
 CreateTherapistUser.propTypes = {
+  setUserCreated: PropTypes.func.isRequired,
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
     fbUser: PropTypes.shape({

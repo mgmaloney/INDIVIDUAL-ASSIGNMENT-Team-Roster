@@ -4,19 +4,22 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
-// import { useAuth } from '../utils/context/authContext';
+import CreateTherapistUser from '../components/forms/createTherapistUser';
+import { useAuth } from '../utils/context/authContext';
+import { getAllSupervisors } from '../utils/databaseCalls.js/supervisorData';
 
 function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
-  // const { user } = useAuth();
+  const {user} = useAuth()
 
-  // if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-  //   return (
-  //     <>
-  //     </>
-  //   )
-  // }
+  if (user.metadata.creationTime === user.metadata.lastSignInTime && !userCreated) {
+    return (
+      <>
+        <CreateTherapistUser setUserCreated={setUserCreated} />
+      </>
+    );
+  }
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
