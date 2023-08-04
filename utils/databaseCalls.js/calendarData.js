@@ -18,7 +18,7 @@ const getAppointments = async () => {
     return [];
   } catch (e) {
     console.warn(e);
-    return null;
+    return 'call failed';
   }
 };
 

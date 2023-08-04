@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['prettier', 'next', 'next/core-web-vitals', 'airbnb'],
+  extends: ['next', 'next/core-web-vitals', 'airbnb', 'prettier'],
   env: {
     browser: true,
     es2021: true,
@@ -11,7 +11,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['prettier', 'react'],
   rules: {
     'no-unused-vars': 'error',
     'react/jsx-props-no-spreading': 'off',
