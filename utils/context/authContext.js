@@ -38,7 +38,7 @@ const AuthProvider = (props) => {
       userLoading: user === null, // as long as user === null, will be true
       // As soon as the user value !== null, value will be false
     }),
-    [user]
+    [user],
   );
 
   return <AuthContext.Provider value={value} {...props} />;

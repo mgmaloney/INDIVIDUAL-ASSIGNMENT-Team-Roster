@@ -31,6 +31,7 @@
     "firebase": "^8.10.1",
     "firestore": "^1.1.6",
     "next": "^12.3.4",
+    "prettier-eslint": "^15.0.1",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-big-calendar": "^1.8.1",

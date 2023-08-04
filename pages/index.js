@@ -6,17 +6,16 @@ import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
 import CreateTherapistUser from '../components/forms/createTherapistUser';
 import { useAuth } from '../utils/context/authContext';
-import { getAllSupervisors } from '../utils/databaseCalls.js/supervisorData';
 
 function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
-  const {user} = useAuth()
+  const { user } = useAuth();
 
-  if (user.metadata.creationTime === user.metadata.lastSignInTime && !userCreated) {
+  if (user.metadata.creationTime === user.metadata.lastSignInTime) {
     return (
       <>
-        <CreateTherapistUser setUserCreated={setUserCreated} />
+        <CreateTherapistUser />
       </>
     );
   }
