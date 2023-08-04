@@ -20,9 +20,7 @@ const getTherapistByUid = async (uid) => {
 
 const getTherapistByTherapistId = async (therapistId) => {
   try {
-    const { data } = await axios.get(
-      `${dbURL}/therapists.json?orderBy="uid"&equalTo="${therapistId}"`,
-    );
+    const { data } = await axios.get(`${dbURL}/therapists/${therapistId}.json`);
     if (data) {
       return data;
     }
