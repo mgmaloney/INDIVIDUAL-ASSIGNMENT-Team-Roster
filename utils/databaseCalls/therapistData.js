@@ -8,10 +8,11 @@ const getTherapistByUid = async (uid) => {
     const { data } = await axios.get(
       `${dbURL}/therapists.json?orderBy="uid"&equalTo="${uid}"`,
     );
-    if (data) {
-      return data;
+    const dataArr = Object.values(data);
+    if (dataArr.length > 0) {
+      return dataArr;
     }
-    return null;
+    return [];
   } catch (e) {
     console.warn(e);
     return 'call failed';

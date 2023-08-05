@@ -1,18 +1,31 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
 import CreateTherapistUser from '../components/forms/createTherapistUser';
 import { useAuth } from '../utils/context/authContext';
+import { getTherapistByUid } from '../utils/databaseCalls/therapistData';
 
 function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
+  const [isNewUser, setIsNewUser] = useState(false);
   const { user } = useAuth();
 
-  if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+  const isNewUserCheck = async () => {
+    const therapist = await getTherapistByUid(user.uid);
+    if (therapist.length === 0) {
+      setIsNewUser(true);
+    }
+  };
+
+  useEffect(() => {
+    isNewUserCheck();
+  }, []);
+
+  if (isNewUser) {
     return (
       <>
         <CreateTherapistUser />
