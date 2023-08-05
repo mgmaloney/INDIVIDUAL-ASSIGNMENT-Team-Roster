@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import getAppointments from '../utils/databaseCalls.js/calendarData';
+import getAppointments from '../utils/databaseCalls/calendarData';
 
 const locales = {
   'en-US': require('date-fns/locale/en-US'),
