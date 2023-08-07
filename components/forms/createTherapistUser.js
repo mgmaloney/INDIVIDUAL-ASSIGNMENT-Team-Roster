@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useAuth } from '../../utils/context/authContext';
 import { getAllSupervisors } from '../../utils/databaseCalls/supervisorData';
 import { createTherapist } from '../../utils/databaseCalls/therapistData';
 
 export default function CreateTherapistUser() {
-  const { user } = useAuth();
   const [supervisors, setSuperVisors] = useState([]);
 
   useEffect(() => {
@@ -15,10 +13,10 @@ export default function CreateTherapistUser() {
   }, []);
 
   const [formData, setFormData] = useState({
-    therapist_id: user.uid,
+    therapist_id: '',
     firstName: '',
     lastName: '',
-    email: user.email,
+    email: '',
     supervisor_id: '',
     clients: [],
   });
@@ -59,6 +57,17 @@ export default function CreateTherapistUser() {
             name="lastName"
             required
             value={formData.lastName}
+            onChange={handleChange}
+          />
+          <Form.Text className="text-muted" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="email">
+          <Form.Label>Email: </Form.Label>
+          <Form.Control
+            name="email"
+            required
+            value={formData.email}
             onChange={handleChange}
           />
           <Form.Text className="text-muted" />

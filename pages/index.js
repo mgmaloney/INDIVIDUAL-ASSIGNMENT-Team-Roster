@@ -18,6 +18,7 @@ function Home() {
     const therapist = await getTherapistByUid(user.uid);
     if (therapist.length === 0) {
       setIsNewUser(true);
+      console.warn('user', user);
     }
   };
 
