@@ -16,7 +16,7 @@ function Home() {
   const { user } = useAuth();
 
   useEffect(() => {
-    getTherapistByUid(user.uid).then(setTherapist);
+    getTherapistByUid(user.uid).then((response) => setTherapist(response[0]));
   }, [user.uid]);
 
   // this will need to be refactored for when the admin user is added

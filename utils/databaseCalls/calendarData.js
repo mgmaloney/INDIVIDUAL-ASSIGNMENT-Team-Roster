@@ -35,10 +35,7 @@ const getAppointmentsByTherapistId = async (therapistId) => {
     );
     const appointmentsJSON = await response.json();
     const appointmentsArr = Object.values(appointmentsJSON);
-    if (appointmentsArr) {
-      return appointmentsArr;
-    }
-    return [];
+    return appointmentsArr;
   } catch (e) {
     console.warn(e);
     return 'call failed';
