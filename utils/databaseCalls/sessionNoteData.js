@@ -3,9 +3,9 @@ import { clientCredentials } from '../client';
 
 const dbURL = clientCredentials.databaseURL;
 
-const getNoteByNoteId = async (noteId) => {
+const getSessionNoteByNoteId = async (noteId) => {
   try {
-    const { data } = await axios.get(`${dbURL}/notes/${noteId}.json`);
+    const { data } = await axios.get(`${dbURL}/sessionNotes/${noteId}.json`);
     if (data) {
       return data;
     }
@@ -16,10 +16,10 @@ const getNoteByNoteId = async (noteId) => {
   }
 };
 
-const getAllClientNotes = async (clientId) => {
+const getAllClientSessionNotes = async (clientId) => {
   try {
     const { data } = await axios.get(
-      `${dbURL}/notes.json?orderBy="clientId"&equalTo="${clientId}"`,
+      `${dbURL}/sessionNotes.json?orderBy="clientId"&equalTo="${clientId}"`,
     );
     if (data.length() > 0) {
       return Object.values(data);
@@ -31,10 +31,10 @@ const getAllClientNotes = async (clientId) => {
   }
 };
 
-const getUnsignedNotesTherapist = () => {
+const getUnsignedSessionNotesTherapist = () => {
   try {
     const { data } = axios.get(
-      `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=false`,
+      `${dbURL}/sessionNotes.json?orderBy="signedByTherapist"&equalTo=false`,
     );
     if (data.length() > 0) {
       return Object.values(data);
@@ -46,11 +46,11 @@ const getUnsignedNotesTherapist = () => {
   }
 };
 
-const getUnsignedNotesSuperVisor = async (supervisorId) => {
+const getUnsignedSessionNotesSuperVisor = async (supervisorId) => {
   const unsignedNotes = [];
   try {
     const { data } = await axios.get(
-      `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=true`,
+      `${dbURL}/sessionNotes.json?orderBy="signedByTherapist"&equalTo=true`,
     );
     const signedByTherapistNotes = Object.values(data);
     signedByTherapistNotes.forEach((note) => {
@@ -65,10 +65,10 @@ const getUnsignedNotesSuperVisor = async (supervisorId) => {
   }
 };
 
-const updateNote = async (payload) => {
+const updateSessionNote = async (payload) => {
   try {
     const response = await axios.patch(
-      `${dbURL}/notes/${payload.noteId}.json`,
+      `${dbURL}/sessionNotes/${payload.noteId}.json`,
       payload,
     );
     return response;
@@ -78,11 +78,11 @@ const updateNote = async (payload) => {
   }
 };
 
-const createNote = async (payload) => {
+const createSessionNote = async (payload) => {
   try {
-    const response = await axios.post(`${dbURL}/notes.json`, payload);
+    const response = await axios.post(`${dbURL}/sessionNotes.json`, payload);
     const noteId = await response.data.name;
-    await updateNote({ noteId });
+    await updateSessionNote({ noteId });
     return 'success';
   } catch (e) {
     console.warn(e);
@@ -90,9 +90,11 @@ const createNote = async (payload) => {
   }
 };
 
-const deleteNote = async (payload) => {
+const deleteSessionNote = async (payload) => {
   try {
-    const response = await axios.delete(`${dbURL}/notes/${payload.noteId}`);
+    const response = await axios.delete(
+      `${dbURL}/sessionNotes/${payload.noteId}`,
+    );
     return response;
   } catch (e) {
     console.warn(e);
@@ -101,11 +103,11 @@ const deleteNote = async (payload) => {
 };
 
 export {
-  getNoteByNoteId,
-  getUnsignedNotesTherapist,
-  getUnsignedNotesSuperVisor,
-  getAllClientNotes,
-  updateNote,
-  createNote,
-  deleteNote,
+  getSessionNoteByNoteId,
+  getUnsignedSessionNotesTherapist,
+  getUnsignedSessionNotesSuperVisor,
+  getAllClientSessionNotes,
+  updateSessionNote,
+  createSessionNote,
+  deleteSessionNote,
 };
