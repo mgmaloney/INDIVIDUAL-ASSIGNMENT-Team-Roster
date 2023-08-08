@@ -1,6 +1,7 @@
 {
   "-ZidsjmyWFEU-yluJkL-": {
     "noteId": "-ZidsjmyWFEU-yluJkL-",
+    "title": "Appointment #1",
     "appointmentId": "-MiBsBKGWFEU-yluJkL-",
     "clientId": "-MiBsjmyWFEU-yluJkL-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
@@ -15,6 +16,7 @@
   },
   "-TiMsmftWFEU-yluJkM-": {
     "noteId": "-TiMsmftWFEU-yluJkM-",
+    "title": "Appointment #2",
     "appointmentId": "-MiBsBKGWFEU-yluJkM-",
     "clientId": "-MiBsmftWFEU-yluJkM-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
@@ -29,6 +31,7 @@
   },
   "-MiBsUpyFEU-yluJkN-": {
     "noteId": "-MiBsUpyFEU-yluJkN-",
+    "title": "Appointment #3",
     "appointmentId": "-MiBsBKGWFEU-yluJkN-",
     "clientId": "-MiBsWMPFEU-yluJkN-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
