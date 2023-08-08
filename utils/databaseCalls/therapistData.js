@@ -19,6 +19,16 @@ const getTherapistByUid = async (uid) => {
   }
 };
 
+const getAllTherapists = async () => {
+  try {
+    const { data } = await axios.get(`${dbURL}/therapists.json`);
+    return Object.values(data);
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
 const getTherapistByTherapistId = async (therapistId) => {
   try {
     const { data } = await axios.get(`${dbURL}/therapists/${therapistId}.json`);
@@ -72,6 +82,7 @@ const deleteTherapist = async (payload) => {
 export {
   getTherapistByUid,
   getTherapistByTherapistId,
+  getAllTherapists,
   updateTherapist,
   createTherapist,
   deleteTherapist,

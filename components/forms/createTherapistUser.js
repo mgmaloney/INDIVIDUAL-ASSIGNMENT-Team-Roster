@@ -1,26 +1,29 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useAuth } from '../../utils/context/authContext';
 import { getAllSupervisors } from '../../utils/databaseCalls/supervisorData';
 import { createTherapist } from '../../utils/databaseCalls/therapistData';
+import { useAuth } from '../../utils/context/authContext';
 
 export default function CreateTherapistUser() {
-  const { user } = useAuth();
   const [supervisors, setSuperVisors] = useState([]);
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     getAllSupervisors().then(setSuperVisors);
   }, []);
 
   const [formData, setFormData] = useState({
-    therapist_id: user.uid,
+    therapistId: '',
     firstName: '',
     lastName: '',
-    email: user.email,
-    supervisor_id: '',
+    email: '',
+    supervisorId: '',
     clients: [],
+    uid: user.uid,
   });
 
   const handleChange = (e) => {
@@ -34,6 +37,7 @@ export default function CreateTherapistUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createTherapist(formData);
+    router.reload();
   };
 
   return (
@@ -64,20 +68,31 @@ export default function CreateTherapistUser() {
           <Form.Text className="text-muted" />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="supervisor_id">
+        <Form.Group className="mb-3" controlId="email">
+          <Form.Label>Email: </Form.Label>
+          <Form.Control
+            name="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <Form.Text className="text-muted" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="supervisorId">
           <Form.Label>Supervisor</Form.Label>
           <Form.Select
             aria-label="Supervisor"
-            name="supervisor_id"
+            name="supervisorId"
             onChange={handleChange}
-            value={formData.supervisor_id} // FIXME: modify code to remove error
+            value={formData.supervisorId} // FIXME: modify code to remove error
             required
           >
             <option value="">Select a Supervisor</option>
             {supervisors.map((supervisor) => (
               <option
-                key={supervisor.supervisor_id}
-                value={supervisor.supervisor_id}
+                key={supervisor.supervisorId}
+                value={supervisor.supervisorId}
               >
                 {`${supervisor.firstName} ${supervisor.lastName}`}
               </option>
