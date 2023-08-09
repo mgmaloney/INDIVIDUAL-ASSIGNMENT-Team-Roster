@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function NoteCard({ noteObj, type, page }) {
+export default function NoteCard({ noteObj, page }) {
   const [showMore, setShowMore] = useState(false);
 
   const showMoreToggle = () => {
@@ -13,7 +13,7 @@ export default function NoteCard({ noteObj, type, page }) {
   };
 
   const renderTextByType = () => {
-    if (type === 'DAP') {
+    if (noteObj.type === 'DAP') {
       return (
         <>
           <div className="DAP-div">
@@ -27,7 +27,7 @@ export default function NoteCard({ noteObj, type, page }) {
         </>
       );
     }
-    if (type === 'chart') {
+    if (noteObj.type === 'chart') {
       return (
         <>
           <h4 className="note-title">Chart Note</h4>
@@ -42,7 +42,7 @@ export default function NoteCard({ noteObj, type, page }) {
     <>
       <h4 className="note-title">{noteObj.title}</h4>
       {renderTextByType}
-      {page === 'client' ? (
+      {page === 'clientOverview' ? (
         <button onClick={showMoreToggle} type="button">
           Show More
         </button>
@@ -57,6 +57,7 @@ NoteCard.propTypes = {
   noteObj: PropTypes.shape({
     noteId: PropTypes.string,
     title: PropTypes.string,
+    type: PropTypes.string,
     appointmentId: PropTypes.string,
     clientId: PropTypes.string,
     therapistId: PropTypes.string,
@@ -70,6 +71,5 @@ NoteCard.propTypes = {
       chartNote: PropTypes.string,
     }),
   }).isRequired,
-  type: PropTypes.string.isRequired,
   page: PropTypes.string.isRequired,
 };

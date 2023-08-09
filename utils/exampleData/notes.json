@@ -2,6 +2,7 @@
   "-ZidsjmyWFEU-yluJkL-": {
     "noteId": "-ZidsjmyWFEU-yluJkL-",
     "title": "Appointment #1",
+    "type": "appointment",
     "appointmentId": "-MiBsBKGWFEU-yluJkL-",
     "clientId": "-MiBsjmyWFEU-yluJkL-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
@@ -11,12 +12,13 @@
       "A": "this is a paragraph for A",
       "P": "this is a paragraph for P"
     },
-    "signedByTherapist": "false",
-    "signedBySupervisor": "false"
+    "signedByTherapist": false,
+    "signedBySupervisor": false
   },
   "-TiMsmftWFEU-yluJkM-": {
     "noteId": "-TiMsmftWFEU-yluJkM-",
     "title": "Appointment #2",
+    "type": "appointment",
     "appointmentId": "-MiBsBKGWFEU-yluJkM-",
     "clientId": "-MiBsmftWFEU-yluJkM-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
@@ -26,12 +28,13 @@
       "A": "this is a paragraph for A",
       "P": "this is a paragraph for P"
     },
-    "signedByTherapist": "true",
-    "signedBySupervisor": "false"
+    "signedByTherapist": true,
+    "signedBySupervisor": false
   },
   "-MiBsUpyFEU-yluJkN-": {
     "noteId": "-MiBsUpyFEU-yluJkN-",
     "title": "Appointment #3",
+    "type": "appointment",
     "appointmentId": "-MiBsBKGWFEU-yluJkN-",
     "clientId": "-MiBsWMPFEU-yluJkN-",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
@@ -41,7 +44,17 @@
       "A": "this is a paragraph for A",
       "P": "this is a paragraph for P"
     },
-    "signedByTherapist": "true",
-    "signedBySupervisor": "true"
+    "signedByTherapist": true,
+    "signedBySupervisor": true
+  },
+  "-MiBsUpynerpLLeluJkN-": {
+    "noteId": "-MiBsUpynerpLLeluJkN-",
+    "title": "Chart Note",
+    "type": "chart",
+    "clientId": "-MiBsWMPFEU-yluJkN-",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "content": {
+      "chartNote": "this is a chart note"
+    }
   }
 }

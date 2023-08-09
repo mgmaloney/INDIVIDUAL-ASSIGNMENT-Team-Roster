@@ -3,9 +3,9 @@ import { clientCredentials } from '../client';
 
 const dbURL = clientCredentials.databaseURL;
 
-const getSessionNoteByNoteId = async (noteId) => {
+const getAppointmentNoteByNoteId = async (noteId) => {
   try {
-    const { data } = await axios.get(`${dbURL}/sessionNotes/${noteId}.json`);
+    const { data } = await axios.get(`${dbURL}/notes/${noteId}.json`);
     if (data) {
       return data;
     }
@@ -16,25 +16,29 @@ const getSessionNoteByNoteId = async (noteId) => {
   }
 };
 
-const getAllClientSessionNotes = async (clientId) => {
+const getAllClientAppointmentNotes = async (clientId) => {
   try {
     const { data } = await axios.get(
-      `${dbURL}/sessionNotes.json?orderBy="clientId"&equalTo="${clientId}"`,
+      `${dbURL}/notes.json?orderBy="clientId"&equalTo="${clientId}"`,
     );
-    if (data.length() > 0) {
-      return Object.values(data);
-    }
-    return [];
+    const notes = Object.values(data);
+    const appointmentNotes = [];
+    notes.forEach((note) => {
+      if (note.type === 'appointment') {
+        appointmentNotes.push(note);
+      }
+    });
+    return appointmentNotes;
   } catch (e) {
     console.warn(e);
     return 'call failed';
   }
 };
 
-const getUnsignedSessionNotesTherapist = () => {
+const getAllClientNotes = async (clientId) => {
   try {
-    const { data } = axios.get(
-      `${dbURL}/sessionNotes.json?orderBy="signedByTherapist"&equalTo=false`,
+    const { data } = await axios.get(
+      `${dbURL}/notes.json?orderBy="clientId"&equalTo="${clientId}"`,
     );
     if (data.length() > 0) {
       return Object.values(data);
@@ -46,11 +50,26 @@ const getUnsignedSessionNotesTherapist = () => {
   }
 };
 
-const getUnsignedSessionNotesSuperVisor = async (supervisorId) => {
+const getUnsignedAppointmentNotesTherapist = async () => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=false`,
+    );
+    if (data.length() > 0) {
+      return Object.values(data);
+    }
+    return [];
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
+const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
   const unsignedNotes = [];
   try {
     const { data } = await axios.get(
-      `${dbURL}/sessionNotes.json?orderBy="signedByTherapist"&equalTo=true`,
+      `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=true`,
     );
     const signedByTherapistNotes = Object.values(data);
     signedByTherapistNotes.forEach((note) => {
@@ -65,10 +84,10 @@ const getUnsignedSessionNotesSuperVisor = async (supervisorId) => {
   }
 };
 
-const updateSessionNote = async (payload) => {
+const updateNote = async (payload) => {
   try {
     const response = await axios.patch(
-      `${dbURL}/sessionNotes/${payload.noteId}.json`,
+      `${dbURL}/notes/${payload.noteId}.json`,
       payload,
     );
     return response;
@@ -78,11 +97,11 @@ const updateSessionNote = async (payload) => {
   }
 };
 
-const createSessionNote = async (payload) => {
+const createNote = async (payload) => {
   try {
-    const response = await axios.post(`${dbURL}/sessionNotes.json`, payload);
+    const response = await axios.post(`${dbURL}/notes.json`, payload);
     const noteId = await response.data.name;
-    await updateSessionNote({ noteId });
+    await updateNote({ noteId });
     return 'success';
   } catch (e) {
     console.warn(e);
@@ -90,11 +109,9 @@ const createSessionNote = async (payload) => {
   }
 };
 
-const deleteSessionNote = async (payload) => {
+const deleteNote = async (payload) => {
   try {
-    const response = await axios.delete(
-      `${dbURL}/sessionNotes/${payload.noteId}`,
-    );
+    const response = await axios.delete(`${dbURL}/notes/${payload.noteId}`);
     return response;
   } catch (e) {
     console.warn(e);
@@ -103,11 +120,12 @@ const deleteSessionNote = async (payload) => {
 };
 
 export {
-  getSessionNoteByNoteId,
-  getUnsignedSessionNotesTherapist,
-  getUnsignedSessionNotesSuperVisor,
-  getAllClientSessionNotes,
-  updateSessionNote,
-  createSessionNote,
-  deleteSessionNote,
+  getAppointmentNoteByNoteId,
+  getAllClientNotes,
+  getUnsignedAppointmentNotesTherapist,
+  getUnsignedAppointmentNotesSuperVisor,
+  getAllClientAppointmentNotes,
+  updateNote,
+  createNote,
+  deleteNote,
 };

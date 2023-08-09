@@ -32,6 +32,17 @@ const getClientsByTherapistId = async (therapistId) => {
     return 'call failed';
   }
 };
+const getClientByClientId = async (clientId) => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/clients.json?orderBy="clientId"&equalTo="${clientId}"`,
+    );
+    return data;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
 
 const updateClient = async (payload) => {
   try {
@@ -70,6 +81,7 @@ const deleteClient = async (clientId) => {
 
 export {
   getAllClients,
+  getClientByClientId,
   getClientsByTherapistId,
   updateClient,
   createClient,
