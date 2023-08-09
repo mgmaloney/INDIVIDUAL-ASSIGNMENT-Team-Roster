@@ -20,3 +20,18 @@ a {
 body {
   background-color: #88effd;
 }
+
+.sidebar-main {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: 13rem;
+  height: 100vh;
+}
+
+.sidebar-main * {
+  margin: 0.5rem 0rem;
+  color: #267ccb;
+}
