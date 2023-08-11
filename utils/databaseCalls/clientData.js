@@ -79,6 +79,7 @@ const deleteClient = async (clientId) => {
   }
 };
 
+
 export {
   getAllClients,
   getClientByClientId,
