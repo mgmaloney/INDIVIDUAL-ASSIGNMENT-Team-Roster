@@ -16,7 +16,7 @@ export default function ClientsPage() {
     <>
       {therapistClients &&
         therapistClients.map((client) => (
-          <ClientDetailsCard clientObj={client} />
+          <ClientDetailsCard key={client.clientId} clientObj={client} />
         ))}
     </>
   );
