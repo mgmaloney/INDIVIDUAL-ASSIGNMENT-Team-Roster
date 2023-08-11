@@ -10,12 +10,12 @@ export default function ClientsPage() {
   useEffect(() => {
     console.warn('therapist', therapist);
     getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
-  }, [therapist.therapistId]);
+  }, [therapist]);
 
   return (
     <>
-      {therapistClients &&
-        therapistClients.map((client) => (
+      {therapistClients.length > 0 &&
+        therapistClients?.map((client) => (
           <ClientDetailsCard key={client.clientId} clientObj={client} />
         ))}
     </>

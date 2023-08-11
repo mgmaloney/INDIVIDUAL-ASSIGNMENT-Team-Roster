@@ -13,7 +13,11 @@ export default function ClientDetailsCard({ clientObj }) {
   return (
     <>
       <div className="client-card">
-        <Link passHref href={clientObj.clientId} className="client-card-name">
+        <Link
+          passHref
+          href={`/client/${clientObj.clientId}`}
+          className="client-card-name"
+        >
           <p className="client-card-name">
             {clientObj.firstName} {clientObj.lastName}
           </p>

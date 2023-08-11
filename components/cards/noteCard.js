@@ -13,7 +13,7 @@ export default function NoteCard({ noteObj, page }) {
   };
 
   const renderTextByType = () => {
-    if (noteObj.type === 'DAP') {
+    if (noteObj.type === 'appointment') {
       return (
         <>
           <div className="DAP-div">
@@ -41,7 +41,7 @@ export default function NoteCard({ noteObj, page }) {
   return (
     <>
       <h4 className="note-title">{noteObj.title}</h4>
-      {renderTextByType}
+      {renderTextByType()}
       {page === 'clientOverview' ? (
         <button onClick={showMoreToggle} type="button">
           Show More
