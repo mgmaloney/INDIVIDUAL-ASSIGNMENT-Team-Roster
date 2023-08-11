@@ -40,8 +40,9 @@ const getAllClientNotes = async (clientId) => {
     const { data } = await axios.get(
       `${dbURL}/notes.json?orderBy="clientId"&equalTo="${clientId}"`,
     );
-    if (data.length() > 0) {
-      return Object.values(data);
+    const notes = Object.values(data);
+    if (notes.length > 0) {
+      return notes;
     }
     return [];
   } catch (e) {
