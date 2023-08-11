@@ -13,8 +13,10 @@ export default function ClientDetailsCard({ clientObj }) {
   return (
     <>
       <div className="client-card">
-        <Link passHref href="``" className="client-card-name">
-          {clientObj.firstName} {clientObj.lastName}
+        <Link passHref href={clientObj.clientId} className="client-card-name">
+          <p className="client-card-name">
+            {clientObj.firstName} {clientObj.lastName}
+          </p>
         </Link>
         <div className="contact-and-clinician">
           <p className="c-and-c-item">{clientObj.phone}</p>
