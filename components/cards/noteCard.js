@@ -39,7 +39,7 @@ export default function NoteCard({ noteObj, page }) {
   };
 
   return (
-    <>
+    <div className="note-card">
       <h4 className="note-title">{noteObj.title}</h4>
       {renderTextByType()}
       {page === 'clientOverview' ? (
@@ -49,7 +49,7 @@ export default function NoteCard({ noteObj, page }) {
       ) : (
         ''
       )}
-    </>
+    </div>
   );
 }
 

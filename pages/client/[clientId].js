@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 import { getAllClientNotes } from '../../utils/databaseCalls/noteData';
 import NoteCard from '../../components/cards/noteCard';
+import ClientContext from '../../utils/context/clientContext';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -20,14 +21,20 @@ export default function ClientOverView() {
 
   return (
     <>
-      <h2>{client.firstName}</h2>
-      {clientNotes.length && (
-        <div className="client-notes">
-          {clientNotes.map((note) => (
-            <NoteCard key={note.noteId} noteObj={note} page="clientOverview" />
-          ))}
-        </div>
-      )}
+      <ClientContext.Provider value={client}>
+        <h2>{client.firstName}</h2>
+        {clientNotes.length && (
+          <div className="client-notes">
+            {clientNotes.map((note) => (
+              <NoteCard
+                key={note.noteId}
+                noteObj={note}
+                page="clientOverview"
+              />
+            ))}
+          </div>
+        )}
+      </ClientContext.Provider>
     </>
   );
 }

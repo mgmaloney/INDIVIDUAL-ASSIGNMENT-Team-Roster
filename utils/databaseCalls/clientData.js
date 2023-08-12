@@ -34,9 +34,7 @@ const getClientsByTherapistId = async (therapistId) => {
 };
 const getClientByClientId = async (clientId) => {
   try {
-    const { data } = await axios.get(
-      `${dbURL}/clients.json?orderBy="clientId"&equalTo="${clientId}"`,
-    );
+    const { data } = await axios.get(`${dbURL}/clients/${clientId}.json`);
     return data;
   } catch (e) {
     console.warn(e);

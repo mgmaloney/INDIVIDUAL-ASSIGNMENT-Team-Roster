@@ -52,3 +52,9 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.note-card {
+  border: solid 1px black;
+  padding: 1rem;
+  width: 75%;
+}
