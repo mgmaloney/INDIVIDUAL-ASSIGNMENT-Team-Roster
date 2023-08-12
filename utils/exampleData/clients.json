@@ -6,6 +6,7 @@
     "phone": "555-555-5555",
     "email": "JD@scrubs.com",
     "address": "234 Scared Heart Way",
+    "birthDate": "08/14/1961",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
   },
   "-MiBsmftWFEU-yluJkM-": {
@@ -15,6 +16,7 @@
     "phone": "555-555-5555",
     "email": "artman@gmail.com",
     "address": "234 Thievery Way",
+    "birthDate": "08/14/1961",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
   },
   "-MiBsWMPFEU-yluJkN-": {
@@ -24,6 +26,7 @@
     "phone": "555-555-5555",
     "email": "crouchingtiger@gmail.com",
     "address": "234 Everything Way",
+    "birthDate": "08/14/1961",
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
   }
 }
