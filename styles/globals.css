@@ -104,4 +104,5 @@ body {
 
 .notes-info {
   display: flex;
+  width: 70rem;
 }
