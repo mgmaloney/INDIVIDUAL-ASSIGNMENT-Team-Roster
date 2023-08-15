@@ -1,14 +1,34 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { createNote } from '../../utils/databaseCalls/noteData';
 import TherapistContext from '../../utils/context/therapistContext';
 
-export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
+const initialState = {
+  noteId: '',
+  clientId: '',
+  therapistId: '',
+  title: '',
+  type: '',
+  content: { chartNote: '' },
+  dateTime: 0,
+};
+
+export default function ChartNoteForm({
+  noteObj,
+  clientObj,
+  onChartNoteSubmit,
+}) {
   const [formInput, setFormInput] = useState({ noteText: '' });
   const [dateInput, setDateInput] = useState(Date.now());
   const { therapist } = useContext(TherapistContext);
+
+  useEffect(() => {
+    if (noteObj?.noteId) {
+      setFormInput({ noteText: noteObj.content.chartNote });
+    }
+  }, [noteObj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +56,7 @@ export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
       <div className="chart-note-form">
         <form onSubmit={handleSubmit}>
           <input
+            value={formInput.noteText}
             onChange={handleChange}
             type="textarea"
             className="chart-note-textarea"
@@ -63,6 +84,17 @@ export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
 }
 
 ChartNoteForm.propTypes = {
+  noteObj: PropTypes.shape({
+    noteId: PropTypes.string,
+    clientId: PropTypes.string,
+    therapistId: PropTypes.string,
+    title: PropTypes.string,
+    type: PropTypes.string,
+    content: PropTypes.shape({
+      chartNote: PropTypes.string,
+    }),
+    dateTime: PropTypes.number,
+  }),
   clientObj: PropTypes.shape({
     clientId: PropTypes.string,
     therapistId: PropTypes.string,
@@ -75,4 +107,8 @@ ChartNoteForm.propTypes = {
     gender: PropTypes.string,
   }).isRequired,
   onChartNoteSubmit: PropTypes.func.isRequired,
+};
+
+ChartNoteForm.defaultProps = {
+  noteObj: initialState,
 };
