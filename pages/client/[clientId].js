@@ -48,39 +48,45 @@ export default function ClientOverView() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
         </LocalizationProvider>
-        <div className="client-page-header">
-          <div className="overview-name">
-            <h2>{client.firstName}</h2>
-            <h2>{client.lastName}</h2>
-          </div>
-          <div className="client-nav">
-            <div className="birth-age">
-              <h6 className="birthdate">{client.birthDate}</h6>
-              <h6 className="age">
-                ({calculateAge(Date.parse(client.birthDate))})
-              </h6>
+        <div className="main-client-overview">
+          <div className="ov-header-note">
+            <div className="client-page-header">
+              <div className="overview-name">
+                <h2>{client.firstName}</h2>
+                <h2>{client.lastName}</h2>
+              </div>
+              <div className="client-nav">
+                <div className="birth-age">
+                  <h6 className="birthdate">{client.birthDate}</h6>
+                  <h6 className="age">
+                    ({calculateAge(Date.parse(client.birthDate))})
+                  </h6>
+                </div>
+                <p onClick={changeModalState} className="client-nav-link">
+                  Schedule Now
+                </p>
+                <Link passHref href={`/edit/${clientId}`}>
+                  <p className="client-nav-link">Edit</p>
+                </Link>
+              </div>
             </div>
-            <p onClick={changeModalState} className="client-nav-link">
-              Schedule Now
-            </p>
-            <Link passHref href={`/edit/${clientId}`}>
-              <p className="client-nav-link">Edit</p>
-            </Link>
+            <div className="notes-info">
+              {clientNotes.length && (
+                <div className="client-notes">
+                  {clientNotes.map((note) => (
+                    <NoteCard
+                      key={note.noteId}
+                      noteObj={note}
+                      page="clientOverview"
+                    />
+                  ))}
+                </div>
+              )}
+              <div className="client-info-overview">
+                <ClientDetailsCard clientObj={client} page="client-overview" />
+              </div>
+            </div>
           </div>
-        </div>
-        {clientNotes.length && (
-          <div className="client-notes">
-            {clientNotes.map((note) => (
-              <NoteCard
-                key={note.noteId}
-                noteObj={note}
-                page="clientOverview"
-              />
-            ))}
-          </div>
-        )}
-        <div className="client-info-overview">
-          <ClientDetailsCard clientObj={client} page="client-overview" />
         </div>
       </ClientContext.Provider>
     </>
