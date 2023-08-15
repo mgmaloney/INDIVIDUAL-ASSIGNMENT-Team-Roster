@@ -12,6 +12,11 @@ export default function NoteCard({ noteObj, page }) {
     }
   };
 
+  const dateToStringConverter = (dateMilliseconds) => {
+    const date = new Date(dateMilliseconds);
+    return date.toLocaleString('en-US');
+  };
+
   const renderTextByType = () => {
     if (noteObj.type === 'appointment') {
       return (
@@ -30,7 +35,6 @@ export default function NoteCard({ noteObj, page }) {
     if (noteObj.type === 'chart') {
       return (
         <>
-          <h4 className="note-title">Chart Note</h4>
           <p className="chart-note-content">{noteObj.content.chartNote}</p>
         </>
       );
@@ -41,6 +45,7 @@ export default function NoteCard({ noteObj, page }) {
   return (
     <div className="note-card">
       <h4 className="note-title">{noteObj.title}</h4>
+      <h6 className="note-date">{dateToStringConverter(noteObj.dateTime)}</h6>
       {renderTextByType()}
       {page === 'clientOverview' ? (
         <button onClick={showMoreToggle} type="button">
@@ -70,6 +75,7 @@ NoteCard.propTypes = {
       P: PropTypes.string,
       chartNote: PropTypes.string,
     }),
+    dateTime: PropTypes.number,
   }).isRequired,
   page: PropTypes.string.isRequired,
 };

@@ -1,11 +1,15 @@
 import { useState, useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { createNote } from '../../utils/databaseCalls/noteData';
 import TherapistContext from '../../utils/context/therapistContext';
 
 export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
   const [formInput, setFormInput] = useState({ noteText: '' });
+  const [dateInput, setDateInput] = useState(Date.now());
   const { therapist } = useContext(TherapistContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormInput((prevState) => ({ ...prevState, [name]: value }));
@@ -19,6 +23,7 @@ export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
       clientId: clientObj.clientId,
       therapistId: therapist.therapistId,
       content: { chartNote: formInput.noteText },
+      dateTime: Date.parse(dateInput),
     };
     await createNote(payload);
     onChartNoteSubmit();
@@ -36,7 +41,15 @@ export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
             placeholder="Add Chart Note: include notes from a call with a client or copy & paste the contents of a document or email."
           />
           <div className="chartnote-date-btn">
-            <p>add date/time selector here</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                className="datetime-chart"
+                name="dateTime"
+                views={['year', 'month', 'day', 'hours', 'minutes']}
+                value={dateInput}
+                onChange={(newValue) => setDateInput(newValue)}
+              />
+            </LocalizationProvider>
             <button type="submit" className="add-note-btn">
               + Add Note
             </button>
