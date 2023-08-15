@@ -25,8 +25,10 @@ export default function ChartNoteForm({ clientObj, onChartNoteSubmit }) {
       content: { chartNote: formInput.noteText },
       dateTime: Date.parse(dateInput),
     };
+    console.warn(payload);
     await createNote(payload);
     onChartNoteSubmit();
+    setFormInput('');
   };
 
   return (
