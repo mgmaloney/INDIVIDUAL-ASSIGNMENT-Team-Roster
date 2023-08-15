@@ -6,7 +6,11 @@
     "phone": "555-555-5555",
     "email": "JD@scrubs.com",
     "address": "234 Scared Heart Way",
-    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+    "birthDate": "08/14/1961",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "sex": "male",
+    "gender": "he/him",
+    "active": true
   },
   "-MiBsmftWFEU-yluJkM-": {
     "clientId": "-MiBsmftWFEU-yluJkM-",
@@ -15,7 +19,11 @@
     "phone": "555-555-5555",
     "email": "artman@gmail.com",
     "address": "234 Thievery Way",
-    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+    "birthDate": "08/14/1961",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "sex": "male",
+    "gender": "he/him",
+    "active": true
   },
   "-MiBsWMPFEU-yluJkN-": {
     "clientId": "-MiBsWMPFEU-yluJkN-",
@@ -24,6 +32,10 @@
     "phone": "555-555-5555",
     "email": "crouchingtiger@gmail.com",
     "address": "234 Everything Way",
-    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1"
+    "birthDate": "08/14/1961",
+    "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
+    "sex": "female",
+    "gender": "she/her",
+    "active": true
   }
 }
