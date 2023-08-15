@@ -34,6 +34,13 @@ export default function ClientOverView() {
     getAllClientNotes(clientId).then(setClientNotes);
   }, [clientId]);
 
+  function calculateAge(birthday) {
+    // birthday is a date
+    const ageDifMs = Date.now() - birthday;
+    const ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  }
+
   return (
     <>
       <ClientContext.Provider value={client}>
@@ -41,9 +48,17 @@ export default function ClientOverView() {
           <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
         </LocalizationProvider>
         <div className="client-page-header">
-          <h2>{client.firstName}</h2>
+          <div className="overview-name">
+            <h2>{client.firstName}</h2>
+            <h2>{client.lastName}</h2>
+          </div>
           <div className="client-nav">
-            <p className="client-nav-item">{client.birthDate}</p>
+            <div className="birth-age">
+              <h6 className="birthdate">{client.birthDate}</h6>
+              <h6 className="age">
+                ({calculateAge(Date.parse(client.birthDate))})
+              </h6>
+            </div>
             <p onClick={changeModalState} className="client-nav-link">
               Schedule Now
             </p>

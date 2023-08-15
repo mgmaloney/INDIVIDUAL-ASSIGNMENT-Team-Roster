@@ -58,3 +58,29 @@ body {
   padding: 1rem;
   width: 75%;
 }
+
+.overview-name {
+  display: flex;
+}
+
+.overview-name * {
+  margin: 0rem 1rem 1rem 0rem;
+}
+
+.client-nav-link {
+  font-weight: bold;
+  font-size: medium;
+  color: #267ccb;
+  text-decoration: underline;
+  margin: 0.07rem 1.5rem 1rem 0rem;
+}
+
+.client-nav {
+  display: flex;
+}
+
+.birth-age {
+  display: flex;
+  margin-top: 0.25rem;
+  margin-right: 2rem;
+}
