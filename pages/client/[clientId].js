@@ -10,6 +10,7 @@ import { getAllClientNotes } from '../../utils/databaseCalls/noteData';
 import NoteCard from '../../components/cards/noteCard';
 import ClientContext from '../../utils/context/clientContext';
 import AddAppointment from '../../components/addAppointment';
+import ClientDetailsCard from '../../components/cards/clientDetails';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -67,7 +68,6 @@ export default function ClientOverView() {
             </Link>
           </div>
         </div>
-
         {clientNotes.length && (
           <div className="client-notes">
             {clientNotes.map((note) => (
@@ -79,6 +79,9 @@ export default function ClientOverView() {
             ))}
           </div>
         )}
+        <div className="client-info-overview">
+          <ClientDetailsCard clientObj={client} page="client-overview" />
+        </div>
       </ClientContext.Provider>
     </>
   );

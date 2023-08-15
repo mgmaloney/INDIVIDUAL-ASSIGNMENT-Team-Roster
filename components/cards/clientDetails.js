@@ -17,42 +17,50 @@ export default function ClientDetailsCard({ clientObj, page }) {
           page === 'clients' ? 'client-card-clients' : 'client-card-client'
         }
       >
-        <Link
-          passHref
-          href={`/client/${clientObj.clientId}`}
-          className="client-card-name"
-        >
-          <p className="client-card-name">
-            {clientObj.firstName} {clientObj.lastName}
-          </p>
-        </Link>
         <div className="contact-and-clinician">
           {page !== 'clients' ? (
             <>
-              <div className="client-inf-div">
+              <div className="client-info-div">
                 <h4 className="client-info">CLIENT INFO</h4>
                 <button type="button" className="edit-client-info">
                   Edit
                 </button>
               </div>
-              <p className="c-and-c-item">{clientObj.sex}</p>
-              <p className="c-and-c-item">{clientObj.gender}</p>
+              <p className="c-and-c-item">Sex: {clientObj.sex}</p>
+              <p className="c-and-c-item"> Gender: {clientObj.gender}</p>
+            </>
+          ) : (
+            <Link
+              passHref
+              href={`/client/${clientObj.clientId}`}
+              className="client-card-name"
+            >
+              <p className="client-card-name">
+                {clientObj.firstName} {clientObj.lastName}
+              </p>
+            </Link>
+          )}
+          <p className="c-and-c-item">Phone: {clientObj.phone}</p>
+          <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">
+            Email: {clientObj.email}
+          </p>
+          {page !== 'clients' ? (
+            <>
+              <p className="c-and-c-item">Address: {clientObj.address}</p>
+              <div className="address">
+                <p>
+                  {clientObj.city}, {clientObj.state}, {clientObj.zipcode}
+                </p>
+              </div>
             </>
           ) : (
             ''
           )}
-          <p className="c-and-c-item">{clientObj.phone}</p>
-          <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">
-            {clientObj.email}
-          </p>
-          {page !== 'clients' ? (
-            <p className="c-and-c-item">{clientObj.address}</p>
-          ) : (
-            ''
+          {clientTherapist && (
+            <p className="c-and-c-item">
+              Clinician: {clientTherapist.firstName} {clientTherapist.lastName}
+            </p>
           )}
-          <p className="c-and-c-item">
-            Clinician: {clientTherapist.firstName} {clientTherapist.lastName}
-          </p>
         </div>
       </div>
     </>
@@ -68,6 +76,9 @@ ClientDetailsCard.propTypes = {
     email: PropTypes.string,
     phone: PropTypes.string,
     address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    zipcode: PropTypes.string,
     sex: PropTypes.string,
     gender: PropTypes.string,
   }).isRequired,

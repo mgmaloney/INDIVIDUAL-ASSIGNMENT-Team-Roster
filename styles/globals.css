@@ -84,3 +84,7 @@ body {
   margin-top: 0.25rem;
   margin-right: 2rem;
 }
+
+.client-info-overview {
+  border: solid black 1px;
+}
