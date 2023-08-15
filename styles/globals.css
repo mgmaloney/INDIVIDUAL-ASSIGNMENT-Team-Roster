@@ -106,3 +106,18 @@ body {
   display: flex;
   width: 70rem;
 }
+
+.chart-note-textarea {
+  width: 68%;
+  height: 100px;
+}
+
+.add-note-btn {
+  margin-left: 1rem;
+}
+
+.chartnote-date-btn {
+  display: flex;
+  justify-content: space-between;
+  width: 68.5%;
+}

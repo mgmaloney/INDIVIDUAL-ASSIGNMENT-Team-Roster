@@ -11,6 +11,7 @@ import NoteCard from '../../components/cards/noteCard';
 import ClientContext from '../../utils/context/clientContext';
 import AddAppointment from '../../components/addAppointment';
 import ClientDetailsCard from '../../components/cards/clientDetails';
+import ChartNoteForm from '../../components/forms/chartNote';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -25,6 +26,10 @@ export default function ClientOverView() {
     } else {
       setOpenModal(true);
     }
+  };
+
+  const onChartNoteSubmit = () => {
+    getAllClientNotes(clientId).then(setClientNotes);
   };
 
   useEffect(() => {
@@ -70,6 +75,10 @@ export default function ClientOverView() {
                 </Link>
               </div>
             </div>
+            <ChartNoteForm
+              clientObj={client}
+              onChartNoteSubmit={onChartNoteSubmit}
+            />
             <div className="notes-info">
               {clientNotes.length && (
                 <div className="client-notes">
