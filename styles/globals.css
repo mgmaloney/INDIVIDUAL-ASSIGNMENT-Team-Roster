@@ -53,10 +53,15 @@ body {
   cursor: pointer;
 }
 
+.client-info-overview {
+  padding: 1rem;
+  max-height: 27rem;
+}
+
 .note-card {
   border: solid 1px black;
   padding: 1rem;
-  width: 75%;
+  width: 98%;
 }
 
 .overview-name {
@@ -87,4 +92,16 @@ body {
 
 .client-info-overview {
   border: solid black 1px;
+}
+
+.main-client-overview {
+  display: flex;
+}
+
+.client-notes {
+  width: 90%;
+}
+
+.notes-info {
+  display: flex;
 }
