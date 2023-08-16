@@ -13,7 +13,8 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": false,
-    "signedBySupervisor": false
+    "signedBySupervisor": false,
+    "dateTime": "2023-08-18T18:00:00-0600"
   },
   "-TiMsmftWFEU-yluJkM-": {
     "noteId": "-TiMsmftWFEU-yluJkM-",
@@ -29,7 +30,8 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": true,
-    "signedBySupervisor": false
+    "signedBySupervisor": false,
+    "dateTime": "2023-08-14T18:00:00-0600"
   },
   "-MiBsUpyFEU-yluJkN-": {
     "noteId": "-MiBsUpyFEU-yluJkN-",
@@ -45,7 +47,8 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": true,
-    "signedBySupervisor": true
+    "signedBySupervisor": true,
+    "dateTime": "2023-08-04T18:00:00-0600"
   },
   "-MiBsUpynerpLLeluJkN-": {
     "noteId": "-MiBsUpynerpLLeluJkN-",
@@ -55,6 +58,7 @@
     "therapistId": "ZGzdytaw13b2BqINZb0RwVgyHKp1",
     "content": {
       "chartNote": "this is a chart note"
-    }
+    },
+    "dateTime": 1692222815882
   }
 }
