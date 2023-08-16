@@ -110,9 +110,9 @@ const createNote = async (payload) => {
   }
 };
 
-const deleteNote = async (payload) => {
+const deleteNote = async (noteId) => {
   try {
-    const response = await axios.delete(`${dbURL}/notes/${payload.noteId}`);
+    const response = await axios.delete(`${dbURL}/notes/${noteId}.json`);
     return response;
   } catch (e) {
     console.warn(e);
