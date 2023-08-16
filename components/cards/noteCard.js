@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { deleteNote } from '../../utils/databaseCalls/noteData';
 
-export default function NoteCard({ noteObj, page }) {
+export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   const [showMore, setShowMore] = useState(false);
 
   const showMoreToggle = () => {
@@ -12,8 +13,14 @@ export default function NoteCard({ noteObj, page }) {
     }
   };
 
-  const dateToStringConverter = (dateMilliseconds) => {
-    const date = new Date(dateMilliseconds);
+  const handleDelete = async () => {
+    await deleteNote(noteObj.noteId);
+    onNotesUpdate(noteObj.clientId);
+  };
+
+  const dateToStringConverter = (unparsedDate) => {
+    const dateToParse = unparsedDate;
+    const date = new Date(dateToParse);
     return date.toLocaleString('en-US');
   };
 
@@ -36,6 +43,13 @@ export default function NoteCard({ noteObj, page }) {
       return (
         <>
           <p className="chart-note-content">{noteObj.content.chartNote}</p>
+          <button
+            className="delete-note-btn"
+            type="button"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
         </>
       );
     }
@@ -78,4 +92,5 @@ NoteCard.propTypes = {
     dateTime: PropTypes.number,
   }).isRequired,
   page: PropTypes.string.isRequired,
+  onNotesUpdate: PropTypes.func.isRequired,
 };

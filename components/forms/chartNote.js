@@ -15,13 +15,11 @@ const initialState = {
   dateTime: 0,
 };
 
-export default function ChartNoteForm({
-  noteObj,
-  clientObj,
-  onChartNoteSubmit,
-}) {
+export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
+  const initialDate = Date.now();
   const [formInput, setFormInput] = useState({ noteText: '' });
-  const [dateInput, setDateInput] = useState(Date.now());
+  const [dateInput, setDateInput] = useState(initialDate);
+
   const { therapist } = useContext(TherapistContext);
 
   useEffect(() => {
@@ -43,25 +41,24 @@ export default function ChartNoteForm({
       clientId: clientObj.clientId,
       therapistId: therapist.therapistId,
       content: { chartNote: formInput.noteText },
-      dateTime: Date.parse(dateInput),
+      dateTime: dateInput,
     };
-    console.warn(payload);
     await createNote(payload);
-    onChartNoteSubmit();
-    setFormInput('');
+    onNotesUpdate(clientObj.clientId);
   };
 
   return (
     <>
       <div className="chart-note-form">
         <form onSubmit={handleSubmit}>
-          <input
+          <textarea
             value={formInput.noteText}
             onChange={handleChange}
             type="textarea"
-            className="chart-note-textarea"
+            className="chart-note-textarea "
             name="noteText"
             placeholder="Add Chart Note: include notes from a call with a client or copy & paste the contents of a document or email."
+            required
           />
           <div className="chartnote-date-btn">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -71,6 +68,7 @@ export default function ChartNoteForm({
                 views={['year', 'month', 'day', 'hours', 'minutes']}
                 value={dateInput}
                 onChange={(newValue) => setDateInput(newValue)}
+                required
               />
             </LocalizationProvider>
             <button type="submit" className="add-note-btn">
@@ -106,7 +104,7 @@ ChartNoteForm.propTypes = {
     sex: PropTypes.string,
     gender: PropTypes.string,
   }).isRequired,
-  onChartNoteSubmit: PropTypes.func.isRequired,
+  onNotesUpdate: PropTypes.func.isRequired,
 };
 
 ChartNoteForm.defaultProps = {

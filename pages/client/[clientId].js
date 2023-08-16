@@ -28,8 +28,8 @@ export default function ClientOverView() {
     }
   };
 
-  const onChartNoteSubmit = () => {
-    getAllClientNotes(clientId).then(setClientNotes);
+  const onNotesUpdate = (clientKey) => {
+    getAllClientNotes(clientKey).then(setClientNotes);
   };
 
   useEffect(() => {
@@ -75,10 +75,7 @@ export default function ClientOverView() {
                 </Link>
               </div>
             </div>
-            <ChartNoteForm
-              clientObj={client}
-              onChartNoteSubmit={onChartNoteSubmit}
-            />
+            <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
             <div className="notes-info">
               {clientNotes.length && (
                 <div className="client-notes">
@@ -87,6 +84,7 @@ export default function ClientOverView() {
                       key={note.noteId}
                       noteObj={note}
                       page="clientOverview"
+                      onNotesUpdate={onNotesUpdate}
                     />
                   ))}
                 </div>
