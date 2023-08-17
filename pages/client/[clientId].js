@@ -40,6 +40,16 @@ export default function ClientOverView() {
     getAllClientNotes(clientId).then(setClientNotes);
   }, [clientId]);
 
+  // const sortedNotes = [...clientNotes].sort(
+  //   (a, b) => Date.parse(b.dateTime) - Date.parse(a.dateTime),
+  // );
+
+  // useEffect(() => {
+  //   sortedNotes.forEach((note) => {
+  //     console.warn(note.title, Date.parse(note.dateTime));
+  //   });
+  // }, [sortedNotes]);
+
   function calculateAge(birthday) {
     // birthday is a date
     const ageDifMs = Date.now() - birthday;
