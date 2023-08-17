@@ -14,8 +14,10 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   };
 
   const handleDelete = async () => {
-    await deleteNote(noteObj.noteId);
-    onNotesUpdate(noteObj.clientId);
+    if (window.confirm(`Delete this Chart Note?`)) {
+      await deleteNote(noteObj.noteId);
+      onNotesUpdate(noteObj.clientId);
+    }
   };
 
   const dateToStringConverter = (unparsedDate) => {

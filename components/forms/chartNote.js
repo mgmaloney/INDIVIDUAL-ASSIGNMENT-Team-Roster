@@ -45,6 +45,8 @@ export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
     };
     await createNote(payload);
     onNotesUpdate(clientObj.clientId);
+    setFormInput({ noteText: '' });
+    setDateInput(initialDate);
   };
 
   return (
