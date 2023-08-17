@@ -21,8 +21,7 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   };
 
   const dateToStringConverter = (unparsedDate) => {
-    const dateToParse = unparsedDate;
-    const date = new Date(dateToParse);
+    const date = new Date(unparsedDate);
     return date.toLocaleString('en-US');
   };
 
