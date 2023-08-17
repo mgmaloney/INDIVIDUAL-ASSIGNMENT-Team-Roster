@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { addMinutes } from 'date-fns';
+// import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 
@@ -39,13 +39,17 @@ export default function AddAppointment({
 }) {
   const { therapistClients } = useContext(TherapistClientsContext);
   const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  // const [endDate, setEndDate] = useState();
+  // const [formInput, setFormInput] = useState();
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
-    setEndDate(addMinutes(selectedCalDate, 50));
   }, [selectedCalDate]);
+
+  // useEffect(() => {
+  //   setEndDate(addMinutes(startDate), )
+  // }, [startDate])
 
   return (
     <>
@@ -80,27 +84,24 @@ export default function AddAppointment({
               </label>
               <select id="client-select" value="">
                 {therapistClients.map((client) => (
-                    <option
-                      key={client.clientId}
-                      id={client.clientId}
-                      value={client.clientId}
-                    >
-                      {client.firstName} {client.lastName}
-                    </option>
-                  ))}
+                  <option
+                    key={client.clientId}
+                    id={client.clientId}
+                    value={client.clientId}
+                  >
+                    {client.firstName} {client.lastName}
+                  </option>
+                ))}
               </select>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
-                  label="Start Date"
                   value={startDate}
                   onChange={(newValue) => setStartDate(newValue)}
                 />
-                <DateTimePicker
-                  label="End Date"
-                  value={endDate}
-                  onChange={(newValue) => setEndDate(newValue)}
-                />
               </LocalizationProvider>
+              <label>
+                <input type="text" value="50" />
+              </label>
             </form>
           </Box>
         </>
