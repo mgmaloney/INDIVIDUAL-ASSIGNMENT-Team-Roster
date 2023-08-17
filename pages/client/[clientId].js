@@ -18,6 +18,7 @@ export default function ClientOverView() {
   const { clientId } = router.query;
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
+  const [sortedNotes, setSortedNotes] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const changeModalState = () => {
@@ -40,20 +41,18 @@ export default function ClientOverView() {
     getAllClientNotes(clientId).then(setClientNotes);
   }, [clientId]);
 
-  // const sortedNotes = [...clientNotes].sort(
-  //   (a, b) => Date.parse(b.dateTime) - Date.parse(a.dateTime),
-  // );
-
-  // useEffect(() => {
-  //   sortedNotes.forEach((note) => {
-  //     console.warn(note.title, Date.parse(note.dateTime));
-  //   });
-  // }, [sortedNotes]);
+  useEffect(() => {
+    setSortedNotes(
+      [...clientNotes].sort(
+        (a, b) =>
+          new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime(),
+      ),
+    );
+  }, [clientNotes]);
 
   function calculateAge(birthday) {
-    // birthday is a date
     const ageDifMs = Date.now() - birthday;
-    const ageDate = new Date(ageDifMs); // miliseconds from epoch
+    const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
@@ -87,9 +86,9 @@ export default function ClientOverView() {
             </div>
             <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
             <div className="notes-info">
-              {clientNotes.length && (
+              {sortedNotes.length && (
                 <div className="client-notes">
-                  {clientNotes.map((note) => (
+                  {sortedNotes.map((note) => (
                     <NoteCard
                       key={note.noteId}
                       noteObj={note}

@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { toDate } from 'date-fns';
 import { createNote } from '../../utils/databaseCalls/noteData';
 import TherapistContext from '../../utils/context/therapistContext';
 
@@ -16,7 +17,7 @@ const initialState = {
 };
 
 export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
-  const initialDate = Date.now();
+  const initialDate = toDate(Date.now());
   const [formInput, setFormInput] = useState({ noteText: '' });
   const [dateInput, setDateInput] = useState(initialDate);
 
