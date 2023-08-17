@@ -3,8 +3,11 @@ import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import React, { useState } from 'react';
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { addMinutes } from 'date-fns';
+import React, { useContext, useEffect, useState } from 'react';
+import TherapistClientsContext from '../utils/context/therapistClientsContext';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -29,10 +32,20 @@ const style = (theme) => ({
   }`,
 });
 
-export default function AddAppointment({ openModal, setOpenModal }) {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+export default function AddAppointment({
+  openModal,
+  setOpenModal,
+  selectedCalDate,
+}) {
+  const { therapistClients } = useContext(TherapistClientsContext);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const handleClose = () => setOpenModal(false);
+
+  useEffect(() => {
+    setStartDate(selectedCalDate);
+    setEndDate(addMinutes(selectedCalDate, 50));
+  }, [selectedCalDate]);
 
   return (
     <>
@@ -43,18 +56,52 @@ export default function AddAppointment({ openModal, setOpenModal }) {
       >
         <>
           <Box sx={style}>
-            <h2 id="unstyled-modal-title">Text in a modal</h2>
-            <p id="unstyled-modal-description">Aliquid amet deserunt earum!</p>
-
-            <DateTimePicker
-              label="Start Date"
-              onChange={(newValue) => setStartDate(newValue.toString())}
-            />
-            {console.warn(startDate, endDate)}
-            <DateTimePicker
-              label="End Date"
-              onChange={(newValue) => setEndDate(newValue.toString())}
-            />
+            <h2 id="unstyled-modal-title">New Appointment</h2>
+            <form className="add-appointment-modal">
+              <label>
+                Client Appointment
+                <input
+                  type="radio"
+                  className="apt-radio"
+                  id="apt-type-client"
+                  name="apt-type-radio"
+                  value="client"
+                />
+              </label>
+              <label>
+                Other
+                <input
+                  type="radio"
+                  className="apt-radio"
+                  id="apt-type-other"
+                  name="apt-type-radio"
+                  value="other"
+                />
+              </label>
+              <select id="client-select" value="">
+                {therapistClients.map((client) => (
+                    <option
+                      key={client.clientId}
+                      id={client.clientId}
+                      value={client.clientId}
+                    >
+                      {client.firstName} {client.lastName}
+                    </option>
+                  ))}
+              </select>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label="Start Date"
+                  value={startDate}
+                  onChange={(newValue) => setStartDate(newValue)}
+                />
+                <DateTimePicker
+                  label="End Date"
+                  value={endDate}
+                  onChange={(newValue) => setEndDate(newValue)}
+                />
+              </LocalizationProvider>
+            </form>
           </Box>
         </>
       </StyledModal>
@@ -65,6 +112,7 @@ export default function AddAppointment({ openModal, setOpenModal }) {
 AddAppointment.propTypes = {
   openModal: PropTypes.bool.isRequired,
   setOpenModal: PropTypes.func.isRequired,
+  selectedCalDate: PropTypes.string.isRequired,
 };
 
 Backdrop.propTypes = {

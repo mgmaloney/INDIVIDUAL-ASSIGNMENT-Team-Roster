@@ -27,7 +27,12 @@ function Home() {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
+        <AddAppointment
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          selectedCalDate={selectedCalDate}
+          setSelectedCalDate={setSelectedCalDate}
+        />
       </LocalizationProvider>
       <CalendarComp
         openModal={openModal}
