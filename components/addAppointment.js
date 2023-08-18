@@ -4,10 +4,30 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import {
+  Autocomplete,
+  TextField,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
+
+const autocompleteTheme = createTheme({
+  components: {
+    // Name of the component
+    MuiAutoComplete: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          height: '50px',
+        },
+      },
+    },
+  },
+});
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -39,8 +59,9 @@ export default function AddAppointment({
 }) {
   const { therapistClients } = useContext(TherapistClientsContext);
   const [startDate, setStartDate] = useState();
-  // const [endDate, setEndDate] = useState();
-  // const [formInput, setFormInput] = useState();
+  const [endDate, setEndDate] = useState();
+  const [aptRadio, setAptRadio] = useState('client');
+  const [selectedClientId, setSelectedClientId] = useState();
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
@@ -70,6 +91,8 @@ export default function AddAppointment({
                   id="apt-type-client"
                   name="apt-type-radio"
                   value="client"
+                  onChange={(e) => setAptRadio(e.target.value)}
+                  defaultChecked
                 />
               </label>
               <label>
@@ -80,19 +103,29 @@ export default function AddAppointment({
                   id="apt-type-other"
                   name="apt-type-radio"
                   value="other"
+                  onChange={(e) => setAptRadio(e.target.value)}
                 />
               </label>
-              <select id="client-select" value="">
-                {therapistClients.map((client) => (
-                  <option
-                    key={client.clientId}
-                    id={client.clientId}
-                    value={client.clientId}
-                  >
-                    {client.firstName} {client.lastName}
-                  </option>
-                ))}
-              </select>
+              {aptRadio === 'client' ? (
+                <ThemeProvider theme={autocompleteTheme}>
+                  <Autocomplete
+                    id="client-autocomplete"
+                    options={therapistClients}
+                    sx={{ height: 50 }}
+                    getOptionLabel={(option) =>
+                      `${option.firstName} ${option.lastName}`
+                    }
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add Client" />
+                    )}
+                    onChange={(event, newValue) => {
+                      setSelectedClientId(newValue.clientId);
+                    }}
+                  />
+                </ThemeProvider>
+              ) : (
+                <input type="text" placeholder="Add title" />
+              )}
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   value={startDate}
