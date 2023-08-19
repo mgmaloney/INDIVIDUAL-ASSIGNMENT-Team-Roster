@@ -12,6 +12,7 @@ function Home() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
   const [appointments, setAppointments] = useState({});
+  const [selectedApt, setSelectedApt] = useState({});
 
   useEffect(() => {
     getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
@@ -44,6 +45,8 @@ function Home() {
           setOpenModal={setOpenModal}
           selectedCalDate={selectedCalDate}
           setSelectedCalDate={setSelectedCalDate}
+          selectedApt={selectedApt}
+          setSelectedApt={setSelectedApt}
           onAptUpdate={onAptUpdate}
         />
       </LocalizationProvider>
@@ -53,6 +56,8 @@ function Home() {
         setOpenModal={setOpenModal}
         selectedCalDate={selectedCalDate}
         setSelectedCalDate={setSelectedCalDate}
+        selectedApt={selectedApt}
+        setSelectedApt={setSelectedApt}
       />
     </>
   );

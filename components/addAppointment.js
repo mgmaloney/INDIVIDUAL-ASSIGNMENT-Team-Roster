@@ -10,7 +10,22 @@ import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
-import { createAppointment } from '../utils/databaseCalls/calendarData';
+import {
+  createAppointment,
+  updateAppointment,
+} from '../utils/databaseCalls/calendarData';
+import { getClientByClientId } from '../utils/databaseCalls/clientData';
+
+const selectedAptDefaultState = {
+  appointmentId: '',
+  title: '',
+  start: '',
+  end: '',
+  length: 50,
+  therapistId: '',
+  clientId: '',
+  type: '',
+};
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -40,6 +55,7 @@ export default function AddAppointment({
   setOpenModal,
   selectedCalDate,
   onAptUpdate,
+  selectedApt,
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
@@ -50,6 +66,22 @@ export default function AddAppointment({
   const [aptName, setAptName] = useState('');
   const [length, setLength] = useState('');
   const handleClose = () => setOpenModal(false);
+
+  useEffect(() => {
+    if (selectedApt.appointmentId) {
+      setStartDate(new Date(selectedApt.start));
+      setEndDate(new Date(selectedApt.end));
+      setAptRadio(selectedApt.type);
+      setAptName(selectedApt.title);
+      setLength(selectedApt.length);
+    }
+  }, [selectedApt]);
+
+  useEffect(() => {
+    if (selectedApt.clientId) {
+      getClientByClientId(selectedApt.clientId).then(setSelectedClientObj);
+    }
+  }, [selectedApt.clientId]);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
@@ -63,26 +95,44 @@ export default function AddAppointment({
 
   // creates an appointment name with First name and last initial
   useEffect(() => {
-    const { lastName } = selectedClientObj;
-    const lastNameLetter = lastName?.charAt();
-    const aptNam = `${selectedClientObj.firstName} ${lastNameLetter}.`;
-    setAptName(aptNam);
+    if (selectedClientObj.lastName) {
+      const { lastName } = selectedClientObj;
+      const lastNameLetter = lastName?.charAt();
+      const aptNam = `${selectedClientObj.firstName} ${lastNameLetter}.`;
+      setAptName(aptNam);
+    }
   }, [selectedClientObj]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      title: aptName,
-      start: startDate,
-      end: endDate,
-      length,
-      therapistId: therapist.therapistId,
-      clientId: selectedClientObj.clientId,
-      type: aptRadio,
-    };
-    handleClose();
-    await createAppointment(payload);
-    onAptUpdate();
+    if (selectedApt.appointmentId) {
+      const payload = {
+        appointmentId: selectedApt.appointmentId,
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: therapist.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      await updateAppointment(payload);
+      handleClose();
+      onAptUpdate();
+    } else {
+      const payload = {
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: therapist.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      await createAppointment(payload);
+      handleClose();
+      onAptUpdate();
+    }
   };
 
   // still want to add repeating and full day apt options
@@ -134,6 +184,9 @@ export default function AddAppointment({
                   onChange={(event, newValue) => {
                     setSelectedClientObj(newValue);
                   }}
+                  value={
+                    selectedClientObj.clientId ? { ...selectedClientObj } : ''
+                  }
                 />
               ) : (
                 <input type="text" placeholder="Add title" />
@@ -180,6 +233,20 @@ AddAppointment.propTypes = {
   setOpenModal: PropTypes.func.isRequired,
   selectedCalDate: PropTypes.string.isRequired,
   onAptUpdate: PropTypes.func.isRequired,
+  selectedApt: PropTypes.shape({
+    appointmentId: PropTypes.string,
+    title: PropTypes.string,
+    start: PropTypes.string,
+    end: PropTypes.string,
+    length: PropTypes.number,
+    therapistId: PropTypes.string,
+    clientId: PropTypes.string,
+    type: PropTypes.string,
+  }),
+};
+
+AddAppointment.defaultProps = {
+  selectedApt: selectedAptDefaultState,
 };
 
 Backdrop.propTypes = {

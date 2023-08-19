@@ -4,7 +4,7 @@ import getDay from 'date-fns/getDay';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import React from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,10 +22,9 @@ const localizer = dateFnsLocalizer({
 });
 
 export default function CalendarComp({
-  openModal,
   setOpenModal,
-  selectedCalDate,
   setSelectedCalDate,
+  setSelectedApt,
   appointments,
 }) {
   return (
@@ -43,8 +42,11 @@ export default function CalendarComp({
               setSelectedCalDate(slotInfo.slots[0]);
               setOpenModal(true);
             }}
+            onSelectEvent={(appointment) => {
+              setSelectedApt(appointment);
+              setOpenModal(true);
+            }}
           />
-          {console.warn(openModal, selectedCalDate)}
         </div>
       )}
     </>
@@ -52,11 +54,8 @@ export default function CalendarComp({
 }
 
 CalendarComp.propTypes = {
-  openModal: PropTypes.bool.isRequired,
   setOpenModal: PropTypes.func.isRequired,
-  selectedCalDate: PropTypes.string.isRequired,
   setSelectedCalDate: PropTypes.func.isRequired,
-  appointments: PropTypes.shape({
-    length: number,
-  }).isRequired,
+  setSelectedApt: PropTypes.func.isRequired,
+  appointments: PropTypes.shape([]).isRequired,
 };
