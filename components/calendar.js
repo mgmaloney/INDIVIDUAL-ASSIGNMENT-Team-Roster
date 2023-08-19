@@ -3,13 +3,11 @@ import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
-import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes, { number } from 'prop-types';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
-import TherapistContext from '../utils/context/therapistContext';
 
 const locales = {
   'en-US': require('date-fns/locale/en-US'),
@@ -28,14 +26,8 @@ export default function CalendarComp({
   setOpenModal,
   selectedCalDate,
   setSelectedCalDate,
+  appointments,
 }) {
-  const { therapist } = useContext(TherapistContext);
-  const [appointments, setAppointments] = useState({});
-
-  useEffect(() => {
-    getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
-  }, [therapist]);
-
   return (
     <>
       {appointments.length && (
@@ -64,4 +56,7 @@ CalendarComp.propTypes = {
   setOpenModal: PropTypes.func.isRequired,
   selectedCalDate: PropTypes.string.isRequired,
   setSelectedCalDate: PropTypes.func.isRequired,
+  appointments: PropTypes.shape({
+    length: number,
+  }).isRequired,
 };

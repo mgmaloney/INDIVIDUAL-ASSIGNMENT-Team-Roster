@@ -39,6 +39,7 @@ export default function AddAppointment({
   openModal,
   setOpenModal,
   selectedCalDate,
+  onAptUpdate,
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
@@ -79,7 +80,9 @@ export default function AddAppointment({
       clientId: selectedClientObj.clientId,
       type: aptRadio,
     };
+    handleClose();
     await createAppointment(payload);
+    onAptUpdate();
   };
 
   // still want to add repeating and full day apt options
@@ -176,6 +179,7 @@ AddAppointment.propTypes = {
   openModal: PropTypes.bool.isRequired,
   setOpenModal: PropTypes.func.isRequired,
   selectedCalDate: PropTypes.string.isRequired,
+  onAptUpdate: PropTypes.func.isRequired,
 };
 
 Backdrop.propTypes = {

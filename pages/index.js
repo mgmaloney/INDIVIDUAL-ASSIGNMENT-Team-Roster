@@ -1,13 +1,25 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
+import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
+import TherapistContext from '../utils/context/therapistContext';
 
 function Home() {
+  const { therapist } = useContext(TherapistContext);
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
+  const [appointments, setAppointments] = useState({});
+
+  useEffect(() => {
+    getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
+  }, [therapist]);
+
+  const onAptUpdate = () => {
+    getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
+  };
   // const { isNewUser } = useContext(IsNewUserContext);
 
   // part of the newUser check, which will be implemented later
@@ -32,9 +44,11 @@ function Home() {
           setOpenModal={setOpenModal}
           selectedCalDate={selectedCalDate}
           setSelectedCalDate={setSelectedCalDate}
+          onAptUpdate={onAptUpdate}
         />
       </LocalizationProvider>
       <CalendarComp
+        appointments={appointments}
         openModal={openModal}
         setOpenModal={setOpenModal}
         selectedCalDate={selectedCalDate}
