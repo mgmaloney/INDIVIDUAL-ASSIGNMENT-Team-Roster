@@ -9,6 +9,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
+import TherapistContext from '../utils/context/therapistContext';
+import { createAppointment } from '../utils/databaseCalls/calendarData';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -38,24 +40,27 @@ export default function AddAppointment({
   setOpenModal,
   selectedCalDate,
 }) {
+  const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
   const [startDate, setStartDate] = useState();
-  const [setEndDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [aptRadio, setAptRadio] = useState('client');
   const [selectedClientObj, setSelectedClientObj] = useState({});
-  const [setSelectedClientId] = useState();
-  const [setAptName] = useState('');
-  const [length, setLength] = useState();
+  const [aptName, setAptName] = useState('');
+  const [length, setLength] = useState('');
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
   }, [selectedCalDate]);
 
+  // sets the endDate by adding minutes to the startDate
+  // based on the state of both length and start date
   useEffect(() => {
     setEndDate(addMinutes(startDate, length));
   }, [startDate, length]);
 
+  // creates an appointment name with First name and last initial
   useEffect(() => {
     const { lastName } = selectedClientObj;
     const lastNameLetter = lastName?.charAt();
@@ -63,10 +68,21 @@ export default function AddAppointment({
     setAptName(aptNam);
   }, [selectedClientObj]);
 
-  // const handleSubmit = () => {
-  //   const payload = {};
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      title: aptName,
+      start: startDate,
+      end: endDate,
+      length,
+      therapistId: therapist.therapistId,
+      clientId: selectedClientObj.clientId,
+      type: aptRadio,
+    };
+    await createAppointment(payload);
+  };
 
+  // still want to add repeating and full day apt options
   return (
     <>
       <StyledModal
@@ -77,7 +93,7 @@ export default function AddAppointment({
         <>
           <Box sx={style}>
             <h2 id="unstyled-modal-title">New Appointment</h2>
-            <form className="add-appointment-modal">
+            <form className="add-appointment-modal" onSubmit={handleSubmit}>
               <label>
                 Client Appointment
                 <input
@@ -114,7 +130,6 @@ export default function AddAppointment({
                   )}
                   onChange={(event, newValue) => {
                     setSelectedClientObj(newValue);
-                    setSelectedClientId(newValue.clientId);
                   }}
                 />
               ) : (
@@ -133,7 +148,7 @@ export default function AddAppointment({
                     <input
                       type="text"
                       value={length}
-                      onChange={(newValue) => setLength(newValue)}
+                      onChange={(e) => setLength(e.target.value)}
                     />
                     min
                   </label>
