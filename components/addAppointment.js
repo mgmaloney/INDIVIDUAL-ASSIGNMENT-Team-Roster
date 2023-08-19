@@ -4,30 +4,11 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-import {
-  Autocomplete,
-  TextField,
-  createTheme,
-  ThemeProvider,
-} from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-// import { addMinutes } from 'date-fns';
+import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
-
-const autocompleteTheme = createTheme({
-  components: {
-    // Name of the component
-    MuiAutoComplete: {
-      styleOverrides: {
-        // Name of the slot
-        root: {
-          height: '50px',
-        },
-      },
-    },
-  },
-});
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -59,18 +40,32 @@ export default function AddAppointment({
 }) {
   const { therapistClients } = useContext(TherapistClientsContext);
   const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [setEndDate] = useState();
   const [aptRadio, setAptRadio] = useState('client');
-  const [selectedClientId, setSelectedClientId] = useState();
+  const [selectedClientObj, setSelectedClientObj] = useState({});
+  const [setSelectedClientId] = useState();
+  const [setAptName] = useState('');
+  const [length, setLength] = useState();
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
   }, [selectedCalDate]);
 
-  // useEffect(() => {
-  //   setEndDate(addMinutes(startDate), )
-  // }, [startDate])
+  useEffect(() => {
+    setEndDate(addMinutes(startDate, length));
+  }, [startDate, length]);
+
+  useEffect(() => {
+    const { lastName } = selectedClientObj;
+    const lastNameLetter = lastName?.charAt();
+    const aptNam = `${selectedClientObj.firstName} ${lastNameLetter}.`;
+    setAptName(aptNam);
+  }, [selectedClientObj]);
+
+  // const handleSubmit = () => {
+  //   const payload = {};
+  // };
 
   return (
     <>
@@ -107,34 +102,53 @@ export default function AddAppointment({
                 />
               </label>
               {aptRadio === 'client' ? (
-                <ThemeProvider theme={autocompleteTheme}>
-                  <Autocomplete
-                    id="client-autocomplete"
-                    options={therapistClients}
-                    sx={{ height: 50 }}
-                    getOptionLabel={(option) =>
-                      `${option.firstName} ${option.lastName}`
-                    }
-                    renderInput={(params) => (
-                      <TextField {...params} label="Add Client" />
-                    )}
-                    onChange={(event, newValue) => {
-                      setSelectedClientId(newValue.clientId);
-                    }}
-                  />
-                </ThemeProvider>
+                <Autocomplete
+                  id="client-autocomplete"
+                  options={therapistClients}
+                  // sx={{ width: 50 }}
+                  getOptionLabel={(option) =>
+                    `${option.firstName} ${option.lastName}`
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label="Add Client" size="small" />
+                  )}
+                  onChange={(event, newValue) => {
+                    setSelectedClientObj(newValue);
+                    setSelectedClientId(newValue.clientId);
+                  }}
+                />
               ) : (
                 <input type="text" placeholder="Add title" />
               )}
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DateTimePicker
-                  value={startDate}
-                  onChange={(newValue) => setStartDate(newValue)}
-                />
-              </LocalizationProvider>
-              <label>
-                <input type="text" value="50" />
-              </label>
+              <>
+                <div className="datepick-and-mins">
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      value={startDate}
+                      onChange={(newValue) => setStartDate(newValue)}
+                      slotProps={{ textField: { size: 'small' } }}
+                    />
+                  </LocalizationProvider>
+                  <label>
+                    <input
+                      type="text"
+                      value={length}
+                      onChange={(newValue) => setLength(newValue)}
+                    />
+                    min
+                  </label>
+                </div>
+              </>
+              <button
+                className="cancel-btn"
+                type="button"
+                onClick={handleClose}
+              >
+                Cancel
+              </button>
+              <button className="dont-btn" type="submit">
+                Done
+              </button>
             </form>
           </Box>
         </>

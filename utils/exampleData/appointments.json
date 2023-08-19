@@ -4,23 +4,29 @@
     "title": "Zack B. Appointment",
     "start": "2023-08-18T18:00:00-0600",
     "end": "2023-08-18T18:00:00-0600",
+    "length": 50,
     "therapistId": "-Mityumity-yluJkL-",
-    "clientId": "-MiBsjmyWFEU-yluJkL-"
+    "clientId": "-MiBsjmyWFEU-yluJkL-",
+    "type": "client"
   },
   "-MiBsBKGWFEU-yluJkM-": {
     "appointmentId": "-MiBsBKGWFEU-yluJkM-",
     "title": "Matt B.",
     "start": "2023-08-14T18:00:00-0600",
     "end": "2023-08-14T18:00:00-0600",
+    "length": 50,
     "therapistId": "-Mityumity-yluJkL-",
-    "client_id": "-MiBsmftWFEU-yluJkM-"
+    "client_id": "-MiBsmftWFEU-yluJkM-",
+    "type": "client"
   },
   "-MiBsBKGWFEU-yluJkN-": {
     "appointmentId": "-MiBsBKGWFEU-yluJkN-",
     "title": "Michelle Y. Appointment",
     "start": "2023-08-04T18:00:00-0600",
     "end": "2023-08-04T18:00:00-0600",
+    "length": 50,
     "therapistId": "-Mityumity-yluJkL-",
-    "client_id": "-MiBsWMPFEU-yluJkN-"
+    "client_id": "-MiBsWMPFEU-yluJkN-",
+    "type": "client"
   }
 }
