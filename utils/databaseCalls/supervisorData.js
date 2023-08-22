@@ -7,8 +7,6 @@ const getAllSupervisors = async () => {
   try {
     const { data } = await axios.get(`${dbURL}/supervisors.json`);
     const supervisors = Object.values(data);
-
-    console.warn('supervisors', supervisors);
     return supervisors;
   } catch (e) {
     console.warn(e);
