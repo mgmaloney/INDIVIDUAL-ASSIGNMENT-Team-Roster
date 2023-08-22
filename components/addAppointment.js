@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, SvgIcon, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
@@ -22,8 +23,8 @@ const selectedAptDefaultState = {
   start: '',
   end: '',
   length: 50,
-  therapistId: '',
   clientId: '',
+  therapistId: '',
   type: '',
 };
 
@@ -56,6 +57,7 @@ export default function AddAppointment({
   selectedCalDate,
   onAptUpdate,
   selectedApt,
+  setSelectedApt,
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
@@ -65,7 +67,12 @@ export default function AddAppointment({
   const [selectedClientObj, setSelectedClientObj] = useState({});
   const [aptName, setAptName] = useState('');
   const [length, setLength] = useState('');
-  const handleClose = () => setOpenModal(false);
+
+  const handleClose = () => {
+    setSelectedApt(selectedAptDefaultState);
+    setSelectedClientObj({});
+    setOpenModal(false);
+  };
 
   useEffect(() => {
     if (selectedApt.appointmentId) {
@@ -80,6 +87,7 @@ export default function AddAppointment({
   useEffect(() => {
     if (selectedApt.clientId) {
       getClientByClientId(selectedApt.clientId).then(setSelectedClientObj);
+      console.warn('getClient running');
     }
   }, [selectedApt.clientId]);
 
@@ -175,9 +183,12 @@ export default function AddAppointment({
                   id="client-autocomplete"
                   options={therapistClients}
                   // sx={{ width: 50 }}
-                  getOptionLabel={(option) =>
-                    `${option.firstName} ${option.lastName}`
-                  }
+                  getOptionLabel={(option) => {
+                    if (option.firstName) {
+                      return `${option.firstName} ${option.lastName}`;
+                    }
+                    return '';
+                  }}
                   renderInput={(params) => (
                     <TextField {...params} label="Add Client" size="small" />
                   )}
@@ -210,6 +221,7 @@ export default function AddAppointment({
                   </label>
                 </div>
               </>
+              {selectedApt.appointmentId ? <DeleteOutlineIcon /> : ''}
               <button
                 className="cancel-btn"
                 type="button"
@@ -243,6 +255,7 @@ AddAppointment.propTypes = {
     clientId: PropTypes.string,
     type: PropTypes.string,
   }),
+  setSelectedApt: PropTypes.func.isRequired,
 };
 
 AddAppointment.defaultProps = {
