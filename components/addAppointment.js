@@ -67,7 +67,7 @@ export default function AddAppointment({
   const [aptRadio, setAptRadio] = useState('client');
   const [selectedClientObj, setSelectedClientObj] = useState({});
   const [aptName, setAptName] = useState('');
-  const [length, setLength] = useState('');
+  const [length, setLength] = useState(50);
 
   const handleClose = () => {
     setSelectedApt(selectedAptDefaultState);

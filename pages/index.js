@@ -4,14 +4,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
-import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
+import {
+  getAppointmentsByClientId,
+  getAppointmentsByTherapistId,
+} from '../utils/databaseCalls/calendarData';
 import TherapistContext from '../utils/context/therapistContext';
+import {
+  createNote,
+  getAllClientAppointmentNotes,
+} from '../utils/databaseCalls/noteData';
 
 function Home() {
   const { therapist } = useContext(TherapistContext);
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
-  const [appointments, setAppointments] = useState({});
+  const [appointments, setAppointments] = useState([]);
   const [selectedApt, setSelectedApt] = useState({});
 
   useEffect(() => {
@@ -21,6 +28,7 @@ function Home() {
   const onAptUpdate = () => {
     getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
   };
+
   // const { isNewUser } = useContext(IsNewUserContext);
 
   // part of the newUser check, which will be implemented later
