@@ -9,7 +9,10 @@ import {
   getAppointmentsByTherapistId,
 } from '../utils/databaseCalls/calendarData';
 import TherapistContext from '../utils/context/therapistContext';
-import { createNote } from '../utils/databaseCalls/noteData';
+import {
+  createNote,
+  getAllClientAppointmentNotes,
+} from '../utils/databaseCalls/noteData';
 
 function Home() {
   const { therapist } = useContext(TherapistContext);
@@ -25,49 +28,6 @@ function Home() {
   const onAptUpdate = () => {
     getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
   };
-
-  const createNoteAfterAptStart = async (aptsArr) => {
-    const now = Date.now();
-    console.warn('now', now);
-    aptsArr.forEach(async (appointment) => {
-      const aptTime = new Date(appointment.start);
-      let numberOfPastClientApts = 0;
-      console.warn('apttime', aptTime);
-      if (now >= aptTime) {
-        const clientApts = await getAppointmentsByClientId(
-          appointment.clientId,
-        );
-        clientApts.forEach((clientAppointment) => {
-          const clientAptTime = new Date(clientAppointment.start);
-          if (now >= clientAptTime) {
-            numberOfPastClientApts += 1;
-            console.warn(
-              `${clientAppointment.title} is #${numberOfPastClientApts}`,
-            );
-          }
-        });
-        const newNotePayload = {
-          title: `Appointment #${numberOfPastClientApts}`,
-          type: 'appointment',
-          appointmentId: appointment.appointmentId,
-          clientId: appointment.clientId,
-          therapistId: appointment.therapistId,
-          supervisorId: therapist.supervisorId,
-          content: {
-            D: '',
-            A: '',
-            P: '',
-          },
-          signedByTherapist: false,
-          signedBySupervisor: false,
-          dateTime: appointment.dateTime,
-        };
-        // createNote(newNotePayload)
-      }
-    });
-  };
-
-
 
   // const { isNewUser } = useContext(IsNewUserContext);
 
@@ -107,7 +67,6 @@ function Home() {
         selectedApt={selectedApt}
         setSelectedApt={setSelectedApt}
       />
-      {/* {createAptAfterAptStart()} */}
     </>
   );
 }

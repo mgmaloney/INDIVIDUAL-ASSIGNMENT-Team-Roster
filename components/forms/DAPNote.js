@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const initialState = {
   noteId: '',
@@ -12,8 +10,8 @@ const initialState = {
   dateTime: 0,
 };
 
-export default function DAPForm({ noteObj, clientObj }) {
-  const [formInput, setFormInput] = useState(initialState);
+export default function DAPForm() {
+  const [ setFormInput] = useState(initialState);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,24 +1,33 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Link from 'next/link';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
-import { getAllClientNotes } from '../../utils/databaseCalls/noteData';
+import {
+  getAllClientNotes,
+  getAllClientAppointmentNotes,
+  createNote,
+} from '../../utils/databaseCalls/noteData';
 import NoteCard from '../../components/cards/noteCard';
 import ClientContext from '../../utils/context/clientContext';
 import AddAppointment from '../../components/addAppointment';
 import ClientDetailsCard from '../../components/cards/clientDetails';
 import ChartNoteForm from '../../components/forms/chartNote';
+import TherapistContext from '../../utils/context/therapistContext';
+import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
 
 export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
+  const { therapist } = useContext(TherapistContext);
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
+  const [aptNotes, setAptNotes] = useState([]);
   const [sortedNotes, setSortedNotes] = useState([]);
+  const [clientApts, setClientApts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const changeModalState = () => {
@@ -42,6 +51,14 @@ export default function ClientOverView() {
   }, [clientId]);
 
   useEffect(() => {
+    getAllClientAppointmentNotes(clientId).then(setAptNotes);
+  }, [clientId]);
+
+  useEffect(() => {
+    getAppointmentsByClientId(clientId).then(setClientApts);
+  }, [clientId]);
+
+  useEffect(() => {
     setSortedNotes(
       [...clientNotes].sort(
         (a, b) =>
@@ -49,6 +66,56 @@ export default function ClientOverView() {
       ),
     );
   }, [clientNotes]);
+
+  const createNoteAfterAptStart = async (aptsArr) => {
+    const now = Date.now();
+    aptsArr.forEach(async (appointment) => {
+      const aptTime = new Date(appointment.start);
+      let numberOfPastClientApts = clientNotes.length;
+      if (now >= aptTime) {
+        numberOfPastClientApts += 1;
+        console.warn('now check OK');
+        if (
+          !aptNotes.some(
+            (note) => note.appointmentId === appointment.appointmentId,
+          )
+        ) {
+          const newNotePayload = {
+            title: `Appointment #${numberOfPastClientApts}`,
+            type: 'appointment',
+            appointmentId: appointment.appointmentId,
+            clientId: appointment.clientId,
+            therapistId: appointment.therapistId,
+            supervisorId: therapist.supervisorId,
+            content: {
+              D: '',
+              A: '',
+              P: '',
+            },
+            signedByTherapist: false,
+            signedBySupervisor: false,
+            dateTime: appointment.start,
+          };
+          console.warn(
+            `creating note for ${appointment.title}'s ${appointment.start} appointment`,
+          );
+          await createNote(newNotePayload);
+          const updatedClientNotes = await getAllClientAppointmentNotes(
+            clientId,
+          );
+          const updateClientApts = await getAllClientAppointmentNotes(clientId);
+          setAptNotes(updatedClientNotes);
+          console.warn('clientAptNotes', aptNotes);
+          setClientApts(updateClientApts);
+          console.warn('clientApts', clientApts);
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    createNoteAfterAptStart(clientApts);
+  }, [clientApts]);
 
   function calculateAge(birthday) {
     const ageDifMs = Date.now() - birthday;
