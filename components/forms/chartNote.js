@@ -52,8 +52,8 @@ export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
 
   return (
     <>
-      <div className="chart-note-form">
-        <form onSubmit={handleSubmit}>
+      <div>
+        <form className="chart-note-form" onSubmit={handleSubmit}>
           <textarea
             value={formInput.noteText}
             onChange={handleChange}

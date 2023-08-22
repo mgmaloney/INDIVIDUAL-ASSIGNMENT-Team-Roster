@@ -100,7 +100,7 @@ body {
 }
 
 .client-notes {
-  width: 90%;
+  width: 100%;
 }
 
 .notes-info {
@@ -108,13 +108,19 @@ body {
   width: 70rem;
 }
 
+.chart-note-form {
+  width: 98%;
+  border: solid 1px black;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
 .chart-note-textarea {
-  width: 68%;
+  width: 100%;
   height: 100px;
 }
 
 .add-note-btn {
-  margin-left: 1rem;
   height: 10%;
 }
 
@@ -122,7 +128,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 68.5%;
+  width: 100%;
 }
 .datetime-chart {
   background-color: white;
