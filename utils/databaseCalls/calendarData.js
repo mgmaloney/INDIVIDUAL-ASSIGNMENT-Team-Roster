@@ -71,7 +71,7 @@ const createAppointment = async (payload) => {
 const deleteAppointment = async (appointmentId) => {
   try {
     const response = await axios.delete(
-      `${dbURL}/appointment/${appointmentId}.json`,
+      `${dbURL}/appointments/${appointmentId}.json`,
     );
     return response;
   } catch (e) {
