@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-import { Autocomplete, SvgIcon, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { addMinutes } from 'date-fns';
@@ -13,6 +13,7 @@ import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
 import {
   createAppointment,
+  deleteAppointment,
   updateAppointment,
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
@@ -143,6 +144,14 @@ export default function AddAppointment({
     }
   };
 
+  const handleDelete = async () => {
+    if (window.confirm(`Delete this appointment?`)) {
+      await deleteAppointment(selectedApt.appointmentId);
+      handleClose();
+      onAptUpdate();
+    }
+  };
+
   // still want to add repeating and full day apt options
   return (
     <>
@@ -221,17 +230,30 @@ export default function AddAppointment({
                   </label>
                 </div>
               </>
-              {selectedApt.appointmentId ? <DeleteOutlineIcon /> : ''}
-              <button
-                className="cancel-btn"
-                type="button"
-                onClick={handleClose}
-              >
-                Cancel
-              </button>
-              <button className="dont-btn" type="submit">
-                Done
-              </button>
+              <>
+                <div className="btm-apt-btns">
+                  {selectedApt.appointmentId ? (
+                    <DeleteOutlineIcon
+                      onClick={handleDelete}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  ) : (
+                    ''
+                  )}
+                  <div className="cancel-done-btns">
+                    <button
+                      className="cancel-btn"
+                      type="button"
+                      onClick={handleClose}
+                    >
+                      Cancel
+                    </button>
+                    <button className="dont-btn" type="submit">
+                      Done
+                    </button>
+                  </div>
+                </div>
+              </>
             </form>
           </Box>
         </>
