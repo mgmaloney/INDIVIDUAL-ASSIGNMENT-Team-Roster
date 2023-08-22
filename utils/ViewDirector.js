@@ -52,7 +52,6 @@ const ViewDirectorBasedOnUserAuthStatus = ({
       <>
         <TherapistContext.Provider value={{ therapist }}>
           <TherapistClientsContext.Provider value={{ therapistClients }}>
-            {console.warn(user)}
             <NavBar />{' '}
             {/* NavBar only visible if user is logged in and is in every view */}
             <SideBar />

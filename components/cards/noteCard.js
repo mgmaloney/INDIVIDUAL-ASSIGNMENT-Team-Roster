@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
 
 export default function NoteCard({ noteObj, page, onNotesUpdate }) {
@@ -26,6 +27,13 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   };
 
   const renderTextByType = () => {
+    if (noteObj.type !== 'chart' && !noteObj.content.D) {
+      return (
+        <Link passHref href={`/client/progessnote/edit/${noteObj.noteId}`}>
+          Add Progress Note
+        </Link>
+      );
+    }
     if (noteObj.type === 'appointment') {
       return (
         <>

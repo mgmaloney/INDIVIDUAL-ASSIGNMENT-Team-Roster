@@ -43,6 +43,26 @@ const getAppointmentsByTherapistId = async (therapistId) => {
   }
 };
 
+const getAppointmentsByClientId = async (clientId) => {
+  try {
+    const response = await fetch(
+      `${dbURL}/appointments.json?orderBy="clientId"&equalTo="${clientId}"`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    const appointmentsJSON = await response.json();
+    const appointmentsArr = Object.values(appointmentsJSON);
+    return appointmentsArr;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
 const updateAppointment = async (payload) => {
   try {
     const response = await axios.patch(
@@ -83,6 +103,7 @@ const deleteAppointment = async (appointmentId) => {
 export {
   getAppointments,
   getAppointmentsByTherapistId,
+  getAppointmentsByClientId,
   updateAppointment,
   createAppointment,
   deleteAppointment,
