@@ -98,10 +98,10 @@ export default function ClientOverView() {
                   ))}
                 </div>
               )}
-              <div className="client-info-overview">
-                <ClientDetailsCard clientObj={client} page="client-overview" />
-              </div>
             </div>
+          </div>
+          <div className="client-info-overview">
+            <ClientDetailsCard clientObj={client} page="client-overview" />
           </div>
         </div>
       </ClientContext.Provider>
