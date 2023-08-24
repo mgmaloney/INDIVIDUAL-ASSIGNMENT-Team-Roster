@@ -56,6 +56,7 @@ const getAppointmentsByClientId = async (clientId) => {
     );
     const appointmentsJSON = await response.json();
     const appointmentsArr = Object.values(appointmentsJSON);
+    console.warn('aptArr', appointmentsArr);
     return appointmentsArr;
   } catch (e) {
     console.warn(e);

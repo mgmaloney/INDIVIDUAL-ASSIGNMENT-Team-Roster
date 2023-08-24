@@ -38,8 +38,13 @@ export default function ClientOverView() {
     }
   };
 
-  const onNotesUpdate = (clientKey) => {
-    getAllClientNotes(clientKey).then(setClientNotes);
+  const getAndSetClientAptsAndAptNotes = async () => {
+    const allClientNotes = await getAllClientNotes(clientId);
+    const clientAptNotes = await getAllClientAppointmentNotes(clientId);
+    const clientAppointments = await getAppointmentsByClientId(clientId);
+    setClientNotes(allClientNotes);
+    setAptNotes(clientAptNotes);
+    setClientApts(clientAppointments);
   };
 
   useEffect(() => {
@@ -47,16 +52,8 @@ export default function ClientOverView() {
   }, [clientId]);
 
   useEffect(() => {
-    getAllClientNotes(clientId).then(setClientNotes);
-  }, [clientId]);
-
-  useEffect(() => {
-    getAllClientAppointmentNotes(clientId).then(setAptNotes);
-  }, [clientId]);
-
-  useEffect(() => {
-    getAppointmentsByClientId(clientId).then(setClientApts);
-  }, [clientId]);
+    getAndSetClientAptsAndAptNotes();
+  }, []);
 
   useEffect(() => {
     setSortedNotes(
@@ -67,19 +64,27 @@ export default function ClientOverView() {
     );
   }, [clientNotes]);
 
-  const createNoteAfterAptStart = async (aptsArr) => {
+  const onNotesUpdate = (clientKey) => {
+    getAllClientNotes(clientKey).then(setClientNotes);
+  };
+
+  const createNoteAfterAptStart = async () => {
     const now = Date.now();
-    aptsArr.forEach(async (appointment) => {
+    clientApts.forEach(async (appointment) => {
       const aptTime = new Date(appointment.start);
-      let numberOfPastClientApts = clientNotes.length;
+      let numberOfPastClientApts = aptNotes.length;
       if (now >= aptTime) {
         numberOfPastClientApts += 1;
-        console.warn('now check OK');
         if (
-          !aptNotes.some(
+          aptNotes.some(
             (note) => note.appointmentId === appointment.appointmentId,
-          )
+          ) === false
         ) {
+          // if (
+          //   aptNotes.findIndex(
+          //     (note) => note.appointmentId === appointment.appointmentId,
+          //   ) === -1
+          // ) {
           const newNotePayload = {
             title: `Appointment #${numberOfPastClientApts}`,
             type: 'appointment',
@@ -105,16 +110,15 @@ export default function ClientOverView() {
           );
           const updateClientApts = await getAllClientAppointmentNotes(clientId);
           setAptNotes(updatedClientNotes);
-          console.warn('clientAptNotes', aptNotes);
           setClientApts(updateClientApts);
-          console.warn('clientApts', clientApts);
+          onNotesUpdate(clientId);
         }
       }
     });
   };
 
   useEffect(() => {
-    createNoteAfterAptStart(clientApts);
+    createNoteAfterAptStart();
   }, [clientApts]);
 
   function calculateAge(birthday) {

@@ -4,15 +4,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
-import {
-  getAppointmentsByClientId,
-  getAppointmentsByTherapistId,
-} from '../utils/databaseCalls/calendarData';
+import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
 import TherapistContext from '../utils/context/therapistContext';
-import {
-  createNote,
-  getAllClientAppointmentNotes,
-} from '../utils/databaseCalls/noteData';
 
 function Home() {
   const { therapist } = useContext(TherapistContext);
