@@ -29,7 +29,7 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   const renderTextByType = () => {
     if (noteObj.type !== 'chart' && !noteObj.content.D) {
       return (
-        <Link passHref href={`/client/progessnote/edit/${noteObj.noteId}`}>
+        <Link href={`/client/progessnote/edit/${noteObj.noteId}`}>
           Add Progress Note
         </Link>
       );
