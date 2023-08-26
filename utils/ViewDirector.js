@@ -17,6 +17,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const { user, userLoading } = useAuth();
   const [therapist, setTherapist] = useState({});
   const [therapistClients, setTherapistClients] = useState([]);
+  const [openClientModal, setOpenClientModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -52,12 +53,16 @@ const ViewDirectorBasedOnUserAuthStatus = ({
       <>
         <TherapistContext.Provider value={{ therapist }}>
           <TherapistClientsContext.Provider value={{ therapistClients }}>
-            <NavBar />{' '}
+            <NavBar setOpenClientModal={setOpenClientModal} />{' '}
             {/* NavBar only visible if user is logged in and is in every view */}
             <SideBar />
             {/* <IsNewUserContext.Provider value={isNewUser}> */}
             <div className="container">
-              <Component {...pageProps} />
+              <Component
+                openClientModal={openClientModal}
+                setOpenClientModal={setOpenClientModal}
+                {...pageProps}
+              />
             </div>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
