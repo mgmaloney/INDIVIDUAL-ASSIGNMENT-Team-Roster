@@ -9,7 +9,9 @@ import TherapistContext from '../../utils/context/therapistContext';
 import {
   createClient,
   getClientByClientId,
+  getClientsByTherapistId,
 } from '../../utils/databaseCalls/clientData';
+import TherapistClientsContext from '../../utils/context/therapistClientsContext';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -56,7 +58,13 @@ export default function AddClient({
   clientObj,
 }) {
   const { therapist } = useContext(TherapistContext);
+  const { setTherapistClients } = useContext(TherapistClientsContext);
+
   const [formInput, setFormInput] = useState(initialState);
+
+  const onClientsUpdate = () => {
+    getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
+  };
 
   useEffect(() => {
     if (clientObj.clientId) {
@@ -81,6 +89,7 @@ export default function AddClient({
       therapistId: therapist.therapistId,
     };
     await createClient(payload);
+    onClientsUpdate();
     handleClose();
   };
 

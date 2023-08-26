@@ -30,15 +30,20 @@ export default function ClientDetailsCard({ clientObj, page }) {
               <p className="c-and-c-item"> Gender: {clientObj.gender}</p>
             </>
           ) : (
-            <Link
-              passHref
-              href={`/client/${clientObj.clientId}`}
-              className="client-card-name"
-            >
-              <p className="client-card-name">
-                {clientObj.firstName} {clientObj.lastName}
-              </p>
-            </Link>
+            <>
+              <Link
+                passHref
+                href={`/client/${clientObj.clientId}`}
+                className="client-card-name"
+              >
+                <p className="client-card-name">
+                  {clientObj.firstName} {clientObj.lastName}
+                </p>
+              </Link>
+              <Link passHref href={`/client/edit/${clientObj.clientId}`}>
+                Edit
+              </Link>
+            </>
           )}
           <p className="c-and-c-item">Phone: {clientObj.phone}</p>
           <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">

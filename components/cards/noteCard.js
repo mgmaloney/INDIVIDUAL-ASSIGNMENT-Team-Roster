@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
+import { Router, useRouter } from 'next/router';
 
-export default function NoteCard({ noteObj, page, onNotesUpdate }) {
+export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
+  const router = useRouter();
+
   const [showMore, setShowMore] = useState(false);
 
   const showMoreToggle = () => {
@@ -26,12 +30,19 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
     return date.toLocaleString('en-US');
   };
 
+  //
+
   const renderTextByType = () => {
     if (noteObj.type !== 'chart' && !noteObj.content.D) {
       return (
-        <Link href={`/client/progessnote/edit/${noteObj.noteId}`}>
-          Add Progress Note
-        </Link>
+        <p
+          type="button"
+          onClick={() =>
+            router.push(`/client/progressnote/edit/${noteObj.noteId}`)
+          }
+        >
+          Add Progress Note +
+        </p>
       );
     }
     if (noteObj.type === 'appointment') {
@@ -102,4 +113,5 @@ NoteCard.propTypes = {
   }).isRequired,
   page: PropTypes.string.isRequired,
   onNotesUpdate: PropTypes.func.isRequired,
+  clientId: PropTypes.string.isRequired,
 };

@@ -52,7 +52,9 @@ const ViewDirectorBasedOnUserAuthStatus = ({
     return (
       <>
         <TherapistContext.Provider value={{ therapist }}>
-          <TherapistClientsContext.Provider value={{ therapistClients }}>
+          <TherapistClientsContext.Provider
+            value={{ therapistClients, setTherapistClients }}
+          >
             <NavBar setOpenClientModal={setOpenClientModal} />{' '}
             {/* NavBar only visible if user is logged in and is in every view */}
             <SideBar />
