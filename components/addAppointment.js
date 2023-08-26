@@ -248,7 +248,7 @@ export default function AddAppointment({
                     >
                       Cancel
                     </button>
-                    <button className="dont-btn" type="submit">
+                    <button className="done-btn" type="submit">
                       Done
                     </button>
                   </div>
