@@ -13,6 +13,7 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": false,
+    "sharedWithSupervisor": false,
     "signedBySupervisor": false,
     "dateTime": "2023-08-18T18:00:00-0600"
   },
@@ -30,6 +31,7 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": true,
+    "sharedWithSupervisor": false,
     "signedBySupervisor": false,
     "dateTime": "2023-08-14T18:00:00-0600"
   },
@@ -47,6 +49,7 @@
       "P": "this is a paragraph for P"
     },
     "signedByTherapist": true,
+    "sharedWithSupervisor": false,
     "signedBySupervisor": true,
     "dateTime": "2023-08-04T18:00:00-0600"
   }

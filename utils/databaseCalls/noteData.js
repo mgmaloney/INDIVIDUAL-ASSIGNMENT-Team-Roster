@@ -74,7 +74,7 @@ const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
     );
     const signedByTherapistNotes = Object.values(data);
     signedByTherapistNotes.forEach((note) => {
-      if (note.supervisorId === supervisorId && !note.signedBySupervisor) {
+      if (note.supervisorId === supervisorId && note.sharedWithSupervisor && !note.signedBySupervisor) {
         unsignedNotes.push(note);
       }
     });

@@ -80,11 +80,6 @@ export default function ClientOverView() {
             (note) => note.appointmentId === appointment.appointmentId,
           ) === false
         ) {
-          // if (
-          //   aptNotes.findIndex(
-          //     (note) => note.appointmentId === appointment.appointmentId,
-          //   ) === -1
-          // ) {
           const newNotePayload = {
             title: `Appointment #${numberOfPastClientApts}`,
             type: 'appointment',
@@ -98,6 +93,7 @@ export default function ClientOverView() {
               P: '',
             },
             signedByTherapist: false,
+            sharedWithSupervisor: false,
             signedBySupervisor: false,
             dateTime: appointment.start,
           };
@@ -162,6 +158,7 @@ export default function ClientOverView() {
                   {sortedNotes.map((note) => (
                     <NoteCard
                       key={note.noteId}
+                      clientId={clientId}
                       noteObj={note}
                       page="clientOverview"
                       onNotesUpdate={onNotesUpdate}
