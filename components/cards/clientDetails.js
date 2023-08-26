@@ -46,8 +46,13 @@ export default function ClientDetailsCard({ clientObj, page }) {
           </p>
           {page !== 'clients' ? (
             <>
-              <p className="c-and-c-item">Address: {clientObj.address}</p>
               <div className="address">
+                <p className="address-item">Address: {clientObj.address1} </p>
+                {clientObj.address2 ? (
+                  <p className="address-item address2">{clientObj.address2} </p>
+                ) : (
+                  ''
+                )}
                 <p>
                   {clientObj.city}, {clientObj.state}, {clientObj.zipcode}
                 </p>
@@ -75,7 +80,8 @@ ClientDetailsCard.propTypes = {
     lastName: PropTypes.string,
     email: PropTypes.string,
     phone: PropTypes.string,
-    address: PropTypes.string,
+    address1: PropTypes.string,
+    address2: PropTypes.string,
     city: PropTypes.string,
     state: PropTypes.string,
     zipcode: PropTypes.string,

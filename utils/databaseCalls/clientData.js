@@ -58,8 +58,8 @@ const updateClient = async (payload) => {
 const createClient = async (payload) => {
   try {
     const response = await axios.post(`${dbURL}/clients.json`, payload);
-    const therapistId = await response.data.name;
-    await updateClient({ therapistId });
+    const clientId = await response.data.name;
+    await updateClient({ clientId });
     return 'success';
   } catch (e) {
     console.warn(e);
