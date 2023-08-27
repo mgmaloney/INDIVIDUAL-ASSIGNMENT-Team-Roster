@@ -70,9 +70,12 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
       noteObj.sharedWithSupervisor
     ) {
       return (
-        <Link passHref href={`/client/progessnote/${noteObj.noteId}`}>
+        <p
+          type="button"
+          onClick={() => router.push(`/client/progressnote/${noteObj.noteId}`)}
+        >
           View Note
-        </Link>
+        </p>
       );
     }
     if (
@@ -82,9 +85,14 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
       noteObj.content.D
     ) {
       return (
-        <Link passHref href={`/client/progressnote/edit/${noteObj.noteId}`}>
+        <p
+          type="button"
+          onClick={() =>
+            router.push(`/client/progressnote/edit/${noteObj.noteId}`)
+          }
+        >
           Edit
-        </Link>
+        </p>
       );
     }
     if (page === 'clientOverview' && noteObj.type === 'chart') {

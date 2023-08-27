@@ -24,6 +24,10 @@ export default function DAPForm({ noteObj }) {
   }, [noteObj]);
 
   useEffect(() => {
+    getAppointmentNoteByNoteId(noteObj.noteId).then(setNote);
+  }, [noteObj]);
+
+  useEffect(() => {
     getClientByClientId(noteObj.clientId).then(setClient);
   }, [noteObj]);
 
@@ -109,7 +113,7 @@ export default function DAPForm({ noteObj }) {
                 required
               />
             </label>
-            {!noteObj.sharedWithSupervisor ? (
+            {!note?.sharedWithSupervisor ? (
               <div className="DAP-form-btns">
                 <button type="button" className="done-btn" onClick={handleSave}>
                   {!saved ? 'Save' : 'Edit'}
