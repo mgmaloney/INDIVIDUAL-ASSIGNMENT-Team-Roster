@@ -53,6 +53,7 @@ export default function DAPForm({ noteObj }) {
       sharedWithSupervisor: true,
     };
     await updateNote(payload);
+    alert('Note signed and shared!');
     const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
     setNote(updatedNote);
   };
