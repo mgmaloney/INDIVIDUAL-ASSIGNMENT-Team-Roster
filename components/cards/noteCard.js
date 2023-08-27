@@ -1,10 +1,10 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
 
-export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
+export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -129,15 +129,15 @@ NoteCard.propTypes = {
     supervisorId: PropTypes.string,
     signedByTherapist: PropTypes.bool,
     signedBySupervisor: PropTypes.bool,
+    sharedWithSupervisor: PropTypes.bool,
     content: PropTypes.shape({
       D: PropTypes.string,
       A: PropTypes.string,
       P: PropTypes.string,
       chartNote: PropTypes.string,
     }),
-    dateTime: PropTypes.number,
+    dateTime: PropTypes.string,
   }).isRequired,
   page: PropTypes.string.isRequired,
   onNotesUpdate: PropTypes.func.isRequired,
-  clientId: PropTypes.string.isRequired,
 };
