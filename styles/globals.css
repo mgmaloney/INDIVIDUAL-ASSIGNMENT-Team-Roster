@@ -44,14 +44,24 @@ body {
   justify-content: space-around;
 }
 
-.client-card-name {
+.client-name {
   font-weight: bold;
   color: #267ccb;
 }
 
-.client-card-name:hover {
+.client-name:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.name-head {
+  font-size: 2em;
+  margin-right: 3rem;
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
 }
 
 .client-info-overview {
@@ -150,4 +160,9 @@ body {
 }
 
 .done-btn {
+}
+
+.signed-n-shared {
+  margin-top: 1rem;
+  text-align: end;
 }

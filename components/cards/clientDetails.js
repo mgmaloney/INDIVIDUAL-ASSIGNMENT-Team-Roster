@@ -34,9 +34,9 @@ export default function ClientDetailsCard({ clientObj, page }) {
               <Link
                 passHref
                 href={`/client/${clientObj.clientId}`}
-                className="client-card-name"
+                className="client-name"
               >
-                <p className="client-card-name">
+                <p className="client-name">
                   {clientObj.firstName} {clientObj.lastName}
                 </p>
               </Link>
