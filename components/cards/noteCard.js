@@ -1,22 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
-import { Router, useRouter } from 'next/router';
 
 export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
   const router = useRouter();
-
-  const [showMore, setShowMore] = useState(false);
-
-  const showMoreToggle = () => {
-    if (!showMore) {
-      setShowMore(true);
-    } else {
-      setShowMore(false);
-    }
-  };
 
   const handleDelete = async () => {
     if (window.confirm(`Delete this Chart Note?`)) {
@@ -29,8 +18,6 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
     const date = new Date(unparsedDate);
     return date.toLocaleString('en-US');
   };
-
-  //
 
   const renderTextByType = () => {
     if (noteObj.type !== 'chart' && !noteObj.content.D) {
@@ -76,18 +63,48 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
     return '';
   };
 
+  const renderLinksByType = () => {
+    if (
+      page === 'clientOverview' &&
+      noteObj.type === 'appointment' &&
+      noteObj.sharedWithSuperviors
+    ) {
+      return (
+        <Link passHref href={`/client/progessnote/${noteObj.noteId}`}>
+          View Note
+        </Link>
+      );
+    }
+    if (
+      page === 'clientOverview' &&
+      noteObj.type === 'appointment' &&
+      !noteObj.sharedWithSuperviors
+    ) {
+      return (
+        <Link passHref href={`/client/progressnote/edit/${noteObj.noteId}`}>
+          Edit
+        </Link>
+      );
+    }
+    if (page === 'clientOverview' && noteObj.type === 'chart') {
+      return <button type="button">Edit</button>;
+    }
+    return '';
+  };
+
   return (
     <div className="note-card">
       <h4 className="note-title">{noteObj.title}</h4>
       <h6 className="note-date">{dateToStringConverter(noteObj.dateTime)}</h6>
       {renderTextByType()}
       {page === 'clientOverview' ? (
-        <button onClick={showMoreToggle} type="button">
+        <button className="show-more-btn" type="button">
           Show More
         </button>
       ) : (
         ''
       )}
+      {renderLinksByType()}
     </div>
   );
 }
