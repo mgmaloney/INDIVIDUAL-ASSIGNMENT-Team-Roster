@@ -11,10 +11,11 @@ import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 export default function DAPForm({ noteObj }) {
   const router = useRouter();
   const [note, setNote] = useState(noteObj);
+  const [saved, setSaved] = useState(false);
   const [formInput, setFormInput] = useState({
-    D: noteObj.content?.D,
-    A: noteObj.content?.A,
-    P: noteObj.content?.P,
+    D: noteObj.content.D,
+    A: noteObj.content.A,
+    P: noteObj.content.P,
   });
   const [client, setClient] = useState();
 
@@ -70,7 +71,7 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="D"
                 value={formInput.D}
-                disabled={noteObj.signedByTherapist}
+                disabled={noteObj.signedByTherapist || saved}
                 placeholder={noteObj.content?.D}
                 required
               />
@@ -84,7 +85,11 @@ export default function DAPForm({ noteObj }) {
                 name="A"
                 value={formInput.A}
                 disabled={noteObj.signedByTherapist}
-                placeholder={noteObj.content?.A}
+                placeholder={
+                  noteObj.sharedWithSupervisor || saved
+                    ? noteObj.content?.A
+                    : ''
+                }
                 required
               />
             </label>
