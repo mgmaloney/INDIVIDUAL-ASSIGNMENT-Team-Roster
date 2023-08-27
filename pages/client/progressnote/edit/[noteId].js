@@ -5,12 +5,12 @@ import DAPForm from '../../../../components/forms/DAPNote';
 
 export default function EditDAPNote() {
   const router = useRouter();
-  const { id } = router.query;
+  const { noteId } = router.query;
   const [note, setNote] = useState({});
 
   useEffect(() => {
-    getAppointmentNoteByNoteId(id).then(setNote);
-  }, [id]);
+    getAppointmentNoteByNoteId(noteId).then(setNote);
+  }, [noteId]);
 
   return <DAPForm noteObj={note} />;
 }

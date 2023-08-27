@@ -134,3 +134,20 @@ body {
 .datetime-chart {
   background-color: white;
 }
+
+.DAP-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.DAP-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.DAP-form-btns {
+  display: flex;
+}
+
+.done-btn {
+}
