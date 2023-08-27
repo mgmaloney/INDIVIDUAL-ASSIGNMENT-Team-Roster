@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import {
   getAppointmentNoteByNoteId,
   updateNote,
@@ -9,7 +9,6 @@ import {
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 
 export default function DAPForm({ noteObj }) {
-  const router = useRouter();
   const [note, setNote] = useState(noteObj);
   const [saved, setSaved] = useState(false);
   const [formInput, setFormInput] = useState({});
@@ -139,3 +138,24 @@ export default function DAPForm({ noteObj }) {
     </>
   );
 }
+
+DAPForm.propTypes = {
+  noteObj: PropTypes.shape({
+    noteId: PropTypes.string,
+    title: PropTypes.string,
+    type: PropTypes.string,
+    appointmentId: PropTypes.string,
+    clientId: PropTypes.string,
+    therapistId: PropTypes.string,
+    supervisorId: PropTypes.string,
+    signedByTherapist: PropTypes.bool,
+    signedBySupervisor: PropTypes.bool,
+    content: PropTypes.shape({
+      D: PropTypes.string,
+      A: PropTypes.string,
+      P: PropTypes.string,
+      chartNote: PropTypes.string,
+    }),
+    dateTime: PropTypes.string,
+  }).isRequired,
+};
