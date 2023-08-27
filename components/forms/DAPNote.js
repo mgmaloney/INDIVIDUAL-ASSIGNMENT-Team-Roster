@@ -12,12 +12,16 @@ export default function DAPForm({ noteObj }) {
   const router = useRouter();
   const [note, setNote] = useState(noteObj);
   const [saved, setSaved] = useState(false);
-  const [formInput, setFormInput] = useState({
-    D: noteObj.content.D,
-    A: noteObj.content.A,
-    P: noteObj.content.P,
-  });
+  const [formInput, setFormInput] = useState({});
   const [client, setClient] = useState();
+
+  useEffect(() => {
+    setFormInput({
+      D: noteObj.content?.D,
+      A: noteObj.content?.A,
+      P: noteObj.content?.P,
+    });
+  }, [noteObj]);
 
   useEffect(() => {
     getClientByClientId(noteObj.clientId).then(setClient);
@@ -28,13 +32,17 @@ export default function DAPForm({ noteObj }) {
     setFormInput((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     const payload = {
       ...noteObj,
       content: { ...formInput },
     };
-    updateNote(payload);
+    await updateNote(payload);
+    const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
+    setNote(updatedNote);
+    setSaved(true);
+    alert('Note saved!');
   };
 
   const handleSign = async () => {
@@ -45,7 +53,9 @@ export default function DAPForm({ noteObj }) {
       sharedWithSupervisor: true,
     };
     await updateNote(payload);
-    getAppointmentNoteByNoteId(noteObj.noteId).then(setNote);
+    alert('Note signed and shared!');
+    const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
+    setNote(updatedNote);
   };
 
   return (
@@ -61,7 +71,7 @@ export default function DAPForm({ noteObj }) {
         <h2>Progress Note</h2>
       </div>
       <div className="main-note">
-        <form className="DAP-form" onSubmit={handleSubmit}>
+        <form className="DAP-form">
           <div className="DAP-container">
             <label className="DAP-label">
               Data:
@@ -72,7 +82,6 @@ export default function DAPForm({ noteObj }) {
                 name="D"
                 value={formInput.D}
                 disabled={noteObj.signedByTherapist || saved}
-                placeholder={noteObj.content?.D}
                 required
               />
             </label>
@@ -84,12 +93,7 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="A"
                 value={formInput.A}
-                disabled={noteObj.signedByTherapist}
-                placeholder={
-                  noteObj.sharedWithSupervisor || saved
-                    ? noteObj.content?.A
-                    : ''
-                }
+                disabled={noteObj.signedByTherapist || saved}
                 required
               />
             </label>
@@ -101,23 +105,26 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="P"
                 value={formInput.P}
-                disabled={noteObj.signedByTherapist}
-                placeholder={noteObj.content?.P}
+                disabled={noteObj.signedByTherapist || saved}
                 required
               />
             </label>
             {!noteObj.sharedWithSupervisor ? (
               <div className="DAP-form-btns">
-                <button type="submit" className="done-btn">
-                  Save
+                <button type="button" className="done-btn" onClick={handleSave}>
+                  {!saved ? 'Save' : 'Edit'}
                 </button>
-                <button
-                  type="button"
-                  onClick={handleSign}
-                  className="done-btn sign-n-share"
-                >
-                  Sign & Share
-                </button>
+                {saved ? (
+                  <button
+                    type="button"
+                    onClick={handleSign}
+                    className="done-btn sign-n-share"
+                  >
+                    Sign & Share
+                  </button>
+                ) : (
+                  ''
+                )}
               </div>
             ) : (
               <p className="signed-n-shared">Signed and Shared</p>
