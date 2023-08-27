@@ -78,7 +78,8 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientId }) {
     if (
       page === 'clientOverview' &&
       noteObj.type === 'appointment' &&
-      !noteObj.sharedWithSupervisor
+      !noteObj.sharedWithSupervisor &&
+      noteObj.content.D
     ) {
       return (
         <Link passHref href={`/client/progressnote/edit/${noteObj.noteId}`}>
