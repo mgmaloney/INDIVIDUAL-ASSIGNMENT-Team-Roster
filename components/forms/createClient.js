@@ -3,15 +3,16 @@ import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import statesAndAbbrevs from '../../utils/statesAndAbbrevs';
 import TherapistContext from '../../utils/context/therapistContext';
 import {
   createClient,
-  getClientByClientId,
   getClientsByTherapistId,
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
+import ClientEditContext from '../../utils/context/clientEditContext';
+import OpenClientModalContext from '../../utils/context/openClientModalContext';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -52,25 +53,19 @@ const initialState = {
   gender: '',
 };
 
-export default function AddClient({
-  openClientModal,
-  setOpenClientModal,
-  clientObj,
-}) {
+export default function AddClient() {
   const { therapist } = useContext(TherapistContext);
   const { setTherapistClients } = useContext(TherapistClientsContext);
+  const { openClientModal, setOpenClientModal } = useContext(
+    OpenClientModalContext,
+  );
+  const { editingClient, setEditingClient } = useContext(ClientEditContext);
 
   const [formInput, setFormInput] = useState(initialState);
 
   const onClientsUpdate = () => {
     getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
   };
-
-  useEffect(() => {
-    if (clientObj.clientId) {
-      getClientByClientId(clientObj.clientId).then(setFormInput);
-    }
-  }, [clientObj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -254,8 +249,6 @@ export default function AddClient({
 }
 
 AddClient.propTypes = {
-  openClientModal: PropTypes.bool.isRequired,
-  setOpenClientModal: PropTypes.func.isRequired,
   clientObj: PropTypes.shape({
     clientId: PropTypes.string,
     firstName: PropTypes.string,

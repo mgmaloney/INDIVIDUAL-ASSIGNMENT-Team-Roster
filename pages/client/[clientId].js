@@ -12,17 +12,18 @@ import {
   createNote,
 } from '../../utils/databaseCalls/noteData';
 import NoteCard from '../../components/cards/noteCard';
-import ClientContext from '../../utils/context/clientContext';
 import AddAppointment from '../../components/addAppointment';
 import ClientDetailsCard from '../../components/cards/clientDetails';
 import ChartNoteForm from '../../components/forms/chartNote';
 import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
+import ClientEditContext from '../../utils/context/clientEditContext';
 
 export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
   const { therapist } = useContext(TherapistContext);
+  const { setEditingClient } = useContext(ClientEditContext);
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
@@ -67,6 +68,10 @@ export default function ClientOverView() {
   const onNotesUpdate = (clientKey) => {
     getAllClientNotes(clientKey).then(setClientNotes);
   };
+  const handleEdit = () => {
+    setEditingClient(client)
+    setOpenClientModal(true)
+  }
 
   const createNoteAfterAptStart = async () => {
     const now = Date.now();
@@ -125,54 +130,52 @@ export default function ClientOverView() {
 
   return (
     <>
-      <ClientContext.Provider value={client}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
-        </LocalizationProvider>
-        <div className="main-client-overview">
-          <div className="ov-header-note">
-            <div className="client-page-header">
-              <div className="overview-name">
-                <h2>{client.firstName}</h2>
-                <h2>{client.lastName}</h2>
-              </div>
-              <div className="client-nav">
-                <div className="birth-age">
-                  <h6 className="birthdate">{client.birthDate}</h6>
-                  <h6 className="age">
-                    ({calculateAge(Date.parse(client.birthDate))})
-                  </h6>
-                </div>
-                <p onClick={changeModalState} className="client-nav-link">
-                  Schedule Now
-                </p>
-                <Link passHref href={`/edit/${clientId}`}>
-                  <p className="client-nav-link">Edit</p>
-                </Link>
-              </div>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
+      </LocalizationProvider>
+      <div className="main-client-overview">
+        <div className="ov-header-note">
+          <div className="client-page-header">
+            <div className="overview-name">
+              <h2>{client.firstName}</h2>
+              <h2>{client.lastName}</h2>
             </div>
-            <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
-            <div className="notes-info">
-              {sortedNotes.length && (
-                <div className="client-notes">
-                  {sortedNotes.map((note) => (
-                    <NoteCard
-                      key={note.noteId}
-                      clientId={clientId}
-                      noteObj={note}
-                      page="clientOverview"
-                      onNotesUpdate={onNotesUpdate}
-                    />
-                  ))}
-                </div>
-              )}
+            <div className="client-nav">
+              <div className="birth-age">
+                <h6 className="birthdate">{client.birthDate}</h6>
+                <h6 className="age">
+                  ({calculateAge(Date.parse(client.birthDate))})
+                </h6>
+              </div>
+              <p onClick={changeModalState} className="client-nav-link">
+                Schedule Now
+              </p>
+              <Link passHref href={`/edit/${clientId}`}>
+                <p className="client-nav-link">Edit</p>
+              </Link>
             </div>
           </div>
-          <div className="client-info-overview">
-            <ClientDetailsCard clientObj={client} page="client-overview" />
+          <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
+          <div className="notes-info">
+            {sortedNotes.length && (
+              <div className="client-notes">
+                {sortedNotes.map((note) => (
+                  <NoteCard
+                    key={note.noteId}
+                    clientId={clientId}
+                    noteObj={note}
+                    page="clientOverview"
+                    onNotesUpdate={onNotesUpdate}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </ClientContext.Provider>
+        <div className="client-info-overview">
+          <ClientDetailsCard clientObj={client} page="client-overview" />
+        </div>
+      </div>
     </>
   );
 }

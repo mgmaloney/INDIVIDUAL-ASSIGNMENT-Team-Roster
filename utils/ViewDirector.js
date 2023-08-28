@@ -6,9 +6,12 @@ import Loading from '../components/Loading';
 import Signin from '../components/Signin';
 import NavBar from '../components/NavBar';
 import SideBar from '../components/sideBar';
+import AddClient from '../components/forms/createClient';
 import TherapistContext from './context/therapistContext';
 import { getClientsByTherapistId } from './databaseCalls/clientData';
 import TherapistClientsContext from './context/therapistClientsContext';
+import ClientEditContext from './context/clientEditContext';
+import OpenClientModalContext from './context/openClientModalContext';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -17,6 +20,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const { user, userLoading } = useAuth();
   const [therapist, setTherapist] = useState({});
   const [therapistClients, setTherapistClients] = useState([]);
+  const [editingClient, setEditingClient] = useState({});
   const [openClientModal, setOpenClientModal] = useState(false);
 
   useEffect(() => {
@@ -55,17 +59,22 @@ const ViewDirectorBasedOnUserAuthStatus = ({
           <TherapistClientsContext.Provider
             value={{ therapistClients, setTherapistClients }}
           >
-            <NavBar setOpenClientModal={setOpenClientModal} />{' '}
-            {/* NavBar only visible if user is logged in and is in every view */}
-            <SideBar />
-            {/* <IsNewUserContext.Provider value={isNewUser}> */}
-            <div className="container">
-              <Component
-                openClientModal={openClientModal}
-                setOpenClientModal={setOpenClientModal}
-                {...pageProps}
-              />
-            </div>
+            <OpenClientModalContext.Provider
+              value={{ openClientModal, setOpenClientModal }}
+            >
+              <ClientEditContext.Provider
+                value={{ editingClient, setEditingClient }}
+              >
+                <NavBar />{' '}
+                {/* NavBar only visible if user is logged in and is in every view */}
+                <SideBar />
+                {/* <IsNewUserContext.Provider value={isNewUser}> */}
+                <AddClient />
+                <div className="container">
+                  <Component {...pageProps} />
+                </div>
+              </ClientEditContext.Provider>
+            </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
         {/* </IsNewUserContext.Provider> */}

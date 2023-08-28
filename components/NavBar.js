@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import OpenClientModalContext from '../utils/context/openClientModalContext';
 
-export default function NavBar({ setOpenClientModal }) {
+export default function NavBar() {
+  const { setOpenClientModal } = useContext(OpenClientModalContext);
+
   const handleModalOpen = () => {
     setOpenClientModal(true);
   };
@@ -35,7 +37,3 @@ export default function NavBar({ setOpenClientModal }) {
     </Navbar>
   );
 }
-
-NavBar.propTypes = {
-  setOpenClientModal: PropTypes.func.isRequired,
-};
