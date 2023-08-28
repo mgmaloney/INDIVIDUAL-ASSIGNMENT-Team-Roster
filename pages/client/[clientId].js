@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useContext } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Link from 'next/link';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 import {
   getAllClientNotes,
@@ -18,12 +17,17 @@ import ChartNoteForm from '../../components/forms/chartNote';
 import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
 import ClientEditContext from '../../utils/context/clientEditContext';
+import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import { format } from 'date-fns';
 
 export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
   const { therapist } = useContext(TherapistContext);
   const { setEditingClient } = useContext(ClientEditContext);
+  const { openClientModal, setOpenClientModal } = useContext(
+    OpenClientModalContext,
+  );
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
@@ -50,7 +54,7 @@ export default function ClientOverView() {
 
   useEffect(() => {
     getClientByClientId(clientId).then(setClient);
-  }, [clientId]);
+  }, [openClientModal, clientId]);
 
   useEffect(() => {
     getAndSetClientAptsAndAptNotes();
@@ -68,10 +72,11 @@ export default function ClientOverView() {
   const onNotesUpdate = (clientKey) => {
     getAllClientNotes(clientKey).then(setClientNotes);
   };
+
   const handleEdit = () => {
-    setEditingClient(client)
-    setOpenClientModal(true)
-  }
+    setEditingClient(client);
+    setOpenClientModal(true);
+  };
 
   const createNoteAfterAptStart = async () => {
     const now = Date.now();
@@ -122,11 +127,16 @@ export default function ClientOverView() {
     createNoteAfterAptStart();
   }, [clientApts]);
 
-  function calculateAge(birthday) {
+  const formatBirthday = () => {
+    const birthdayFormatted = format(new Date(client.birthDate), 'MM/dd/yyyy');
+    return birthdayFormatted;
+  };
+
+  const calculateAge = (birthday) => {
     const ageDifMs = Date.now() - birthday;
     const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
-  }
+  };
 
   return (
     <>
@@ -142,7 +152,7 @@ export default function ClientOverView() {
             </div>
             <div className="client-nav">
               <div className="birth-age">
-                <h6 className="birthdate">{client.birthDate}</h6>
+                <h6 className="birthdate">{formatBirthday()}</h6>
                 <h6 className="age">
                   ({calculateAge(Date.parse(client.birthDate))})
                 </h6>
@@ -150,9 +160,9 @@ export default function ClientOverView() {
               <p onClick={changeModalState} className="client-nav-link">
                 Schedule Now
               </p>
-              <Link passHref href={`/edit/${clientId}`}>
-                <p className="client-nav-link">Edit</p>
-              </Link>
+              <p onClick={handleEdit} className="client-nav-link">
+                Edit
+              </p>
             </div>
           </div>
           <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />

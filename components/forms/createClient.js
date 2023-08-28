@@ -3,16 +3,18 @@ import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import statesAndAbbrevs from '../../utils/statesAndAbbrevs';
 import TherapistContext from '../../utils/context/therapistContext';
 import {
   createClient,
   getClientsByTherapistId,
+  updateClient,
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
 import ClientEditContext from '../../utils/context/clientEditContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import { format, parseISO } from 'date-fns';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -60,8 +62,19 @@ export default function AddClient() {
     OpenClientModalContext,
   );
   const { editingClient, setEditingClient } = useContext(ClientEditContext);
-
   const [formInput, setFormInput] = useState(initialState);
+
+  useEffect(() => {
+    if (editingClient.clientId) {
+      console.warn('editing client bday', new Date(editingClient.birthDate));
+      const birthdayFormatted = format(
+        new Date(editingClient.birthDate),
+        'yyyy-MM-dd',
+      );
+      console.warn(birthdayFormatted);
+      setFormInput({ ...editingClient, birthDate: birthdayFormatted });
+    }
+  }, [editingClient]);
 
   const onClientsUpdate = () => {
     getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
@@ -75,6 +88,7 @@ export default function AddClient() {
   const handleClose = () => {
     setOpenClientModal(false);
     setFormInput(initialState);
+    setEditingClient({});
   };
 
   const handleSubmit = async (e) => {
@@ -83,7 +97,11 @@ export default function AddClient() {
       ...formInput,
       therapistId: therapist.therapistId,
     };
-    await createClient(payload);
+    if (formInput.clientId) {
+      updateClient(payload);
+    } else {
+      await createClient(payload);
+    }
     onClientsUpdate();
     handleClose();
   };
@@ -216,7 +234,7 @@ export default function AddClient() {
             <label>
               Sex
               <select name="sex" onChange={handleChange} required>
-                <option disabled selected value>
+                <option disabled selected={!formInput?.sex}>
                   Select an option
                 </option>
                 <option value="female">Female</option>
@@ -226,7 +244,7 @@ export default function AddClient() {
             <label>
               Gender
               <select name="gender" onChange={handleChange} required>
-                <option disabled selected value>
+                <option disabled selected={!formInput?.gender}>
                   Select an option
                 </option>
                 <option value="she/her">she/her</option>

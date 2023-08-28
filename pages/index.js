@@ -6,13 +6,9 @@ import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
 import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
 import TherapistContext from '../utils/context/therapistContext';
-import OpenClientModalContext from '../utils/context/openClientModalContext';
 
 function Home() {
   const { therapist } = useContext(TherapistContext);
-  const { openClientModal, setOpenClientModal } = useContext(
-    OpenClientModalContext,
-  );
   const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
   const [appointments, setAppointments] = useState([]);
