@@ -159,6 +159,7 @@ ClientDetailsCard.propTypes = {
     zipcode: PropTypes.string,
     sex: PropTypes.string,
     gender: PropTypes.string,
+    active: PropTypes.bool,
   }).isRequired,
   page: PropTypes.string.isRequired,
 };
