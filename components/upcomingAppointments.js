@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 
 export default function UpcomingAppointments({ apts }) {
@@ -29,3 +30,18 @@ export default function UpcomingAppointments({ apts }) {
     </>
   );
 }
+
+UpcomingAppointments.propTypes = {
+  apts: PropTypes.arrayOf(
+    PropTypes.shape({
+      appointmentId: PropTypes.string,
+      title: PropTypes.string,
+      start: PropTypes.string,
+      end: PropTypes.string,
+      length: PropTypes.number,
+      therapistId: PropTypes.string,
+      clientId: PropTypes.string,
+      type: PropTypes.string,
+    }),
+  ).isRequired,
+};

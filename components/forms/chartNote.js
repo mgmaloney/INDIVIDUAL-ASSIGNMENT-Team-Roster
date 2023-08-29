@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { setDate, toDate } from 'date-fns';
+import { toDate } from 'date-fns';
 import { createNote, updateNote } from '../../utils/databaseCalls/noteData';
 import TherapistContext from '../../utils/context/therapistContext';
 
@@ -127,6 +127,8 @@ ChartNoteForm.propTypes = {
     gender: PropTypes.string,
   }).isRequired,
   onNotesUpdate: PropTypes.func.isRequired,
+  editingChartNote: PropTypes.bool.isRequired,
+  setEditingChartNote: PropTypes.func.isRequired,
 };
 
 ChartNoteForm.defaultProps = {

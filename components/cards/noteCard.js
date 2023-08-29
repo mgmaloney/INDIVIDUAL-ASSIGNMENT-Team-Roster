@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
-import { useState } from 'react';
 import ChartNoteForm from '../forms/chartNote';
 
 export default function NoteCard({ noteObj, page, onNotesUpdate, clientObj }) {
@@ -180,4 +180,20 @@ NoteCard.propTypes = {
   }).isRequired,
   page: PropTypes.string.isRequired,
   onNotesUpdate: PropTypes.func.isRequired,
+  clientObj: PropTypes.shape({
+    clientId: PropTypes.string,
+    therapistId: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    address1: PropTypes.string,
+    address2: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    zipcode: PropTypes.string,
+    sex: PropTypes.string,
+    gender: PropTypes.string,
+    active: PropTypes.bool,
+  }).isRequired,
 };
