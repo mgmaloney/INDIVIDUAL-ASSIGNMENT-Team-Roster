@@ -24,8 +24,9 @@ export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
   const { therapist } = useContext(TherapistContext);
-  const { setEditingClient } = useContext(ClientEditContext);
-  const { setOpenClientModal } = useContext(OpenClientModalContext);
+  const { setOpenClientModal, setEditingClient } = useContext(
+    OpenClientModalContext,
+  );
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);

@@ -1,10 +1,17 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getTherapistByTherapistId } from '../../utils/databaseCalls/therapistData';
+import OpenClientModalContext from '../../utils/context/openClientModalContext';
 
 export default function ClientDetailsCard({ clientObj, page }) {
   const [clientTherapist, setClientTherapist] = useState({});
+  const {setOpenClientModal, setEditingClient} = useContext(OpenClientModalContext)
+
+  const handleEdit = () => {
+    setEditingClient(clientObj);
+    setOpenClientModal(true);
+  };
 
   useEffect(() => {
     getTherapistByTherapistId(clientObj.therapistId).then(setClientTherapist);
@@ -40,9 +47,9 @@ export default function ClientDetailsCard({ clientObj, page }) {
                   {clientObj.firstName} {clientObj.lastName}
                 </p>
               </Link>
-              <Link passHref href={`/client/edit/${clientObj.clientId}`}>
+              <p onClick={handleEdit}>
                 Edit
-              </Link>
+              </p>
             </>
           )}
           <p className="c-and-c-item">Phone: {clientObj.phone}</p>

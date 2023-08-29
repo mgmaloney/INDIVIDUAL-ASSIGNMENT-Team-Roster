@@ -63,20 +63,18 @@ const ViewDirectorBasedOnUserAuthStatus = ({
               value={{
                 openClientModal,
                 setOpenClientModal,
+                editingClient,
+                setEditingClient,
               }}
             >
-              <ClientEditContext.Provider
-                value={{ editingClient, setEditingClient }}
-              >
-                <NavBar />{' '}
-                {/* NavBar only visible if user is logged in and is in every view */}
-                <SideBar />
-                {/* <IsNewUserContext.Provider value={isNewUser}> */}
-                <AddClient />
-                <div className="container">
-                  <Component {...pageProps} />
-                </div>
-              </ClientEditContext.Provider>
+              <NavBar />{' '}
+              {/* NavBar only visible if user is logged in and is in every view */}
+              <SideBar />
+              {/* <IsNewUserContext.Provider value={isNewUser}> */}
+              <AddClient />
+              <div className="container">
+                <Component {...pageProps} />
+              </div>
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
