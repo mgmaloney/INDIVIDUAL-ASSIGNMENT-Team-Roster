@@ -181,6 +181,7 @@ export default function ClientOverView() {
                   <NoteCard
                     key={note.noteId}
                     clientId={clientId}
+                    clientObj={client}
                     noteObj={note}
                     page="clientOverview"
                     onNotesUpdate={onNotesUpdate}

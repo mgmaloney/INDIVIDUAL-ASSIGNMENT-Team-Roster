@@ -2,8 +2,8 @@ import { useState, useContext, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { toDate } from 'date-fns';
-import { createNote } from '../../utils/databaseCalls/noteData';
+import { setDate, toDate } from 'date-fns';
+import { createNote, updateNote } from '../../utils/databaseCalls/noteData';
 import TherapistContext from '../../utils/context/therapistContext';
 
 const initialState = {
@@ -16,7 +16,13 @@ const initialState = {
   dateTime: 0,
 };
 
-export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
+export default function ChartNoteForm({
+  noteObj,
+  clientObj,
+  onNotesUpdate,
+  editingChartNote,
+  setEditingChartNote,
+}) {
   const initialDate = toDate(Date.now());
   const [formInput, setFormInput] = useState({ noteText: '' });
   const [dateInput, setDateInput] = useState(initialDate);
@@ -26,6 +32,7 @@ export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
   useEffect(() => {
     if (noteObj?.noteId) {
       setFormInput({ noteText: noteObj.content.chartNote });
+      setDateInput(new Date(noteObj.dateTime));
     }
   }, [noteObj]);
 
@@ -44,16 +51,28 @@ export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
       content: { chartNote: formInput.noteText },
       dateTime: dateInput,
     };
-    await createNote(payload);
+    if (!editingChartNote) {
+      await createNote(payload);
+    } else {
+      await updateNote(payload);
+    }
     onNotesUpdate(clientObj.clientId);
     setFormInput({ noteText: '' });
     setDateInput(initialDate);
+    setEditingChartNote(false);
   };
 
   return (
     <>
       <div>
-        <form className="chart-note-form" onSubmit={handleSubmit}>
+        <form
+          className={
+            editingChartNote
+              ? 'chart-note-form edit-chartnote-form'
+              : 'chart-note-form'
+          }
+          onSubmit={handleSubmit}
+        >
           <textarea
             value={formInput.noteText}
             onChange={handleChange}
@@ -75,7 +94,7 @@ export default function ChartNoteForm({ noteObj, clientObj, onNotesUpdate }) {
               />
             </LocalizationProvider>
             <button type="submit" className="add-note-btn">
-              + Add Note
+              {editingChartNote ? 'Save' : '+ Add Note'}
             </button>
           </div>
         </form>

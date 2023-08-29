@@ -3,9 +3,20 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
+import { useState } from 'react';
+import ChartNoteForm from '../forms/chartNote';
 
-export default function NoteCard({ noteObj, page, onNotesUpdate }) {
+export default function NoteCard({ noteObj, page, onNotesUpdate, clientObj }) {
   const router = useRouter();
+  const [editingChartNote, setEditingChartNote] = useState(false);
+
+  const handleEdit = () => {
+    if (editingChartNote) {
+      setEditingChartNote(false);
+    } else {
+      setEditingChartNote(true);
+    }
+  };
 
   const handleDelete = async () => {
     if (window.confirm(`Delete this Chart Note?`)) {
@@ -49,14 +60,26 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
     if (noteObj.type === 'chart') {
       return (
         <>
-          <p className="chart-note-content">{noteObj.content.chartNote}</p>
-          <button
-            className="delete-note-btn"
-            type="button"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
+          {!editingChartNote ? (
+            <>
+              <p className="chart-note-content">{noteObj.content.chartNote}</p>
+              <button
+                className="delete-note-btn"
+                type="button"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </>
+          ) : (
+            <ChartNoteForm
+              clientObj={clientObj}
+              noteObj={noteObj}
+              onNotesUpdate={onNotesUpdate}
+              editingChartNote={editingChartNote}
+              setEditingChartNote={setEditingChartNote}
+            />
+          )}
         </>
       );
     }
@@ -71,6 +94,7 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
     ) {
       return (
         <p
+          className="client-nav-link"
           type="button"
           onClick={() => router.push(`/client/progressnote/${noteObj.noteId}`)}
         >
@@ -95,8 +119,16 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
         </p>
       );
     }
-    if (page === 'clientOverview' && noteObj.type === 'chart') {
-      return <button type="button">Edit</button>;
+    if (
+      page === 'clientOverview' &&
+      noteObj.type === 'chart' &&
+      !editingChartNote
+    ) {
+      return (
+        <button onClick={handleEdit} type="button">
+          Edit
+        </button>
+      );
     }
     return '';
   };
@@ -104,12 +136,20 @@ export default function NoteCard({ noteObj, page, onNotesUpdate }) {
   return (
     <div className="note-card">
       <h4 className="note-title">{noteObj.title}</h4>
-      <h6 className="note-date">{dateToStringConverter(noteObj.dateTime)}</h6>
+      <h6 className="note-date">
+        {!editingChartNote ? dateToStringConverter(noteObj.dateTime) : ''}
+      </h6>
       {renderTextByType()}
       {page === 'clientOverview' ? (
-        <button className="show-more-btn" type="button">
-          Show More
-        </button>
+        <>
+          {noteObj.type === 'chart' && editingChartNote ? (
+            ''
+          ) : (
+            <button className="show-more-btn" type="button">
+              Show More
+            </button>
+          )}
+        </>
       ) : (
         ''
       )}
