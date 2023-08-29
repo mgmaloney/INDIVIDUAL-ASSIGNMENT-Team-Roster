@@ -17,7 +17,6 @@ import ClientDetailsCard from '../../components/cards/clientDetails';
 import ChartNoteForm from '../../components/forms/chartNote';
 import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
-import ClientEditContext from '../../utils/context/clientEditContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
 
 export default function ClientOverView() {
@@ -165,9 +164,13 @@ export default function ClientOverView() {
               <p onClick={changeModalState} className="client-nav-link">
                 Schedule Now
               </p>
-              <p onClick={handleEdit} className="client-nav-link">
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="client-nav-link edit-clients-page"
+              >
                 Edit
-              </p>
+              </button>
             </div>
           </div>
           <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />

@@ -10,7 +10,6 @@ import AddClient from '../components/forms/createClient';
 import TherapistContext from './context/therapistContext';
 import { getClientsByTherapistId } from './databaseCalls/clientData';
 import TherapistClientsContext from './context/therapistClientsContext';
-import ClientEditContext from './context/clientEditContext';
 import OpenClientModalContext from './context/openClientModalContext';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
