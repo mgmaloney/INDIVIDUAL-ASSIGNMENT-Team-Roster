@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useContext } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Link from 'next/link';
+import { format } from 'date-fns';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 import {
   getAllClientNotes,
@@ -12,17 +12,21 @@ import {
   createNote,
 } from '../../utils/databaseCalls/noteData';
 import NoteCard from '../../components/cards/noteCard';
-import ClientContext from '../../utils/context/clientContext';
 import AddAppointment from '../../components/addAppointment';
 import ClientDetailsCard from '../../components/cards/clientDetails';
 import ChartNoteForm from '../../components/forms/chartNote';
 import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
+import ClientEditContext from '../../utils/context/clientEditContext';
+import OpenClientModalContext from '../../utils/context/openClientModalContext';
 
 export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
   const { therapist } = useContext(TherapistContext);
+  const { setOpenClientModal, setEditingClient } = useContext(
+    OpenClientModalContext,
+  );
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
@@ -66,6 +70,11 @@ export default function ClientOverView() {
 
   const onNotesUpdate = (clientKey) => {
     getAllClientNotes(clientKey).then(setClientNotes);
+  };
+
+  const handleEdit = () => {
+    setEditingClient(client);
+    setOpenClientModal(true);
   };
 
   const createNoteAfterAptStart = async () => {
@@ -117,62 +126,71 @@ export default function ClientOverView() {
     createNoteAfterAptStart();
   }, [clientApts]);
 
-  function calculateAge(birthday) {
+  const formatBirthday = () => {
+    if (client.birthDate) {
+      const birthdayFormatted = format(
+        new Date(client.birthDate),
+        'MM/dd/yyyy',
+      );
+      return birthdayFormatted;
+    }
+    return '';
+  };
+
+  const calculateAge = (birthday) => {
     const ageDifMs = Date.now() - birthday;
     const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
-  }
+  };
 
   return (
     <>
-      <ClientContext.Provider value={client}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
-        </LocalizationProvider>
-        <div className="main-client-overview">
-          <div className="ov-header-note">
-            <div className="client-page-header">
-              <div className="overview-name">
-                <h2>{client.firstName}</h2>
-                <h2>{client.lastName}</h2>
-              </div>
-              <div className="client-nav">
-                <div className="birth-age">
-                  <h6 className="birthdate">{client.birthDate}</h6>
-                  <h6 className="age">
-                    ({calculateAge(Date.parse(client.birthDate))})
-                  </h6>
-                </div>
-                <p onClick={changeModalState} className="client-nav-link">
-                  Schedule Now
-                </p>
-                <Link passHref href={`/edit/${clientId}`}>
-                  <p className="client-nav-link">Edit</p>
-                </Link>
-              </div>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <AddAppointment openModal={openModal} setOpenModal={setOpenModal} />
+      </LocalizationProvider>
+      <div className="main-client-overview">
+        <div className="ov-header-note">
+          <div className="client-page-header">
+            <div className="overview-name">
+              <h2>{client.firstName}</h2>
+              <h2>{client.lastName}</h2>
             </div>
-            <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
-            <div className="notes-info">
-              {sortedNotes.length && (
-                <div className="client-notes">
-                  {sortedNotes.map((note) => (
-                    <NoteCard
-                      key={note.noteId}
-                      clientId={clientId}
-                      noteObj={note}
-                      page="clientOverview"
-                      onNotesUpdate={onNotesUpdate}
-                    />
-                  ))}
-                </div>
-              )}
+            <div className="client-nav">
+              <div className="birth-age">
+                <h6 className="birthdate">{formatBirthday()}</h6>
+                <h6 className="age">
+                  ({calculateAge(Date.parse(client.birthDate))})
+                </h6>
+              </div>
+              <p onClick={changeModalState} className="client-nav-link">
+                Schedule Now
+              </p>
+              <p onClick={handleEdit} className="client-nav-link">
+                Edit
+              </p>
             </div>
           </div>
-          <div className="client-info-overview">
-            <ClientDetailsCard clientObj={client} page="client-overview" />
+          <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
+          <div className="notes-info">
+            {sortedNotes.length && (
+              <div className="client-notes">
+                {sortedNotes.map((note) => (
+                  <NoteCard
+                    key={note.noteId}
+                    clientId={clientId}
+                    noteObj={note}
+                    page="clientOverview"
+                    onNotesUpdate={onNotesUpdate}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </ClientContext.Provider>
+        <div className="client-info-overview">
+          <ClientDetailsCard clientObj={client} page="client-overview" />
+        </div>
+      </div>
     </>
   );
 }

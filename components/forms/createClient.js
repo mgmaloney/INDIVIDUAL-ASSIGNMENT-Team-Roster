@@ -8,10 +8,14 @@ import statesAndAbbrevs from '../../utils/statesAndAbbrevs';
 import TherapistContext from '../../utils/context/therapistContext';
 import {
   createClient,
-  getClientByClientId,
   getClientsByTherapistId,
+  updateClient,
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
+import ClientEditContext from '../../utils/context/clientEditContext';
+import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import { format } from 'date-fns';
+import { useRouter } from 'next/router';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -52,25 +56,33 @@ const initialState = {
   gender: '',
 };
 
-export default function AddClient({
-  openClientModal,
-  setOpenClientModal,
-  clientObj,
-}) {
+export default function AddClient() {
+  const router = useRouter();
   const { therapist } = useContext(TherapistContext);
   const { setTherapistClients } = useContext(TherapistClientsContext);
-
+  const {
+    openClientModal,
+    setOpenClientModal,
+    editingClient,
+    setEditingClient,
+  } = useContext(OpenClientModalContext);
   const [formInput, setFormInput] = useState(initialState);
+
+  useEffect(() => {
+    if (editingClient.clientId) {
+      console.warn('editing client bday', new Date(editingClient.birthDate));
+      const birthdayFormatted = format(
+        new Date(editingClient.birthDate),
+        'yyyy-MM-dd',
+      );
+      console.warn(birthdayFormatted);
+      setFormInput({ ...editingClient, birthDate: birthdayFormatted });
+    }
+  }, [editingClient]);
 
   const onClientsUpdate = () => {
     getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
   };
-
-  useEffect(() => {
-    if (clientObj.clientId) {
-      getClientByClientId(clientObj.clientId).then(setFormInput);
-    }
-  }, [clientObj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,6 +92,7 @@ export default function AddClient({
   const handleClose = () => {
     setOpenClientModal(false);
     setFormInput(initialState);
+    setEditingClient({});
   };
 
   const handleSubmit = async (e) => {
@@ -88,9 +101,14 @@ export default function AddClient({
       ...formInput,
       therapistId: therapist.therapistId,
     };
-    await createClient(payload);
-    onClientsUpdate();
+    if (formInput.clientId) {
+      updateClient(payload);
+    } else {
+      await createClient(payload);
+    }
     handleClose();
+    onClientsUpdate();
+    router.reload();
   };
 
   return (
@@ -221,7 +239,7 @@ export default function AddClient({
             <label>
               Sex
               <select name="sex" onChange={handleChange} required>
-                <option disabled selected value>
+                <option disabled selected={!formInput?.sex}>
                   Select an option
                 </option>
                 <option value="female">Female</option>
@@ -231,7 +249,7 @@ export default function AddClient({
             <label>
               Gender
               <select name="gender" onChange={handleChange} required>
-                <option disabled selected value>
+                <option disabled selected={!formInput?.gender}>
                   Select an option
                 </option>
                 <option value="she/her">she/her</option>
@@ -239,7 +257,7 @@ export default function AddClient({
                 <option value="they/them">they/them</option>
                 <option value="other">Other</option>
                 <option value="prefer not to answer">
-                  Perfer not to Answer
+                  Prefer not to Answer
                 </option>
               </select>
             </label>
@@ -254,8 +272,6 @@ export default function AddClient({
 }
 
 AddClient.propTypes = {
-  openClientModal: PropTypes.bool.isRequired,
-  setOpenClientModal: PropTypes.func.isRequired,
   clientObj: PropTypes.shape({
     clientId: PropTypes.string,
     firstName: PropTypes.string,
