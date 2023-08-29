@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import React, { useContext, useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import { useRouter } from 'next/router';
 import statesAndAbbrevs from '../../utils/statesAndAbbrevs';
 import TherapistContext from '../../utils/context/therapistContext';
 import {
@@ -12,10 +14,7 @@ import {
   updateClient,
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
-import ClientEditContext from '../../utils/context/clientEditContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
-import { format } from 'date-fns';
-import { useRouter } from 'next/router';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;

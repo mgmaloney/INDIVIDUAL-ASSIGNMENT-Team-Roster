@@ -6,7 +6,9 @@ import OpenClientModalContext from '../../utils/context/openClientModalContext';
 
 export default function ClientDetailsCard({ clientObj, page }) {
   const [clientTherapist, setClientTherapist] = useState({});
-  const {setOpenClientModal, setEditingClient} = useContext(OpenClientModalContext)
+  const { setOpenClientModal, setEditingClient } = useContext(
+    OpenClientModalContext,
+  );
 
   const handleEdit = () => {
     setEditingClient(clientObj);
@@ -47,9 +49,13 @@ export default function ClientDetailsCard({ clientObj, page }) {
                   {clientObj.firstName} {clientObj.lastName}
                 </p>
               </Link>
-              <p onClick={handleEdit}>
+              <button
+                type="button"
+                className="client-nav-link edit-clients-page"
+                onClick={handleEdit}
+              >
                 Edit
-              </p>
+              </button>
             </>
           )}
           <p className="c-and-c-item">Phone: {clientObj.phone}</p>

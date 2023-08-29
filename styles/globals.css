@@ -91,6 +91,18 @@ body {
   margin: 0.07rem 1.5rem 1rem 0rem;
 }
 
+.edit-clients-page {
+  border: none;
+  background-color: white;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+}
+
+.edit-clients-page:hover {
+  text-decoration: underline;
+}
+
 .client-nav {
   display: flex;
 }
@@ -123,6 +135,12 @@ body {
   border: solid 1px black;
   margin-bottom: 1rem;
   padding: 1rem;
+}
+
+.edit-chartnote-form {
+  border: none;
+  margin: 0px;
+  padding: 0px;
 }
 
 .chart-note-textarea {
