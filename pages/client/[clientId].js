@@ -18,6 +18,7 @@ import ChartNoteForm from '../../components/forms/chartNote';
 import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import UpcomingAppointments from '../../components/upcomingAppointments';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -191,8 +192,11 @@ export default function ClientOverView() {
             )}
           </div>
         </div>
-        <div className="client-info-overview">
-          <ClientDetailsCard clientObj={client} page="client-overview" />
+        <div className="client-overview-sidebar">
+          <div className="client-info-overview">
+            <ClientDetailsCard clientObj={client} page="client-overview" />
+          </div>
+          <UpcomingAppointments apts={clientApts} />
         </div>
       </div>
     </>

@@ -58,7 +58,13 @@ export default function ClientDetailsCard({ clientObj, page }) {
           page === 'clients' ? 'client-card-clients' : 'client-card-client'
         }
       >
-        <div className="contact-and-clinician">
+        <div
+          className={
+            page === 'clients'
+              ? 'contact-and-clinician-clients'
+              : 'contact-and-clinician-client'
+          }
+        >
           {page !== 'clients' ? (
             <>
               <div className="client-info-div">

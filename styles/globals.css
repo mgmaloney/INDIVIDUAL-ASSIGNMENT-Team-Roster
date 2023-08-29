@@ -55,10 +55,17 @@ body {
   margin: 1rem;
 }
 
-.contact-and-clinician {
+.contact-and-clinician-clients {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 1rem;
+}
+
+.contact-and-clinician-clients {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
 }
 
@@ -107,6 +114,7 @@ body {
   color: #267ccb;
   text-decoration: underline;
   margin: 0.07rem 1.5rem 1rem 0rem;
+  cursor: pointer;
 }
 
 .edit-clients-page {
@@ -133,6 +141,8 @@ body {
 
 .client-info-overview {
   border: solid black 1px;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-client-overview {
@@ -201,4 +211,9 @@ body {
 .signed-n-shared {
   margin-top: 1rem;
   text-align: end;
+}
+
+.upcoming-apts {
+  border: 1px solid black;
+  margin: 2rem 0rem;
 }
