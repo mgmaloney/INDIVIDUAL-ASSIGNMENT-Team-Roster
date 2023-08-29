@@ -99,6 +99,7 @@ export default function AddClient() {
     const payload = {
       ...formInput,
       therapistId: therapist.therapistId,
+      active: true,
     };
     if (formInput.clientId) {
       updateClient(payload);

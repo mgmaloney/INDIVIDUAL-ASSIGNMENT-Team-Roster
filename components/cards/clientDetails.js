@@ -3,9 +3,15 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getTherapistByTherapistId } from '../../utils/databaseCalls/therapistData';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import {
+  getClientsByTherapistId,
+  updateClient,
+} from '../../utils/databaseCalls/clientData';
+import TherapistClientsContext from '../../utils/context/therapistClientsContext';
 
 export default function ClientDetailsCard({ clientObj, page }) {
   const [clientTherapist, setClientTherapist] = useState({});
+  const { setTherapistClients } = useContext(TherapistClientsContext);
   const { setOpenClientModal, setEditingClient } = useContext(
     OpenClientModalContext,
   );
@@ -13,6 +19,32 @@ export default function ClientDetailsCard({ clientObj, page }) {
   const handleEdit = () => {
     setEditingClient(clientObj);
     setOpenClientModal(true);
+  };
+
+  const handleActive = async (e) => {
+    if (clientObj.active && e.target.value === 'inactive') {
+      if (
+        window.confirm(
+          `Make ${clientObj.firstName} ${clientObj.lastName} inactive?`,
+        )
+      ) {
+        await updateClient({ clientId: clientObj.clientId, active: false });
+        getClientsByTherapistId(clientObj.therapistId).then(
+          setTherapistClients,
+        );
+      }
+    } else if (!clientObj.active && e.target.value === 'active') {
+      if (
+        window.confirm(
+          `Make ${clientObj.firstName} ${clientObj.lastName} inactive?`,
+        )
+      ) {
+        await updateClient({ clientId: clientObj.clientId, active: true });
+        getClientsByTherapistId(clientObj.therapistId).then(
+          setTherapistClients,
+        );
+      }
+    }
   };
 
   useEffect(() => {
@@ -40,28 +72,32 @@ export default function ClientDetailsCard({ clientObj, page }) {
             </>
           ) : (
             <>
-              <Link
-                passHref
-                href={`/client/${clientObj.clientId}`}
-                className="client-name"
-              >
-                <p className="client-name">
-                  {clientObj.firstName} {clientObj.lastName}
-                </p>
-              </Link>
-              <button
-                type="button"
-                className="client-nav-link edit-clients-page"
-                onClick={handleEdit}
-              >
-                Edit
-              </button>
+              <div>
+                <Link
+                  passHref
+                  href={`/client/${clientObj.clientId}`}
+                  className="client-name"
+                >
+                  <p className="client-name">
+                    {clientObj.firstName} {clientObj.lastName}
+                  </p>
+                </Link>
+                <button
+                  type="button"
+                  className="client-nav-link edit-clients-page"
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+              </div>
             </>
           )}
-          <p className="c-and-c-item">Phone: {clientObj.phone}</p>
-          <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">
-            Email: {clientObj.email}
-          </p>
+          <div>
+            <p className="c-and-c-item">Phone: {clientObj.phone}</p>
+            <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">
+              Email: {clientObj.email}
+            </p>
+          </div>
           {page !== 'clients' ? (
             <>
               <div className="address">
@@ -83,6 +119,18 @@ export default function ClientDetailsCard({ clientObj, page }) {
             <p className="c-and-c-item">
               Clinician: {clientTherapist.firstName} {clientTherapist.lastName}
             </p>
+          )}
+          {page === 'clients' ? (
+            <select onChange={handleActive} className="active-select">
+              <option value="active" selected={clientObj.active}>
+                {clientObj.active ? 'Active' : 'Mark Active'}
+              </option>
+              <option value="inactive" selected={!clientObj.active}>
+                {clientObj.active ? 'Mark Inactive' : 'Inactive'}
+              </option>
+            </select>
+          ) : (
+            ''
           )}
         </div>
       </div>

@@ -66,8 +66,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                 setEditingClient,
               }}
             >
-              <AddClient />
-              <NavBar />{' '}
+              <NavBar /> <AddClient />
               {/* NavBar only visible if user is logged in and is in every view */}
               <div className="main-wrapper">
                 <SideBar />
