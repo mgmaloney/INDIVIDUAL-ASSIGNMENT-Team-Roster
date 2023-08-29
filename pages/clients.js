@@ -37,6 +37,19 @@ export default function ClientsPage() {
     }
   };
 
+  const handleSearch = (e) => {
+    const filteredClients = [];
+    therapistClients.forEach((client) => {
+      if (
+        client.firstName.toLowerCase().includes(e.target.value) ||
+        client.lastName.toLowerCase().includes(e.target.value)
+      ) {
+        filteredClients.push(client);
+      }
+    });
+    setShowingClients(filteredClients);
+  };
+
   return (
     <>
       <h1 className="clients-header">Your Clients: </h1>
@@ -47,6 +60,12 @@ export default function ClientsPage() {
         <option value="inactive">Inactive Clients</option>
         <option value="all">All Clients</option>
       </select>
+      <input
+        type="search"
+        placeholder="Search..."
+        className="search-clients"
+        onChange={handleSearch}
+      />
       {showingClients.length > 0 &&
         showingClients?.map((client) => (
           <ClientDetailsCard
