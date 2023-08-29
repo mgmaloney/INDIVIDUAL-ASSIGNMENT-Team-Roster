@@ -3,7 +3,7 @@ import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -27,14 +27,25 @@ export default function CalendarComp({
   setSelectedApt,
   appointments,
 }) {
+  const [formattedDateApts, setFormattedDateApts] = useState([]);
+
+  useEffect(() => {
+    const formattedApts = appointments.map((appointment) => ({
+      ...appointment,
+      start: new Date(appointment.start),
+      end: new Date(appointment.start),
+    }));
+    setFormattedDateApts(formattedApts);
+  }, [appointments]);
+
   return (
     <>
-      {appointments.length && (
+      {formattedDateApts.length && (
         <div className="calendar">
           <Calendar
             localizer={localizer}
-            events={appointments}
-            startAccessor="start"
+            events={formattedDateApts}
+            startAccessor={(event) => new Date(event.start)}
             endAccessor="end"
             style={{ height: 500, margin: '50px' }}
             selectable
