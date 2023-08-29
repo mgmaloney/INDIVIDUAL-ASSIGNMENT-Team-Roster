@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useContext } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { format } from 'date-fns';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 import {
   getAllClientNotes,
@@ -18,16 +19,13 @@ import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
 import ClientEditContext from '../../utils/context/clientEditContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
-import { format } from 'date-fns';
 
 export default function ClientOverView() {
   const router = useRouter();
   const { clientId } = router.query;
   const { therapist } = useContext(TherapistContext);
   const { setEditingClient } = useContext(ClientEditContext);
-  const { openClientModal, setOpenClientModal } = useContext(
-    OpenClientModalContext,
-  );
+  const { setOpenClientModal } = useContext(OpenClientModalContext);
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
@@ -54,7 +52,7 @@ export default function ClientOverView() {
 
   useEffect(() => {
     getClientByClientId(clientId).then(setClient);
-  }, [openClientModal, clientId]);
+  }, [clientId]);
 
   useEffect(() => {
     getAndSetClientAptsAndAptNotes();
@@ -128,8 +126,14 @@ export default function ClientOverView() {
   }, [clientApts]);
 
   const formatBirthday = () => {
-    const birthdayFormatted = format(new Date(client.birthDate), 'MM/dd/yyyy');
-    return birthdayFormatted;
+    if (client.birthDate) {
+      const birthdayFormatted = format(
+        new Date(client.birthDate),
+        'MM/dd/yyyy',
+      );
+      return birthdayFormatted;
+    }
+    return '';
   };
 
   const calculateAge = (birthday) => {

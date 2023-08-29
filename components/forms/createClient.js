@@ -14,7 +14,8 @@ import {
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
 import ClientEditContext from '../../utils/context/clientEditContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
-import { format, parseISO } from 'date-fns';
+import { format} from 'date-fns';
+import { useRouter } from 'next/router';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -56,11 +57,13 @@ const initialState = {
 };
 
 export default function AddClient() {
+  const router = useRouter();
   const { therapist } = useContext(TherapistContext);
   const { setTherapistClients } = useContext(TherapistClientsContext);
-  const { openClientModal, setOpenClientModal } = useContext(
-    OpenClientModalContext,
-  );
+  const {
+    openClientModal,
+    setOpenClientModal,
+  } = useContext(OpenClientModalContext);
   const { editingClient, setEditingClient } = useContext(ClientEditContext);
   const [formInput, setFormInput] = useState(initialState);
 
@@ -89,6 +92,7 @@ export default function AddClient() {
     setOpenClientModal(false);
     setFormInput(initialState);
     setEditingClient({});
+    router.reload()
   };
 
   const handleSubmit = async (e) => {
@@ -102,8 +106,8 @@ export default function AddClient() {
     } else {
       await createClient(payload);
     }
-    onClientsUpdate();
     handleClose();
+    onClientsUpdate();
   };
 
   return (

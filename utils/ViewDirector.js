@@ -60,7 +60,10 @@ const ViewDirectorBasedOnUserAuthStatus = ({
             value={{ therapistClients, setTherapistClients }}
           >
             <OpenClientModalContext.Provider
-              value={{ openClientModal, setOpenClientModal }}
+              value={{
+                openClientModal,
+                setOpenClientModal,
+              }}
             >
               <ClientEditContext.Provider
                 value={{ editingClient, setEditingClient }}
