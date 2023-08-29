@@ -66,13 +66,15 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                 setEditingClient,
               }}
             >
+              <AddClient />
               <NavBar />{' '}
               {/* NavBar only visible if user is logged in and is in every view */}
-              <SideBar />
-              {/* <IsNewUserContext.Provider value={isNewUser}> */}
-              <AddClient />
-              <div className="container">
-                <Component {...pageProps} />
+              <div className="main-wrapper">
+                <SideBar />
+                {/* <IsNewUserContext.Provider value={isNewUser}> */}
+                <div className="container">
+                  <Component {...pageProps} />
+                </div>
               </div>
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
