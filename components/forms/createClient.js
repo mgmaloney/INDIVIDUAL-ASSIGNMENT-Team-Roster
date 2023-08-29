@@ -106,9 +106,9 @@ export default function AddClient() {
     } else {
       await createClient(payload);
     }
-    router.reload();
     handleClose();
     onClientsUpdate();
+    router.reload();
   };
 
   return (
