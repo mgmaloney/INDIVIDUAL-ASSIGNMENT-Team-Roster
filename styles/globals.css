@@ -44,14 +44,22 @@ body {
 }
 
 .container {
-  margin: 3rem;
+  margin: 0rem;
   max-width: 110%;
 }
 
-.client-card {
+.client-card-clients {
   border: solid 1px black;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.contact-and-clinician {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
 }
 
 .client-name {
