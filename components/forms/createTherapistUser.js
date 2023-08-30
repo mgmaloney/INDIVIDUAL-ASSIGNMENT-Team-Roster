@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Box, styled } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';

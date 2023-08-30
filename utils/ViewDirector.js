@@ -54,8 +54,12 @@ const ViewDirectorBasedOnUserAuthStatus = ({
     return <Loading />;
   }
 
+  if(user && isNewuser) {
+
+  }
+
   // what the user should see if they are logged in
-  if (user) {
+  if (user && !isNewuser) {
     return (
       <>
         <TherapistContext.Provider value={{ therapist }}>
