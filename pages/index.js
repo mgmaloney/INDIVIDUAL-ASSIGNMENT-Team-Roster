@@ -15,11 +15,11 @@ function Home() {
   const [selectedApt, setSelectedApt] = useState({});
 
   useEffect(() => {
-    getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
+    getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
   }, [therapist]);
 
   const onAptUpdate = () => {
-    getAppointmentsByTherapistId(therapist.therapistId).then(setAppointments);
+    getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
   };
 
   // const { isNewUser } = useContext(IsNewUserContext);

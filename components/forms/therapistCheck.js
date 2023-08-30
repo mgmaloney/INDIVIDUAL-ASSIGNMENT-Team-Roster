@@ -59,7 +59,7 @@ export default function TherapistCheckForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    if (practiceCheckSet() && checkTherapistExists()) {
+    if ((await practiceCheckSet()) && checkTherapistExists()) {
       setPassCheck(true);
       await updateTherapist({
         therapistId: therapist.therapistId,
@@ -103,6 +103,7 @@ export default function TherapistCheckForm() {
             Practice Registration Password
             <input type="password" name="regPassword" onChange={handleChange} />
           </label>
+          <button type="submit">Submit</button>
         </form>
       </>
     );
@@ -110,7 +111,7 @@ export default function TherapistCheckForm() {
   if (submitted && !passCheck) {
     return (
       <h1 className="not-found">
-        User not found. Please Contact Your Administator
+        User not found. Please Contact Your Administator.
       </h1>
     );
   }

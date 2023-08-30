@@ -53,7 +53,7 @@ export default function CreateTherapistUser() {
     lastName: '',
     email: '',
     supervisorId: '',
-    practice: therapist.practiceId,
+    practice: therapist?.practiceId,
   };
 
   const [formData, setFormData] = useState(initialState);

@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useAuth } from './context/authContext';
-import { getTherapistByUid } from './databaseCalls/therapistData';
+import {
+  getAllTherapists,
+  getTherapistByUid,
+} from './databaseCalls/therapistData';
 import Loading from '../components/Loading';
 import Signin from '../components/Signin';
 import NavBar from '../components/NavBar';
@@ -26,7 +29,6 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [openClientModal, setOpenClientModal] = useState(false);
   const [editingTherapist, setEditingTherapist] = useState({});
   const [openTherapistModal, setOpenTherapistModal] = useState(false);
-  const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -35,15 +37,21 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }, [user]);
 
   useEffect(() => {
-    getClientsByTherapistId(therapist.therapistId).then(setTherapistClients);
+    getClientsByTherapistId(therapist?.therapistId).then(setTherapistClients);
   }, [therapist]);
 
   // this will need to be refactored for when the admin user is added
+  const [isNewUser, setIsNewUser] = useState();
 
   const isNewUserCheck = async () => {
-    if (therapist.length === 0) {
+    const therapists = await getAllTherapists();
+    const matchingTherapist = therapists.find(
+      (therapistChecking) => therapistChecking.uid === user?.uid,
+    );
+    if (matchingTherapist) {
+      setIsNewUser(false);
+    } else {
       setIsNewUser(true);
-      console.warn('user', user);
     }
   };
 
@@ -57,7 +65,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }
 
   if (user && isNewUser) {
-    <TherapistCheckForm />;
+    return <TherapistCheckForm />;
   }
 
   // what the user should see if they are logged in
