@@ -69,12 +69,10 @@ export default function AddClient() {
 
   useEffect(() => {
     if (editingClient.clientId) {
-      console.warn('editing client bday', new Date(editingClient.birthDate));
       const birthdayFormatted = format(
         new Date(editingClient.birthDate),
         'yyyy-MM-dd',
       );
-      console.warn(birthdayFormatted);
       setFormInput({ ...editingClient, birthDate: birthdayFormatted });
     }
   }, [editingClient]);

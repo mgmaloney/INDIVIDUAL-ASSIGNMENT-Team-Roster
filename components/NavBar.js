@@ -4,12 +4,19 @@ import Link from 'next/link';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import OpenClientModalContext from '../utils/context/openClientModalContext';
+import OpenTherapistModalContext from '../utils/context/openTherapistModalContext';
+import TherapistContext from '../utils/context/therapistContext';
 
 export default function NavBar() {
   const { setOpenClientModal } = useContext(OpenClientModalContext);
+  const { setOpenTherapistModal } = useContext(OpenTherapistModalContext);
+  const { therapist } = useContext(TherapistContext);
 
-  const handleModalOpen = () => {
+  const handleClientModalOpen = () => {
     setOpenClientModal(true);
+  };
+  const handleTherapistModalOpen = () => {
+    setOpenTherapistModal(true);
   };
 
   return (
@@ -28,9 +35,16 @@ export default function NavBar() {
             <Button variant="danger" onClick={signOut}>
               Sign Out
             </Button>
-            <Button variant="danger" onClick={handleModalOpen}>
+            <Button variant="danger" onClick={handleClientModalOpen}>
               Add Client
             </Button>
+            {therapist.admin ? (
+              <Button variant="danger" onClick={handleTherapistModalOpen}>
+                Add Therapist
+              </Button>
+            ) : (
+              ''
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
