@@ -5,8 +5,14 @@ const dbURL = clientCredentials.databaseURL;
 
 const getAllSupervisors = async () => {
   try {
-    const { data } = await axios.get(`${dbURL}/supervisors.json`);
-    const supervisors = Object.values(data);
+    const { data } = await axios.get(`${dbURL}/therapists.json`);
+    const therapists = Object.values(data);
+    const supervisors = [];
+    therapists.forEach((therapist) => {
+      if (therapist.supervisor) {
+        supervisors.push(therapist);
+      }
+    });
     return supervisors;
   } catch (e) {
     console.warn(e);
@@ -16,7 +22,7 @@ const getAllSupervisors = async () => {
 
 const getSingleSupervisor = async (id) => {
   try {
-    const { data } = await axios.get(`${dbURL}/supervisors/${id}.json`);
+    const { data } = await axios.get(`${dbURL}/therapists/${id}.json`);
     return data;
   } catch (e) {
     console.warn(e);

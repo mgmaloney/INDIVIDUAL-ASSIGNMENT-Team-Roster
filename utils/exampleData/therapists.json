@@ -2,9 +2,32 @@
   "-Mityumity-yluJkL-": {
     "therapistId": "-Mityumity-yluJkL-",
     "supervisorId": "-MityumyWFEU-yluJkL-",
+    "practiceId": "-MityumtpUMNyluJkL-",
     "firstName": "Matthew",
     "lastName": "Maloney",
     "email": "matthew@experiencetherapygroup.com",
-    "uid": "426dDLp689PwWbTJlWYiPItH9F93"
+    "uid": "426dDLp689PwWbTJlWYiPItH9F93",
+    "admin": true
+  },
+  "-MityumyWFEU-yluJkL-": {
+    "therapistId": "-MityumyWFEU-yluJkL-",
+    "firstName": "Rachael",
+    "lastName": "T-Smiths",
+    "email": "rachaelT@gmail.com",
+    "supervisor": true
+  },
+  "-MiBsmfttupFEU-yluJkM-": {
+    "therapistId": "-MiBsmfttupFEU-yluJkM-",
+    "firstName": "Sarah",
+    "lastName": "Rodgeman",
+    "email": "sarahR@gmail.com",
+    "supervisor": true
+  },
+  "-MiBsWMPFEU-pimJkN-": {
+    "therapistId": "-MiBsWMPFEU-pimJkN-",
+    "firstName": "Andrew",
+    "lastName": "Chapper",
+    "email": "andrewC@gmail.com",
+    "supervisor": true
   }
 }

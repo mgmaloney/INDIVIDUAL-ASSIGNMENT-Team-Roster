@@ -38,7 +38,7 @@ export default function NavBar() {
             <Button variant="danger" onClick={handleClientModalOpen}>
               Add Client
             </Button>
-            {therapist.admin ? (
+            {therapist?.admin ? (
               <Button variant="danger" onClick={handleTherapistModalOpen}>
                 Add Therapist
               </Button>

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Box, styled } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -52,7 +53,7 @@ export default function CreateTherapistUser() {
     lastName: '',
     email: '',
     supervisorId: '',
-    practice: therapist.practice,
+    practice: therapist?.practiceId,
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -147,7 +148,6 @@ export default function CreateTherapistUser() {
                 type="switch"
                 onChange={handleSupervisor}
                 value={isSupervisor} // FIXME: modify code to remove error
-                required
               />
             </Form.Group>
             {!isSupervisor ? (
@@ -163,7 +163,7 @@ export default function CreateTherapistUser() {
                   <option value="">Select a Supervisor</option>
                   {supervisors.map((supervisor) => (
                     <option
-                      key={supervisor.supervisorId}
+                      key={supervisor.supervisorId + 1}
                       value={supervisor.supervisorId}
                     >
                       {`${supervisor.firstName} ${supervisor.lastName}`}
@@ -184,16 +184,6 @@ export default function CreateTherapistUser() {
     </>
   );
 }
-
-CreateTherapistUser.propTypes = {
-  user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-    fbUser: PropTypes.shape({
-      email: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
-  //   updateUser: PropTypes.func.isRequired,
-};
 
 Backdrop.propTypes = {
   className: PropTypes.string.isRequired,
