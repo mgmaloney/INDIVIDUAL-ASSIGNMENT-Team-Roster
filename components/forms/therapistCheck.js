@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from 'react-bootstrap';
 import {
   getAllTherapists,
   updateTherapist,
 } from '../../utils/databaseCalls/therapistData';
 import getAllPractices from '../../utils/databaseCalls/practiceData';
 import { useAuth } from '../../utils/context/authContext';
+import { signOut } from '../../utils/auth';
 
 export default function TherapistCheckForm() {
   const { user } = useAuth();
@@ -56,15 +58,20 @@ export default function TherapistCheckForm() {
     return false;
   };
 
+  const addUid = async () => {
+    const payload = {
+      therapistId: therapist.therapistId,
+      uid: user.uid,
+    };
+    await updateTherapist(payload);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
     if ((await practiceCheckSet()) && checkTherapistExists()) {
       setPassCheck(true);
-      await updateTherapist({
-        therapistId: therapist.therapistId,
-        uid: user.uid,
-      });
+      await addUid();
     } else {
       setPassCheck(false);
     }
@@ -105,22 +112,31 @@ export default function TherapistCheckForm() {
           </label>
           <button type="submit">Submit</button>
         </form>
+        <Button variant="danger" onClick={signOut}>
+          Leave this page.
+        </Button>
       </>
     );
   }
   if (submitted && !passCheck) {
     return (
-      <h1 className="not-found">
-        User not found. Please Contact Your Administator.
-      </h1>
+      <>
+        <h1 className="not-found">
+          User not found. Please Contact Your Administator.
+        </h1>
+        <Button variant="danger" onClick={signOut}>
+          Leave this page
+        </Button>
+      </>
     );
   }
   if (submitted && passCheck) {
     return (
       <>
         <h1>Confirmed. Redirecting...</h1>
+
         {setTimeout(() => {
-          router.push(`/`);
+          router.reload();
         }, 5000)}
       </>
     );

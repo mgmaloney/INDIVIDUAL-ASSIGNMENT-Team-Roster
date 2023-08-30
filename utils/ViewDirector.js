@@ -92,20 +92,25 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                   setEditingTherapist,
                 }}
               >
-                <NavBar /> <CreateTherapistUser /> <AddClient />
-                {/* NavBar only visible if user is logged in and is in every view */}
-                <div className="main-wrapper">
-                  <SideBar />
-                  {/* <IsNewUserContext.Provider value={isNewUser}> */}
-                  <div className="container">
-                    <Component {...pageProps} />
-                  </div>
-                </div>
+                {!isNewUser ? (
+                  <>
+                    <NavBar />
+                    <CreateTherapistUser />
+                    <AddClient />
+                    <div className="main-wrapper">
+                      <SideBar />
+                      <div className="container">
+                        <Component {...pageProps} />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </OpenTherapistModalContext.Provider>
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
-        {/* </IsNewUserContext.Provider> */}
       </>
     );
   }
