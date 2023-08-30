@@ -13,6 +13,7 @@ import TherapistClientsContext from './context/therapistClientsContext';
 import OpenClientModalContext from './context/openClientModalContext';
 import OpenTherapistModalContext from './context/openTherapistModalContext';
 import CreateTherapistUser from '../components/forms/createTherapistUser';
+import TherapistCheckForm from '../components/forms/therapistCheck';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -25,6 +26,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [openClientModal, setOpenClientModal] = useState(false);
   const [editingTherapist, setEditingTherapist] = useState({});
   const [openTherapistModal, setOpenTherapistModal] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -37,29 +39,29 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }, [therapist]);
 
   // this will need to be refactored for when the admin user is added
-  // const [isNewUser, setIsNewUser] = useState(false);
-  // const isNewUserCheck = async () => {
-  //   if (therapist.length === 0) {
-  //     setIsNewUser(true);
-  //     console.warn('user', user);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   isNewUserCheck();
-  // }, [isNewUser]);
+  const isNewUserCheck = async () => {
+    if (therapist.length === 0) {
+      setIsNewUser(true);
+      console.warn('user', user);
+    }
+  };
+
+  useEffect(() => {
+    isNewUserCheck();
+  }, [user]);
 
   // if user state is null, then show loader
   if (userLoading) {
     return <Loading />;
   }
 
-  if(user && isNewuser) {
-
+  if (user && isNewUser) {
+    <TherapistCheckForm />;
   }
 
   // what the user should see if they are logged in
-  if (user && !isNewuser) {
+  if (user && !isNewUser) {
     return (
       <>
         <TherapistContext.Provider value={{ therapist }}>
