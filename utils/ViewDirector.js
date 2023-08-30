@@ -11,6 +11,8 @@ import TherapistContext from './context/therapistContext';
 import { getClientsByTherapistId } from './databaseCalls/clientData';
 import TherapistClientsContext from './context/therapistClientsContext';
 import OpenClientModalContext from './context/openClientModalContext';
+import OpenTherapistModalContext from './context/openTherapistModalContext';
+import CreateTherapistUser from '../components/forms/createTherapistUser';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -21,6 +23,8 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [therapistClients, setTherapistClients] = useState([]);
   const [editingClient, setEditingClient] = useState({});
   const [openClientModal, setOpenClientModal] = useState(false);
+  const [editingTherapist, setEditingTherapist] = useState({});
+  const [openTherapistModal, setOpenTherapistModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -66,15 +70,24 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                 setEditingClient,
               }}
             >
-              <NavBar /> <AddClient />
-              {/* NavBar only visible if user is logged in and is in every view */}
-              <div className="main-wrapper">
-                <SideBar />
-                {/* <IsNewUserContext.Provider value={isNewUser}> */}
-                <div className="container">
-                  <Component {...pageProps} />
+              <OpenTherapistModalContext.Provider
+                value={{
+                  openTherapistModal,
+                  setOpenTherapistModal,
+                  editingTherapist,
+                  setEditingTherapist,
+                }}
+              >
+                <NavBar /> <CreateTherapistUser /> <AddClient />
+                {/* NavBar only visible if user is logged in and is in every view */}
+                <div className="main-wrapper">
+                  <SideBar />
+                  {/* <IsNewUserContext.Provider value={isNewUser}> */}
+                  <div className="container">
+                    <Component {...pageProps} />
+                  </div>
                 </div>
-              </div>
+              </OpenTherapistModalContext.Provider>
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
