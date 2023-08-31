@@ -69,7 +69,7 @@ const createTherapist = async (payload) => {
 
 const deleteTherapist = async (therapistId) => {
   try {
-    const response = await axios.delete(`${dbURL}/therapists/${therapistId}`);
+    const response = await axios.delete(`${dbURL}/therapists/${therapistId}.json`);
     return response;
   } catch (e) {
     console.warn(e);
