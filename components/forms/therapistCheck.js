@@ -44,7 +44,7 @@ export default function TherapistCheckForm() {
     return false;
   };
 
-  const checkTherapistExists = () => {
+  const checkTherapistExists = async () => {
     const therapistConfirmed = therapists.find(
       (therapistChecking) =>
         therapistChecking.firstName === formData.firstName &&
@@ -60,7 +60,7 @@ export default function TherapistCheckForm() {
 
   const addUid = async () => {
     const payload = {
-      therapistId: therapist.therapistId,
+      ...therapist,
       uid: user.uid,
     };
     await updateTherapist(payload);
@@ -68,14 +68,24 @@ export default function TherapistCheckForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    if ((await practiceCheckSet()) && checkTherapistExists()) {
+    if ((await practiceCheckSet()) && (await checkTherapistExists())) {
       setPassCheck(true);
-      await addUid();
     } else {
       setPassCheck(false);
     }
   };
+
+  useEffect(() => {
+    if (therapist.therapistId) {
+      setSubmitted(true);
+    }
+  }, [therapist.therapistId]);
+
+  useEffect(() => {
+    if (passCheck && submitted && therapist.therapistId) {
+      addUid();
+    }
+  }, [submitted]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,7 +120,9 @@ export default function TherapistCheckForm() {
             Practice Registration Password
             <input type="password" name="regPassword" onChange={handleChange} />
           </label>
-          <button type="submit">Submit</button>
+          <button onClick={handleSubmit} type="button">
+            Submit
+          </button>
         </form>
         <Button variant="danger" onClick={signOut}>
           Leave this page.
