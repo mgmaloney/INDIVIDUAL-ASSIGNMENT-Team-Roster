@@ -106,14 +106,11 @@ export default function ClientOverView() {
             signedBySupervisor: false,
             dateTime: appointment.start,
           };
-          console.warn(
-            `creating note for ${appointment.title}'s ${appointment.start} appointment`,
-          );
           await createNote(newNotePayload);
           const updatedClientNotes = await getAllClientAppointmentNotes(
             clientId,
           );
-          const updateClientApts = await getAllClientAppointmentNotes(clientId);
+          const updateClientApts = await getAppointmentsByClientId(clientId);
           setAptNotes(updatedClientNotes);
           setClientApts(updateClientApts);
           onNotesUpdate(clientId);
@@ -176,7 +173,7 @@ export default function ClientOverView() {
           </div>
           <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
           <div className="notes-info">
-            {sortedNotes.length && (
+            {sortedNotes.length > 0 && (
               <div className="client-notes">
                 {sortedNotes.map((note) => (
                   <NoteCard
