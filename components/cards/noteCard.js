@@ -142,7 +142,8 @@ export default function NoteCard({
   return (
     <div className="note-card">
       <h4 className="note-title">
-        {noteObj.title} #{noteObj.type === 'appointment' ? numberOfApt : ''}
+        {noteObj.title}{' '}
+        {noteObj.type === 'appointment' ? `#${numberOfApt}` : ''}
       </h4>
       <h6 className="note-date">
         {!editingChartNote ? dateToStringConverter(noteObj.dateTime) : ''}
@@ -167,6 +168,7 @@ export default function NoteCard({
 }
 
 NoteCard.propTypes = {
+  numberOfApt: PropTypes.number.isRequired,
   noteObj: PropTypes.shape({
     noteId: PropTypes.string,
     title: PropTypes.string,
