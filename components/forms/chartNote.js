@@ -59,7 +59,9 @@ export default function ChartNoteForm({
     onNotesUpdate(clientObj.clientId);
     setFormInput({ noteText: '' });
     setDateInput(initialDate);
-    setEditingChartNote(false);
+    if (editingChartNote) {
+      setEditingChartNote(false);
+    }
   };
 
   return (
