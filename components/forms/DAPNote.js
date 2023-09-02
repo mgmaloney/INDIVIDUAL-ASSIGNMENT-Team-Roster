@@ -48,6 +48,10 @@ export default function DAPForm({ noteObj }) {
     alert('Note saved!');
   };
 
+  const handleEdit = () => {
+    setSaved(false);
+  };
+
   const handleSign = async () => {
     const payload = {
       ...noteObj,
@@ -114,9 +118,23 @@ export default function DAPForm({ noteObj }) {
             </label>
             {!note?.sharedWithSupervisor ? (
               <div className="DAP-form-btns">
-                <button type="button" className="done-btn" onClick={handleSave}>
-                  {!saved ? 'Save' : 'Edit'}
-                </button>
+                {!saved ? (
+                  <button
+                    type="button"
+                    className="done-btn"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="done-btn"
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </button>
+                )}
                 {saved ? (
                   <button
                     type="button"
