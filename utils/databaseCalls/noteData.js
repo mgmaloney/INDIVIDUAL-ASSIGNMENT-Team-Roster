@@ -51,6 +51,18 @@ const getAllClientNotes = async (clientId) => {
   }
 };
 
+const getNoteByAptId = async (appointmentId) => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/notes.json?orderBy="appointmentId"&equalTo="${appointmentId}"`,
+    );
+    const dataArr = Object.values(data);
+    return dataArr[0];
+  } catch (e) {
+    return 'call failed';
+  }
+};
+
 const getUnsignedAppointmentNotesTherapist = async () => {
   try {
     const { data } = await axios.get(
@@ -74,7 +86,11 @@ const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
     );
     const signedByTherapistNotes = Object.values(data);
     signedByTherapistNotes.forEach((note) => {
-      if (note.supervisorId === supervisorId && note.sharedWithSupervisor && !note.signedBySupervisor) {
+      if (
+        note.supervisorId === supervisorId &&
+        note.sharedWithSupervisor &&
+        !note.signedBySupervisor
+      ) {
         unsignedNotes.push(note);
       }
     });
@@ -123,6 +139,7 @@ const deleteNote = async (noteId) => {
 export {
   getAppointmentNoteByNoteId,
   getAllClientNotes,
+  getNoteByAptId,
   getUnsignedAppointmentNotesTherapist,
   getUnsignedAppointmentNotesSuperVisor,
   getAllClientAppointmentNotes,

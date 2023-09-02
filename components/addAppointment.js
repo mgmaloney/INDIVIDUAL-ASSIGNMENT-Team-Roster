@@ -17,6 +17,7 @@ import {
   updateAppointment,
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
+import { getNoteByAptId } from '../utils/databaseCalls/noteData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -68,6 +69,7 @@ export default function AddAppointment({
   const [selectedClientObj, setSelectedClientObj] = useState({});
   const [aptName, setAptName] = useState('');
   const [length, setLength] = useState(50);
+  const [aptNote, setAptNote] = useState({});
 
   const handleClose = () => {
     setOpenModal(false);
@@ -114,6 +116,13 @@ export default function AddAppointment({
     }
   }, [selectedClientObj]);
 
+  useEffect(() => {
+    if (selectedApt.appointmentId) {
+      console.warn(selectedApt.appointmentId);
+      getNoteByAptId(selectedApt.appointmentId).then(setAptNote);
+    }
+  }, [selectedApt.appointmentId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (selectedApt.appointmentId) {
@@ -148,9 +157,16 @@ export default function AddAppointment({
 
   const handleDelete = async () => {
     if (window.confirm(`Delete this appointment?`)) {
-      await deleteAppointment(selectedApt.appointmentId);
-      handleClose();
-      onAptUpdate();
+      if (aptNote.signedByTherapist) {
+        alert(
+          'Appointments with already signed note cannot be deleted.  If this is an error, please contact your administrator.',
+        );
+        handleClose();
+      } else {
+        await deleteAppointment(selectedApt.appointmentId);
+        handleClose();
+        onAptUpdate();
+      }
     }
   };
 
