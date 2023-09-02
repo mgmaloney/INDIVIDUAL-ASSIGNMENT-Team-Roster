@@ -6,9 +6,14 @@ export default function UpcomingAppointments({ apts }) {
   const [upcomingApts, setUpcomingApts] = useState([]);
 
   const sortAndShowUpcoming = () => {
-    const aptsArr = [...apts];
-    aptsArr.sort((a, b) => Date.parse(b.start) - Date.parse(a.start));
-    const nextFiveApts = aptsArr.slice(0, 5);
+    const filterAppointments = [...apts];
+    const upcomingAppointments = filterAppointments.filter(
+      (apt) => Date.now() < Date.parse(apt.start),
+    );
+    upcomingAppointments.sort(
+      (a, b) => Date.parse(b.start) - Date.parse(a.start),
+    );
+    const nextFiveApts = upcomingAppointments.slice(0, 5);
     setUpcomingApts(nextFiveApts);
   };
 
