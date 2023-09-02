@@ -70,9 +70,11 @@ export default function AddAppointment({
   const [length, setLength] = useState(50);
 
   const handleClose = () => {
-    setSelectedApt(selectedAptDefaultState);
-    setSelectedClientObj({});
     setOpenModal(false);
+    if (setSelectedApt) {
+      setSelectedApt(selectedAptDefaultState);
+      setSelectedClientObj({});
+    }
   };
 
   useEffect(() => {
