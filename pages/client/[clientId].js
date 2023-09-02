@@ -78,43 +78,35 @@ export default function ClientOverView() {
   };
 
   const createNoteAfterAptStart = async () => {
-    const now = Date.now();
     clientApts.forEach(async (appointment) => {
-      const aptTime = new Date(appointment.start);
-      let numberOfPastClientApts = aptNotes.length;
-      if (now >= aptTime) {
-        numberOfPastClientApts += 1;
-        if (
-          aptNotes.some(
-            (note) => note.appointmentId === appointment.appointmentId,
-          ) === false
-        ) {
-          const newNotePayload = {
-            title: `Appointment #${numberOfPastClientApts}`,
-            type: 'appointment',
-            appointmentId: appointment.appointmentId,
-            clientId: appointment.clientId,
-            therapistId: appointment.therapistId,
-            supervisorId: therapist.supervisorId,
-            content: {
-              D: '',
-              A: '',
-              P: '',
-            },
-            signedByTherapist: false,
-            sharedWithSupervisor: false,
-            signedBySupervisor: false,
-            dateTime: appointment.start,
-          };
-          await createNote(newNotePayload);
-          const updatedClientNotes = await getAllClientAppointmentNotes(
-            clientId,
-          );
-          const updateClientApts = await getAppointmentsByClientId(clientId);
-          setAptNotes(updatedClientNotes);
-          setClientApts(updateClientApts);
-          onNotesUpdate(clientId);
-        }
+      if (
+        aptNotes.some(
+          (note) => note.appointmentId === appointment.appointmentId,
+        ) === false
+      ) {
+        const newNotePayload = {
+          title: `Appointment`,
+          type: 'appointment',
+          appointmentId: appointment.appointmentId,
+          clientId: appointment.clientId,
+          therapistId: appointment.therapistId,
+          supervisorId: therapist.supervisorId,
+          content: {
+            D: '',
+            A: '',
+            P: '',
+          },
+          signedByTherapist: false,
+          sharedWithSupervisor: false,
+          signedBySupervisor: false,
+          dateTime: appointment.start,
+        };
+        await createNote(newNotePayload);
+        const updatedClientNotes = await getAllClientAppointmentNotes(clientId);
+        const updateClientApts = await getAppointmentsByClientId(clientId);
+        setAptNotes(updatedClientNotes);
+        setClientApts(updateClientApts);
+        onNotesUpdate(clientId);
       }
     });
   };
@@ -183,6 +175,7 @@ export default function ClientOverView() {
                     noteObj={note}
                     page="clientOverview"
                     onNotesUpdate={onNotesUpdate}
+                    numberOfApt={sortedNotes.length - sortedNotes.indexOf(note)}
                   />
                 ))}
               </div>

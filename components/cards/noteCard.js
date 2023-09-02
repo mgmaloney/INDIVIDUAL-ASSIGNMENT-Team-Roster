@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 import { deleteNote } from '../../utils/databaseCalls/noteData';
 import ChartNoteForm from '../forms/chartNote';
 
-export default function NoteCard({ noteObj, page, onNotesUpdate, clientObj }) {
+export default function NoteCard({
+  noteObj,
+  page,
+  onNotesUpdate,
+  clientObj,
+  numberOfApt,
+}) {
   const router = useRouter();
   const [editingChartNote, setEditingChartNote] = useState(false);
 
@@ -135,7 +141,9 @@ export default function NoteCard({ noteObj, page, onNotesUpdate, clientObj }) {
 
   return (
     <div className="note-card">
-      <h4 className="note-title">{noteObj.title}</h4>
+      <h4 className="note-title">
+        {noteObj.title} #{noteObj.type === 'appointment' ? numberOfApt : ''}
+      </h4>
       <h6 className="note-date">
         {!editingChartNote ? dateToStringConverter(noteObj.dateTime) : ''}
       </h6>
