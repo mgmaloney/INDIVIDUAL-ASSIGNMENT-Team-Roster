@@ -136,6 +136,7 @@ const deleteNote = async (noteId) => {
   }
 };
 
+
 export {
   getAppointmentNoteByNoteId,
   getAllClientNotes,
