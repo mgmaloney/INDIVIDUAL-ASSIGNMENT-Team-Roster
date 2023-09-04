@@ -17,7 +17,7 @@ import {
   updateAppointment,
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
-import { getNoteByAptId } from '../utils/databaseCalls/noteData';
+import { getNoteByAptId, deleteNote } from '../utils/databaseCalls/noteData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -162,6 +162,18 @@ export default function AddAppointment({
           'Appointments with already signed note cannot be deleted.  If this is an error, please contact your administrator.',
         );
         handleClose();
+        onAptUpdate();
+      } else if (aptNote.content.D || aptNote.content.A || aptNote.content.P) {
+        if (
+          window.confirm(
+            'Assosciated appointment note already has content. If appointment is deleted, the assosciated note will also be deleted. Are you sure you want to delete this appointment?',
+          )
+        ) {
+          await deleteAppointment(selectedApt.appointmentId);
+          await deleteNote(aptNote.noteId);
+          handleClose();
+          onAptUpdate();
+        }
       } else {
         await deleteAppointment(selectedApt.appointmentId);
         handleClose();
