@@ -42,6 +42,21 @@ const getClientByClientId = async (clientId) => {
   }
 };
 
+const getActiveClients = async () => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/clients.json?orderBy="active"&equalTo=true`,
+    );
+    const dataArr = Object.values(data);
+    if (dataArr.length > 0) {
+      return dataArr;
+    }
+    return [];
+  } catch (e) {
+    return 'call failed';
+  }
+};
+
 const updateClient = async (payload) => {
   try {
     const response = await axios.patch(
@@ -81,6 +96,7 @@ export {
   getAllClients,
   getClientByClientId,
   getClientsByTherapistId,
+  getActiveClients,
   updateClient,
   createClient,
   deleteClient,
