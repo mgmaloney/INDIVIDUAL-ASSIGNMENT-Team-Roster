@@ -63,6 +63,7 @@ export default function AddAppointment({
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
+  const [activeClients, setActiveClients] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [aptRadio, setAptRadio] = useState('client');
@@ -80,6 +81,16 @@ export default function AddAppointment({
   };
 
   useEffect(() => {
+    const activeCts = [];
+    therapistClients.forEach((client) => {
+      if (client.active) {
+        activeCts.push(client);
+      }
+    });
+    setActiveClients(activeCts);
+  }, [therapistClients]);
+
+  useEffect(() => {
     if (selectedApt.appointmentId) {
       setStartDate(new Date(selectedApt.start));
       setEndDate(new Date(selectedApt.end));
@@ -92,7 +103,6 @@ export default function AddAppointment({
   useEffect(() => {
     if (selectedApt.clientId) {
       getClientByClientId(selectedApt.clientId).then(setSelectedClientObj);
-      console.warn('getClient running');
     }
   }, [selectedApt.clientId]);
 
@@ -220,7 +230,7 @@ export default function AddAppointment({
               {aptRadio === 'client' ? (
                 <Autocomplete
                   id="client-autocomplete"
-                  options={therapistClients}
+                  options={activeClients}
                   // sx={{ width: 50 }}
                   getOptionLabel={(option) => {
                     if (option.firstName) {
