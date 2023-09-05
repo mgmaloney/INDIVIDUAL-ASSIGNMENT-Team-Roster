@@ -101,7 +101,8 @@ body {
   margin: 0rem 1rem 1rem 0rem;
 }
 
-.client-nav-link {
+.client-nav-link,
+.therapist {
   font-weight: bold;
   font-size: medium;
   color: #267ccb;
@@ -231,7 +232,33 @@ body {
 }
 
 .list-header {
-  margin-top: 2rem;
+  margin-top: 0rem;
   font-weight: bold;
   color: #267ccb;
+}
+
+.view-therapist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0rem 1rem;
+}
+
+.view-therapist-header * {
+  margin: 1rem 0rem;
+  padding: 0.2rem;
+}
+
+.therapist-clients {
+  margin-left: 1.3rem;
+}
+
+.header-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.active-sort {
+  margin: 1rem;
 }
