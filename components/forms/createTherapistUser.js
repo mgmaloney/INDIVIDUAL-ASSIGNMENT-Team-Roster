@@ -163,8 +163,8 @@ export default function CreateTherapistUser() {
                   <option value="">Select a Supervisor</option>
                   {supervisors.map((supervisor) => (
                     <option
-                      key={supervisor.supervisorId + 1}
-                      value={supervisor.supervisorId}
+                      key={supervisor.therapistId}
+                      value={supervisor.therapistId}
                     >
                       {`${supervisor.firstName} ${supervisor.lastName}`}
                     </option>
