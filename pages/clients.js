@@ -2,44 +2,53 @@ import { useContext, useEffect, useState } from 'react';
 import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 
-export default function ClientsPage() {
+export default function ClientsPage({ viewTherapistClients }) {
   const { therapistClients } = useContext(TherapistClientsContext);
+  const [pageSpecificClients, setPageSpecificClients] = useState([]);
   const [showingClients, setShowingClients] = useState([]);
 
   useEffect(() => {
     const initialShowingClients = [];
-    therapistClients.forEach((client) => {
+    pageSpecificClients.forEach((client) => {
       if (client.active) {
         initialShowingClients.push(client);
       }
     });
     setShowingClients(initialShowingClients);
-  }, [therapistClients]);
+  }, [pageSpecificClients]);
+
+  useEffect(() => {
+    if (viewTherapistClients) {
+      setPageSpecificClients(viewTherapistClients);
+    } else {
+      setPageSpecificClients(therapistClients);
+    }
+  }, []);
 
   const handleActiveSort = (e) => {
     const updatedShowingClients = [];
     if (e.target.value === 'active') {
-      therapistClients.forEach((client) => {
+      pageSpecificClients.forEach((client) => {
         if (client.active) {
           updatedShowingClients.push(client);
         }
       });
       setShowingClients(updatedShowingClients);
     } else if (e.target.value === 'inactive') {
-      therapistClients.forEach((client) => {
+      pageSpecificClients.forEach((client) => {
         if (client.active === false) {
           updatedShowingClients.push(client);
         }
       });
       setShowingClients(updatedShowingClients);
     } else if (e.target.value === 'all') {
-      setShowingClients(therapistClients);
+      setShowingClients(pageSpecificClients);
     }
   };
 
   const handleSearch = (e) => {
     const filteredClients = [];
-    therapistClients.forEach((client) => {
+    pageSpecificClients.forEach((client) => {
       if (
         client.firstName.toLowerCase().includes(e.target.value) ||
         client.lastName.toLowerCase().includes(e.target.value)
@@ -52,20 +61,26 @@ export default function ClientsPage() {
 
   return (
     <>
-      <h1 className="list-header">Your Clients: </h1>
-      <select className="active-sort" onChange={handleActiveSort}>
-        <option value="active" defaultValue="active">
-          Active Clients
-        </option>
-        <option value="inactive">Inactive Clients</option>
-        <option value="all">All Clients</option>
-      </select>
-      <input
-        type="search"
-        placeholder="Search..."
-        className="search-clients"
-        onChange={handleSearch}
-      />
+      <div className="header-search">
+        <h3 className="list-header">
+          {viewTherapistClients ? 'Assigned Clients: ' : 'Your Clients: '}
+        </h3>
+        <div className="search-sort">
+          <select className="active-sort" onChange={handleActiveSort}>
+            <option value="active" defaultValue="active">
+              Active Clients
+            </option>
+            <option value="inactive">Inactive Clients</option>
+            <option value="all">All Clients</option>
+          </select>
+          <input
+            type="search"
+            placeholder="Search..."
+            className="search-clients"
+            onChange={handleSearch}
+          />
+        </div>
+      </div>
       {showingClients.length > 0 &&
         showingClients?.map((client) => (
           <ClientDetailsCard
