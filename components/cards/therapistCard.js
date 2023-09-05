@@ -39,7 +39,7 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
           `Make ${therapistObj.firstName} ${therapistObj.lastName} inactive?`,
         )
       ) {
-        await updateClient({
+        await updateTherapist({
           therapistId: therapistObj.therapistId,
           active: true,
         });
@@ -102,5 +102,7 @@ TherapistCard.propTypes = {
     lastName: PropTypes.string,
     email: PropTypes.string,
     supervisorId: PropTypes.string,
+    active: PropTypes.bool,
   }).isRequired,
+  onTherapistUpdate: PropTypes.func.isRequired,
 };
