@@ -3,8 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import OpenTherapistModalContext from '../../utils/context/openTherapistModalContext';
 import { getSingleSupervisor } from '../../utils/databaseCalls/supervisorData';
+import { updateTherapist } from '../../utils/databaseCalls/therapistData';
 
-export default function TherapistCard({ therapistObj }) {
+export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
   const { setEditingTherapist, setOpenTherapistModal } = useContext(
     OpenTherapistModalContext,
   );
@@ -17,6 +18,34 @@ export default function TherapistCard({ therapistObj }) {
   const handleEdit = () => {
     setEditingTherapist(therapistObj);
     setOpenTherapistModal(true);
+  };
+
+  const handleActive = async (e) => {
+    if (therapistObj.active && e.target.value === 'inactive') {
+      if (
+        window.confirm(
+          `Make ${therapistObj.firstName} ${therapistObj.lastName} inactive?`,
+        )
+      ) {
+        await updateTherapist({
+          therapistId: therapistObj.therapistId,
+          active: false,
+        });
+        onTherapistUpdate();
+      }
+    } else if (!therapistObj.active && e.target.value === 'active') {
+      if (
+        window.confirm(
+          `Make ${therapistObj.firstName} ${therapistObj.lastName} inactive?`,
+        )
+      ) {
+        await updateClient({
+          therapistId: therapistObj.therapistId,
+          active: true,
+        });
+        onTherapistUpdate();
+      }
+    }
   };
 
   return (
@@ -53,6 +82,14 @@ export default function TherapistCard({ therapistObj }) {
             </Link>
           )}
         </div>
+        <select onChange={handleActive} className="active-select">
+          <option value="active" selected={therapistObj.active}>
+            {therapistObj.active ? 'Active' : 'Mark Active'}
+          </option>
+          <option value="inactive" selected={!therapistObj.active}>
+            {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
+          </option>
+        </select>
       </div>
     </>
   );
