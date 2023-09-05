@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 
@@ -92,3 +93,30 @@ export default function ClientsPage({ viewTherapistClients }) {
     </>
   );
 }
+
+ClientsPage.propTypes = {
+  viewTherapistClients: PropTypes.arrayOf(
+    PropTypes.shape(
+      PropTypes.shape({
+        clientId: PropTypes.string,
+        therapistId: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        email: PropTypes.string,
+        phone: PropTypes.string,
+        address1: PropTypes.string,
+        address2: PropTypes.string,
+        city: PropTypes.string,
+        state: PropTypes.string,
+        zipcode: PropTypes.string,
+        sex: PropTypes.string,
+        gender: PropTypes.string,
+        active: PropTypes.bool,
+      }),
+    ),
+  ),
+};
+
+ClientsPage.defaultProps = {
+  viewTherapistClients: null,
+};

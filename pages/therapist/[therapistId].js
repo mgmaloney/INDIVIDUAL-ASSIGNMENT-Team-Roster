@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getTherapistByTherapistId } from '../../utils/databaseCalls/therapistData';
 import { getClientsByTherapistId } from '../../utils/databaseCalls/clientData';
-import ClientDetailsCard from '../../components/cards/clientDetails';
 import ClientsPage from '../clients';
 
 export default function ViewTherapist() {
