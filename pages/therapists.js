@@ -9,13 +9,20 @@ export default function Therapists() {
     getAllTherapists().then(setTherapists);
   }, []);
 
+  const onTherapistUpdate = async () => {
+    getAllTherapists().then(setTherapists);
+  };
+
   return (
     <>
       <h1 className="list-header">Therapists: </h1>
       <div className="therapists">
         {therapists &&
           therapists.map((therapist) => (
-            <TherapistCard therapistObj={therapist} />
+            <TherapistCard
+              therapistObj={therapist}
+              onTherapistUpdate={onTherapistUpdate}
+            />
           ))}
       </div>
     </>
