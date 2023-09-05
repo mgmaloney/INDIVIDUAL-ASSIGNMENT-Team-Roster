@@ -210,3 +210,28 @@ body {
   border: 1px solid black;
   margin: 2rem 0rem;
 }
+
+.therapist-card {
+  border: 1px solid black;
+  margin: 2rem 0rem;
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+}
+
+.therapists {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.therapist-card * {
+  margin: 1rem;
+}
+
+.list-header {
+  margin-top: 2rem;
+  font-weight: bold;
+  color: #267ccb;
+}

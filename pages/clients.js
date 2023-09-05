@@ -52,7 +52,7 @@ export default function ClientsPage() {
 
   return (
     <>
-      <h1 className="clients-header">Your Clients: </h1>
+      <h1 className="list-header">Your Clients: </h1>
       <select className="active-sort" onChange={handleActiveSort}>
         <option value="active" defaultValue="active">
           Active Clients
