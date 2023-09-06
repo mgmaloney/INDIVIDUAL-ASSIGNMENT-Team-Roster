@@ -11,7 +11,10 @@ import NavBar from '../components/NavBar';
 import SideBar from '../components/sideBar';
 import AddClient from '../components/forms/createClient';
 import TherapistContext from './context/therapistContext';
-import { getClientsByTherapistId } from './databaseCalls/clientData';
+import {
+  getAllClients,
+  getClientsByTherapistId,
+} from './databaseCalls/clientData';
 import TherapistClientsContext from './context/therapistClientsContext';
 import OpenClientModalContext from './context/openClientModalContext';
 import OpenTherapistModalContext from './context/openTherapistModalContext';
@@ -37,7 +40,11 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }, [user]);
 
   useEffect(() => {
-    getClientsByTherapistId(therapist?.therapistId).then(setTherapistClients);
+    if (therapist.admin) {
+      getAllClients().then(setTherapistClients);
+    } else {
+      getClientsByTherapistId(therapist?.therapistId).then(setTherapistClients);
+    }
   }, [therapist]);
 
   // this will need to be refactored for when the admin user is added
