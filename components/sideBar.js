@@ -21,7 +21,7 @@ export default function SideBar() {
         ) : (
           ''
         )}
-        {therapist.admin || therapist.supervisor ? (
+        {therapist?.admin || therapist.supervisor ? (
           <Link passHref href="/therapists">
             Therapists
           </Link>
