@@ -22,44 +22,32 @@ function Home() {
     getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
   };
 
-  // const { isNewUser } = useContext(IsNewUserContext);
-
-  // part of the newUser check, which will be implemented later
-  // useEffect(() => {
-  //   if (!isNewUser) {
-  //     // getTherapistByUid(user.uid).then(setTherapist);
-  //   }
-  // }, []);
-  //
-  // if (isNewUser) {
-  //   return (
-  //     <>
-  //       <CreateTherapistUser />
-  //     </>
-  //   );
-  // }
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AddAppointment
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          selectedCalDate={selectedCalDate}
-          setSelectedCalDate={setSelectedCalDate}
-          selectedApt={selectedApt}
-          setSelectedApt={setSelectedApt}
-          onAptUpdate={onAptUpdate}
-        />
-      </LocalizationProvider>
-      <CalendarComp
-        appointments={appointments}
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        selectedCalDate={selectedCalDate}
-        setSelectedCalDate={setSelectedCalDate}
-        selectedApt={selectedApt}
-        setSelectedApt={setSelectedApt}
-      />
+      {therapist && (
+        <>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <AddAppointment
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+              selectedCalDate={selectedCalDate}
+              setSelectedCalDate={setSelectedCalDate}
+              selectedApt={selectedApt}
+              setSelectedApt={setSelectedApt}
+              onAptUpdate={onAptUpdate}
+            />
+          </LocalizationProvider>
+          <CalendarComp
+            appointments={appointments}
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            selectedCalDate={selectedCalDate}
+            setSelectedCalDate={setSelectedCalDate}
+            selectedApt={selectedApt}
+            setSelectedApt={setSelectedApt}
+          />
+        </>
+      )}
     </>
   );
 }

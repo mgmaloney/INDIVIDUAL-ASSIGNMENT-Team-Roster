@@ -35,7 +35,11 @@ const ViewDirectorBasedOnUserAuthStatus = ({
 
   useEffect(() => {
     if (user) {
-      getTherapistByUid(user.uid).then((response) => setTherapist(response[0]));
+      getTherapistByUid(user.uid).then((response) => {
+        if (response[0]) {
+          setTherapist(response[0]);
+        }
+      });
     }
   }, [user]);
 
@@ -76,7 +80,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }
 
   // what the user should see if they are logged in
-  if (user && !isNewUser) {
+  if (user && !isNewUser && therapist) {
     return (
       <>
         <TherapistContext.Provider value={{ therapist }}>

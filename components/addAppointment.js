@@ -113,7 +113,7 @@ export default function AddAppointment({
     if (therapist.admin && selectedApt.therapistId) {
       setSelectedTherapistObj(selectedApt.therapistId);
     }
-  }, [therapist.admin, selectedApt.therapistId]);
+  }, [therapist?.admin, selectedApt.therapistId]);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
@@ -137,7 +137,6 @@ export default function AddAppointment({
 
   useEffect(() => {
     if (selectedApt.appointmentId) {
-      console.warn(selectedApt.appointmentId);
       getNoteByAptId(selectedApt.appointmentId).then(setAptNote);
     }
   }, [selectedApt.appointmentId]);
