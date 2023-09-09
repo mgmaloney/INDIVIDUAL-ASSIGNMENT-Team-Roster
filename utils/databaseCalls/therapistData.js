@@ -69,8 +69,26 @@ const createTherapist = async (payload) => {
 
 const deleteTherapist = async (therapistId) => {
   try {
-    const response = await axios.delete(`${dbURL}/therapists/${therapistId}.json`);
+    const response = await axios.delete(
+      `${dbURL}/therapists/${therapistId}.json`,
+    );
     return response;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
+const getSupervisees = async (supervisorId) => {
+  try {
+    const therapists = await getAllTherapists();
+    const supervisees = [];
+    therapists.forEach((therapist) => {
+      if (supervisorId === therapist.supervisorId) {
+        supervisees.push(therapist);
+      }
+    });
+    return supervisees;
   } catch (e) {
     console.warn(e);
     return 'call failed';
@@ -84,4 +102,5 @@ export {
   updateTherapist,
   createTherapist,
   deleteTherapist,
+  getSupervisees,
 };

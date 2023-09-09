@@ -237,16 +237,27 @@ body {
   color: #267ccb;
 }
 
+.view-therapist {
+  display: flex;
+}
+
 .view-therapist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0rem 1rem;
+  width: 85%;
 }
 
 .view-therapist-header * {
   margin: 1rem 0rem;
   padding: 0.2rem;
+}
+
+.therapist-body-container {
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
 }
 
 .therapist-clients {
@@ -261,4 +272,43 @@ body {
 
 .active-sort {
   margin: 1rem;
+}
+
+.side-component-label {
+  margin-bottom: 0rem;
+  color: #267ccb;
+  font-weight: bold;
+}
+
+.side-component {
+  border: solid 1px black;
+  padding: 0.5rem;
+}
+
+.side-component * {
+  font-size: 0.85rem;
+}
+
+.side-component-link {
+  /* font-weight: bold; */
+  color: #267ccb;
+  font-size: 0.3rem;
+}
+
+.side-component-link:hover {
+  text-decoration: underline;
+}
+
+.supervisees {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-therapist-overview {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-components {
+  margin-top: 3rem;
 }

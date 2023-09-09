@@ -24,7 +24,7 @@ export default function UpcomingAppointments({ apts }) {
   return (
     <>
       <div className="upcoming-apts">
-        <p className="upcoming-apts-label">Upcoming Appointments: </p>
+        <p className="side-component-label">Upcoming Appointments: </p>
         {upcomingApts.length > 0 &&
           upcomingApts?.map((apt) => (
             <p className="upcoming-apt client-nav-link">
