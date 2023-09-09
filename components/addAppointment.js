@@ -18,6 +18,7 @@ import {
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
 import { getNoteByAptId, deleteNote } from '../utils/databaseCalls/noteData';
+import { getAllTherapists } from '../utils/databaseCalls/therapistData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -63,11 +64,13 @@ export default function AddAppointment({
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
+  const [therapists, setTherapists] = useState([]);
   const [activeClients, setActiveClients] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [aptRadio, setAptRadio] = useState('client');
   const [selectedClientObj, setSelectedClientObj] = useState({});
+  const [selectedTherapistObj, setSelectedTherapistObj] = useState({});
   const [aptName, setAptName] = useState('');
   const [length, setLength] = useState(50);
   const [aptNote, setAptNote] = useState({});
@@ -107,6 +110,12 @@ export default function AddAppointment({
   }, [selectedApt.clientId]);
 
   useEffect(() => {
+    if (therapist.admin && selectedApt.therapistId) {
+      setSelectedTherapistObj(selectedApt.therapistId);
+    }
+  }, [therapist.admin, selectedApt.therapistId]);
+
+  useEffect(() => {
     setStartDate(selectedCalDate);
   }, [selectedCalDate]);
 
@@ -133,9 +142,27 @@ export default function AddAppointment({
     }
   }, [selectedApt.appointmentId]);
 
+  useEffect(() => {
+    getAllTherapists().then(setTherapists);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedApt.appointmentId) {
+    if (selectedApt.appointmentId && therapist.admin) {
+      const payload = {
+        appointmentId: selectedApt.appointmentId,
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: selectedTherapistObj.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      await updateAppointment(payload);
+      handleClose();
+      onAptUpdate();
+    } else if (selectedApt.appointmentId && !therapist.admin) {
       const payload = {
         appointmentId: selectedApt.appointmentId,
         title: aptName,
@@ -149,13 +176,26 @@ export default function AddAppointment({
       await updateAppointment(payload);
       handleClose();
       onAptUpdate();
-    } else {
+    } else if (!therapist.admin) {
       const payload = {
         title: aptName,
         start: startDate,
         end: endDate,
         length,
         therapistId: therapist.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      await createAppointment(payload);
+      handleClose();
+      onAptUpdate();
+    } else if (therapist.admin) {
+      const payload = {
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: selectedTherapistObj.therapistId,
         clientId: selectedClientObj.clientId,
         type: aptRadio,
       };
@@ -250,6 +290,38 @@ export default function AddAppointment({
                 />
               ) : (
                 <input type="text" placeholder="Add title" />
+              )}
+              {therapist.admin ? (
+                <div className="select-therapist">
+                  <Autocomplete
+                    id="therapists-autocomplete"
+                    options={therapists}
+                    // sx={{ width: 50 }}
+                    getOptionLabel={(option) => {
+                      if (option.firstName) {
+                        return `${option.firstName} ${option.lastName}`;
+                      }
+                      return '';
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Therapist"
+                        size="small"
+                      />
+                    )}
+                    onChange={(event, newValue) => {
+                      setSelectedTherapistObj(newValue);
+                    }}
+                    value={
+                      selectedTherapistObj.therapistId
+                        ? { ...selectedTherapistObj }
+                        : ''
+                    }
+                  />
+                </div>
+              ) : (
+                ''
               )}
               <>
                 <div className="datepick-and-mins">

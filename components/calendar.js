@@ -40,26 +40,24 @@ export default function CalendarComp({
 
   return (
     <>
-      {formattedDateApts.length && (
-        <div className="calendar">
-          <Calendar
-            localizer={localizer}
-            events={formattedDateApts}
-            startAccessor={(event) => new Date(event.start)}
-            endAccessor="end"
-            style={{ height: 500, margin: '50px' }}
-            selectable
-            onSelectSlot={(slotInfo) => {
-              setSelectedCalDate(slotInfo.slots[0]);
-              setOpenModal(true);
-            }}
-            onSelectEvent={(appointment) => {
-              setSelectedApt(appointment);
-              setOpenModal(true);
-            }}
-          />
-        </div>
-      )}
+      <div className="calendar">
+        <Calendar
+          localizer={localizer}
+          events={formattedDateApts.length > 0 ? formattedDateApts : []}
+          startAccessor={(event) => new Date(event.start)}
+          endAccessor="end"
+          style={{ height: 500, margin: '50px' }}
+          selectable
+          onSelectSlot={(slotInfo) => {
+            setSelectedCalDate(slotInfo.slots[0]);
+            setOpenModal(true);
+          }}
+          onSelectEvent={(appointment) => {
+            setSelectedApt(appointment);
+            setOpenModal(true);
+          }}
+        />
+      </div>
     </>
   );
 }
