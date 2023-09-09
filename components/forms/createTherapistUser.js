@@ -64,7 +64,10 @@ export default function CreateTherapistUser() {
 
   useEffect(() => {
     if (editingTherapist?.therapistId) {
-      setFormData({});
+      setFormData(editingTherapist);
+    }
+    if (editingTherapist.supervisor) {
+      setIsSupervisor(true);
     }
   }, [editingTherapist]);
 
@@ -72,6 +75,7 @@ export default function CreateTherapistUser() {
     setOpenTherapistModal(false);
     setFormData(initialState);
     setEditingTherapist({});
+    setIsSupervisor(false);
   };
 
   const handleChange = (e) => {
@@ -141,13 +145,16 @@ export default function CreateTherapistUser() {
               <Form.Text className="text-muted" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="supervisorId">
-              <Form.Label>Is this new therapist a supervisor?</Form.Label>
+              <Form.Label>
+                Is this {editingTherapist ? '' : 'new'} therapist a supervisor?
+              </Form.Label>
               <Form.Check
                 aria-label="Supervisor?"
                 name="isSupervisor"
                 type="switch"
                 onChange={handleSupervisor}
-                value={isSupervisor} // FIXME: modify code to remove error
+                value={isSupervisor}
+                checked={isSupervisor}
               />
             </Form.Group>
             {!isSupervisor ? (
@@ -157,7 +164,7 @@ export default function CreateTherapistUser() {
                   aria-label="Supervisor"
                   name="supervisorId"
                   onChange={handleChange}
-                  value={formData.supervisorId} // FIXME: modify code to remove error
+                  value={formData.supervisorId}
                   required
                 >
                   <option value="">Select a Supervisor</option>
