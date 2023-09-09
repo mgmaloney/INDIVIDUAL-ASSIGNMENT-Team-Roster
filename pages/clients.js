@@ -2,11 +2,19 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
+import TherapistContext from '../utils/context/therapistContext';
+import {
+  getAllClients,
+  getClientsByTherapistId,
+} from '../utils/databaseCalls/clientData';
 
-export default function ClientsPage({ viewTherapistClients }) {
+export default function ClientsPage({ viewClients, page }) {
+  const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
   const [pageSpecificClients, setPageSpecificClients] = useState([]);
   const [showingClients, setShowingClients] = useState([]);
+  const [adminsClients, setAdminsClients] = useState([]);
+  const [showingAdminClients, setShowingAdminClients] = useState(false);
 
   useEffect(() => {
     const initialShowingClients = [];
@@ -19,12 +27,18 @@ export default function ClientsPage({ viewTherapistClients }) {
   }, [pageSpecificClients]);
 
   useEffect(() => {
-    if (viewTherapistClients) {
-      setPageSpecificClients(viewTherapistClients);
+    if (viewClients) {
+      setPageSpecificClients(viewClients);
     } else {
       setPageSpecificClients(therapistClients);
     }
-  }, []);
+  }, [therapist]);
+
+  useEffect(() => {
+    if (therapist.admin) {
+      getClientsByTherapistId(therapist.therapistId).then(setAdminsClients);
+    }
+  }, [therapist]);
 
   const handleActiveSort = (e) => {
     const updatedShowingClients = [];
@@ -35,6 +49,7 @@ export default function ClientsPage({ viewTherapistClients }) {
         }
       });
       setShowingClients(updatedShowingClients);
+      setShowingAdminClients(false);
     } else if (e.target.value === 'inactive') {
       pageSpecificClients.forEach((client) => {
         if (client.active === false) {
@@ -42,8 +57,31 @@ export default function ClientsPage({ viewTherapistClients }) {
         }
       });
       setShowingClients(updatedShowingClients);
+      setShowingAdminClients(false);
     } else if (e.target.value === 'all') {
       setShowingClients(pageSpecificClients);
+      setShowingAdminClients(false);
+    } else if (e.target.value === 'your-active-clients') {
+      const adminActiveClients = [];
+      adminsClients.forEach((client) => {
+        if (client.active === false) {
+          adminActiveClients.push(client);
+        }
+      });
+      setShowingClients(adminActiveClients);
+      setShowingAdminClients(true);
+    } else if (e.target.value === 'your-inactive-clients') {
+      const adminInactiveClients = [];
+      adminsClients.forEach((client) => {
+        if (!client.active === false) {
+          adminInactiveClients.push(client);
+        }
+      });
+      setShowingClients(adminInactiveClients);
+      setShowingAdminClients(true);
+    } else if (e.target.value === 'all-your-clients') {
+      setShowingClients(adminsClients);
+      setShowingAdminClients(true);
     }
   };
 
@@ -60,18 +98,37 @@ export default function ClientsPage({ viewTherapistClients }) {
     setShowingClients(filteredClients);
   };
 
+  const clientsLabel = () => {
+    if (page === 'viewTherapist') {
+      return 'Assigned Clients: ';
+    }
+    if (therapist.admin && !showingAdminClients) {
+      return 'Practice Clients: ';
+    }
+    return 'Your Clients: ';
+  };
+
   return (
     <>
       <div className="header-search">
-        <h3 className="list-header">
-          {viewTherapistClients ? 'Assigned Clients: ' : 'Your Clients: '}
-        </h3>
+        <h3 className="list-header">{clientsLabel()}</h3>
         <div className="search-sort">
           <select className="active-sort" onChange={handleActiveSort}>
             <option value="active" defaultValue="active">
               Active Clients
             </option>
             <option value="inactive">Inactive Clients</option>
+            {therapist?.admin ? (
+              <>
+                <option value="your-active-clients">Your Active Clients</option>
+                <option value="your-inactive-clients">
+                  Your Inactive Clients
+                </option>
+                <option value="all-your-clients">All Your Clients</option>
+              </>
+            ) : (
+              ''
+            )}
             <option value="all">All Clients</option>
           </select>
           <input
@@ -95,7 +152,7 @@ export default function ClientsPage({ viewTherapistClients }) {
 }
 
 ClientsPage.propTypes = {
-  viewTherapistClients: PropTypes.arrayOf(
+  viewClients: PropTypes.arrayOf(
     PropTypes.shape(
       PropTypes.shape({
         clientId: PropTypes.string,
@@ -115,8 +172,10 @@ ClientsPage.propTypes = {
       }),
     ),
   ),
+  page: PropTypes.string,
 };
 
 ClientsPage.defaultProps = {
-  viewTherapistClients: null,
+  viewClients: null,
+  page: '',
 };
