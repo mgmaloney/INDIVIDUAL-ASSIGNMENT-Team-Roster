@@ -12,7 +12,7 @@ export default function ViewTherapist() {
   const router = useRouter();
   const { therapistId } = router.query;
   const [therapist, setTherapist] = useState();
-  const [viewTherapistClients, setViewTherapistClients] = useState([]);
+  const [viewClients, setViewClients] = useState([]);
   const [supervisees, setSupervisees] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function ViewTherapist() {
   }, [therapistId]);
 
   useEffect(() => {
-    getClientsByTherapistId(therapistId).then(setViewTherapistClients);
+    getClientsByTherapistId(therapistId).then(setViewClients);
   }, [therapistId]);
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export default function ViewTherapist() {
   }, [therapist]);
 
   const renderAssignedClients = () => {
-    if (viewTherapistClients.length > 0) {
-      return <ClientsPage viewTherapistClients={viewTherapistClients} />;
+    if (viewClients.length > 0) {
+      return <ClientsPage page='viewTherapist' viewClients={viewClients} />;
     }
     return <h2 className="list-header">No clients assigned</h2>;
   };
