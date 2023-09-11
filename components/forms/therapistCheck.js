@@ -95,6 +95,12 @@ export default function TherapistCheckForm() {
     }));
   };
 
+  const handleSuccess = () => {
+    setTimeout(() => {
+      router.reload();
+    }, 3500);
+  };
+
   if (!submitted) {
     return (
       <>
@@ -147,9 +153,7 @@ export default function TherapistCheckForm() {
       <>
         <h1>Confirmed. Redirecting...</h1>
 
-        {setTimeout(() => {
-          router.reload();
-        }, 5000)}
+        {handleSuccess()}
       </>
     );
   }
