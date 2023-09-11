@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
-import {
-  getAllClients,
-  getClientsByTherapistId,
-} from '../utils/databaseCalls/clientData';
+import { getClientsByTherapistId } from '../utils/databaseCalls/clientData';
 
 export default function ClientsPage({ viewClients, page }) {
   const { therapist } = useContext(TherapistContext);

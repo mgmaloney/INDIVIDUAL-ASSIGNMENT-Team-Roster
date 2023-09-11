@@ -128,7 +128,7 @@ export default function ClientDetailsCard({ clientObj, page }) {
           )}
           {page === 'clients' ? (
             <select onChange={handleActive} className="active-select">
-              <option value="active" selected={clientObj.active}>
+              <option value="active" defaultValue={`${clientObj.active}`}>
                 {clientObj.active ? 'Active' : 'Mark Active'}
               </option>
               <option value="inactive" selected={!clientObj.active}>

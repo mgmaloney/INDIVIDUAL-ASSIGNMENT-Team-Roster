@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import OpenClientModalContext from '../utils/context/openClientModalContext';
@@ -11,12 +12,17 @@ export default function NavBar() {
   const { setOpenClientModal } = useContext(OpenClientModalContext);
   const { setOpenTherapistModal } = useContext(OpenTherapistModalContext);
   const { therapist } = useContext(TherapistContext);
-
+  const router = useRouter();
   const handleClientModalOpen = () => {
     setOpenClientModal(true);
   };
   const handleTherapistModalOpen = () => {
     setOpenTherapistModal(true);
+  };
+
+  const handleSignOut = () => {
+    router.push('/');
+    signOut();
   };
 
   return (
@@ -32,7 +38,7 @@ export default function NavBar() {
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
             </Link>
-            <Button variant="danger" onClick={signOut}>
+            <Button variant="danger" onClick={handleSignOut}>
               Sign Out
             </Button>
             <Button variant="danger" onClick={handleClientModalOpen}>
