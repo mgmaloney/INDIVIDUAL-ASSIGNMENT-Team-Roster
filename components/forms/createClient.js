@@ -15,6 +15,7 @@ import {
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
+import { getAllTherapists } from '../../utils/databaseCalls/therapistData';
 
 const Backdrop = React.forwardRef((props, ref) => {
   const { className, ...other } = props;
@@ -54,10 +55,11 @@ const initialState = {
   sex: '',
   gender: '',
 };
-
 export default function AddClient() {
   const router = useRouter();
+
   const { therapist } = useContext(TherapistContext);
+
   const { setTherapistClients } = useContext(TherapistClientsContext);
   const {
     openClientModal,
@@ -65,7 +67,19 @@ export default function AddClient() {
     editingClient,
     setEditingClient,
   } = useContext(OpenClientModalContext);
-  const [formInput, setFormInput] = useState(initialState);
+  const [therapists, setTherapists] = useState([]);
+
+  const [formInput, setFormInput] = useState({
+    ...initialState,
+  });
+
+  useEffect(() => {
+    setFormInput({ ...formInput, therapistId: therapist.therapistId });
+  }, [therapist.therapistId]);
+
+  useEffect(() => {
+    getAllTherapists().then(setTherapists);
+  }, []);
 
   useEffect(() => {
     if (editingClient.clientId) {
@@ -96,7 +110,6 @@ export default function AddClient() {
     e.preventDefault();
     const payload = {
       ...formInput,
-      therapistId: therapist.therapistId,
       active: true,
     };
     if (formInput.clientId) {
@@ -259,6 +272,27 @@ export default function AddClient() {
                 </option>
               </select>
             </label>
+            <div className="select-therapist">
+              {therapist.admin ? (
+                <label>
+                  Assign Therapist:
+                  <select
+                    id="therapist-select-add-client"
+                    name="therapistId"
+                    onChange={handleChange}
+                  >
+                    {therapists &&
+                      therapists.map((therapistOption) => (
+                        <option value={therapistOption.therapistId}>
+                          {therapistOption.firstName} {therapistOption.lastName}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+              ) : (
+                ''
+              )}
+            </div>
             <button className="done-btn" type="submit">
               Submit
             </button>
