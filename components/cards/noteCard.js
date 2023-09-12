@@ -15,6 +15,15 @@ export default function NoteCard({
 }) {
   const router = useRouter();
   const [editingChartNote, setEditingChartNote] = useState(false);
+  const [isShowingMore, setIsShowMore] = useState(false);
+
+  const handleShowMoreClick = () => {
+    if (isShowingMore) {
+      setIsShowMore(false);
+    } else {
+      setIsShowMore(true);
+    }
+  };
 
   const handleEdit = () => {
     if (editingChartNote) {
@@ -52,7 +61,7 @@ export default function NoteCard({
     if (noteObj.type === 'appointment') {
       return (
         <>
-          <div className="DAP-div">
+          <div className={isShowingMore ? 'DAP-div-show-more' : 'DAP-div'}>
             <h5 className="DAP-head">Data: </h5>
             <p className="DAP-text">{noteObj.content.D}</p>
             <h5 className="DAP-head">Assessment and Response: </h5>
@@ -140,7 +149,7 @@ export default function NoteCard({
   };
 
   return (
-    <div className="note-card">
+    <div className={isShowingMore ? 'note-card-showing-more' : 'note-card'}>
       <h4 className="note-title">
         {noteObj.title}{' '}
         {noteObj.type === 'appointment' ? `#${numberOfApt}` : ''}
@@ -154,7 +163,11 @@ export default function NoteCard({
           {noteObj.type === 'chart' && editingChartNote ? (
             ''
           ) : (
-            <button className="show-more-btn" type="button">
+            <button
+              className="show-more-btn"
+              type="button"
+              onClick={handleShowMoreClick}
+            >
               Show More
             </button>
           )}
