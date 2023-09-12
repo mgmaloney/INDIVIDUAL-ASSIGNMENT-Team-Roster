@@ -20,6 +20,7 @@ import OpenClientModalContext from './context/openClientModalContext';
 import OpenTherapistModalContext from './context/openTherapistModalContext';
 import CreateTherapistUser from '../components/forms/createTherapistUser';
 import TherapistCheckForm from '../components/forms/therapistCheck';
+import OpenAptModalContext from './context/selectedAptContext';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -32,6 +33,8 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [openClientModal, setOpenClientModal] = useState(false);
   const [editingTherapist, setEditingTherapist] = useState({});
   const [openTherapistModal, setOpenTherapistModal] = useState(false);
+  const [selectedApt, setSelectedApt] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -103,21 +106,30 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                   setEditingTherapist,
                 }}
               >
-                {!isNewUser ? (
-                  <>
-                    <NavBar />
-                    <CreateTherapistUser />
-                    <AddClient />
-                    <div className="main-wrapper">
-                      <SideBar />
-                      <div className="container">
-                        <Component {...pageProps} />
+                <OpenAptModalContext.Provider
+                  value={{
+                    openModal,
+                    setOpenModal,
+                    selectedApt,
+                    setSelectedApt,
+                  }}
+                >
+                  {!isNewUser ? (
+                    <>
+                      <NavBar />
+                      <CreateTherapistUser />
+                      <AddClient />
+                      <div className="main-wrapper">
+                        <SideBar />
+                        <div className="container">
+                          <Component {...pageProps} />
+                        </div>
                       </div>
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </OpenAptModalContext.Provider>
               </OpenTherapistModalContext.Provider>
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
