@@ -11,6 +11,7 @@ import { addMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
+import OpenAptModalContext from '../utils/context/selectedAptContext';
 import {
   createAppointment,
   deleteAppointment,
@@ -55,15 +56,17 @@ const style = (theme) => ({
 });
 
 export default function AddAppointment({
-  openModal,
-  setOpenModal,
+  // openModal,
+  // setOpenModal,
   selectedCalDate,
   onAptUpdate,
-  selectedApt,
-  setSelectedApt,
+  // selectedApt,
+  // setSelectedApt,
 }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
+  const { openModal, setOpenModal, selectedApt, setSelectedApt } =
+    useContext(OpenAptModalContext);
   const [therapists, setTherapists] = useState([]);
   const [activeClients, setActiveClients] = useState([]);
   const [startDate, setStartDate] = useState();
@@ -94,7 +97,7 @@ export default function AddAppointment({
   }, [therapistClients]);
 
   useEffect(() => {
-    if (selectedApt.appointmentId) {
+    if (selectedApt?.appointmentId) {
       setStartDate(new Date(selectedApt.start));
       setEndDate(new Date(selectedApt.end));
       setAptRadio(selectedApt.type);
@@ -104,16 +107,16 @@ export default function AddAppointment({
   }, [selectedApt]);
 
   useEffect(() => {
-    if (selectedApt.clientId) {
+    if (selectedApt?.clientId) {
       getClientByClientId(selectedApt.clientId).then(setSelectedClientObj);
     }
-  }, [selectedApt.clientId]);
+  }, [selectedApt?.clientId]);
 
   useEffect(() => {
-    if (therapist.admin && selectedApt.therapistId) {
+    if (therapist.admin && selectedApt?.therapistId) {
       setSelectedTherapistObj(selectedApt.therapistId);
     }
-  }, [therapist?.admin, selectedApt.therapistId]);
+  }, [therapist?.admin, selectedApt?.therapistId]);
 
   useEffect(() => {
     setStartDate(selectedCalDate);
@@ -136,10 +139,10 @@ export default function AddAppointment({
   }, [selectedClientObj]);
 
   useEffect(() => {
-    if (selectedApt.appointmentId) {
+    if (selectedApt?.appointmentId) {
       getNoteByAptId(selectedApt.appointmentId).then(setAptNote);
     }
-  }, [selectedApt.appointmentId]);
+  }, [selectedApt?.appointmentId]);
 
   useEffect(() => {
     getAllTherapists().then(setTherapists);
@@ -147,7 +150,7 @@ export default function AddAppointment({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedApt.appointmentId && therapist.admin) {
+    if (selectedApt?.appointmentId && therapist.admin) {
       const payload = {
         appointmentId: selectedApt.appointmentId,
         title: aptName,
@@ -161,7 +164,7 @@ export default function AddAppointment({
       await updateAppointment(payload);
       handleClose();
       onAptUpdate();
-    } else if (selectedApt.appointmentId && !therapist.admin) {
+    } else if (selectedApt?.appointmentId && !therapist.admin) {
       const payload = {
         appointmentId: selectedApt.appointmentId,
         title: aptName,
@@ -343,7 +346,7 @@ export default function AddAppointment({
               </>
               <>
                 <div className="btm-apt-btns">
-                  {selectedApt.appointmentId ? (
+                  {selectedApt?.appointmentId ? (
                     <DeleteOutlineIcon
                       onClick={handleDelete}
                       style={{ cursor: 'pointer' }}

@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import OpenAptModalContext from '../utils/context/selectedAptContext';
 
 export default function UpcomingAppointments({ apts }) {
   const [upcomingApts, setUpcomingApts] = useState([]);
+  const { setOpenModal, setSelectedApt } = useContext(OpenAptModalContext);
 
   const sortAndShowUpcoming = () => {
     const filterAppointments = [...apts];
@@ -27,7 +31,13 @@ export default function UpcomingAppointments({ apts }) {
         <p className="side-component-label">Upcoming Appointments: </p>
         {upcomingApts.length > 0 &&
           upcomingApts?.map((apt) => (
-            <p className="upcoming-apt client-nav-link">
+            <p
+              className="upcoming-apt client-nav-link"
+              onClick={() => {
+                setOpenModal(true);
+                setSelectedApt(apt);
+              }}
+            >
               {format(new Date(apt.start), 'MM/dd/yyyy H:mm a')}
             </p>
           ))}

@@ -9,10 +9,8 @@ import TherapistContext from '../utils/context/therapistContext';
 
 function Home() {
   const { therapist } = useContext(TherapistContext);
-  const [openModal, setOpenModal] = useState(false);
   const [selectedCalDate, setSelectedCalDate] = useState('');
   const [appointments, setAppointments] = useState([]);
-  const [selectedApt, setSelectedApt] = useState({});
 
   useEffect(() => {
     getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
@@ -28,23 +26,15 @@ function Home() {
         <>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <AddAppointment
-              openModal={openModal}
-              setOpenModal={setOpenModal}
               selectedCalDate={selectedCalDate}
               setSelectedCalDate={setSelectedCalDate}
-              selectedApt={selectedApt}
-              setSelectedApt={setSelectedApt}
               onAptUpdate={onAptUpdate}
             />
           </LocalizationProvider>
           <CalendarComp
             appointments={appointments}
-            openModal={openModal}
-            setOpenModal={setOpenModal}
             selectedCalDate={selectedCalDate}
             setSelectedCalDate={setSelectedCalDate}
-            selectedApt={selectedApt}
-            setSelectedApt={setSelectedApt}
           />
         </>
       )}
