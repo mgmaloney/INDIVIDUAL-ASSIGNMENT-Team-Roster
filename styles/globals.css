@@ -91,6 +91,25 @@ body {
   border: solid 1px black;
   padding: 1rem;
   width: 98%;
+  max-height: 20rem;
+  margin: 1rem 0rem;
+}
+
+.note-card-showing-more {
+  border: solid 1px black;
+  padding: 1rem;
+  width: 98%;
+  margin: 1rem 0rem;
+  max-height: fit-content;
+}
+
+.DAP-div {
+  max-height: 7rem;
+  overflow: hidden;
+}
+
+.show-more-btn {
+  margin: 1rem 0rem 0.5rem 0rem;
 }
 
 .overview-name {
@@ -197,6 +216,9 @@ body {
 
 .DAP-form-btns {
   display: flex;
+}
+
+.DAP-div {
 }
 
 .done-btn {
