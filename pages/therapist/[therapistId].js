@@ -7,6 +7,7 @@ import {
 } from '../../utils/databaseCalls/therapistData';
 import { getClientsByTherapistId } from '../../utils/databaseCalls/clientData';
 import ClientsPage from '../clients';
+import { getSingleSupervisor } from '../../utils/databaseCalls/supervisorData';
 
 export default function ViewTherapist() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function ViewTherapist() {
   const [therapist, setTherapist] = useState();
   const [viewClients, setViewClients] = useState([]);
   const [supervisees, setSupervisees] = useState([]);
+  const [therapistSupervisor, setTherapistSupervisor] = useState({});
 
   useEffect(() => {
     getTherapistByTherapistId(therapistId).then(setTherapist);
@@ -24,6 +26,12 @@ export default function ViewTherapist() {
   }, [therapistId]);
 
   useEffect(() => {
+    if (!therapist?.supervisor) {
+      getSingleSupervisor(therapist?.supervisorId).then(setTherapistSupervisor);
+    }
+  }, [therapist?.supervisorId]);
+
+  useEffect(() => {
     if (therapist?.supervisor) {
       getSupervisees(therapist.therapistId).then(setSupervisees);
     }
@@ -31,7 +39,7 @@ export default function ViewTherapist() {
 
   const renderAssignedClients = () => {
     if (viewClients.length > 0) {
-      return <ClientsPage page='viewTherapist' viewClients={viewClients} />;
+      return <ClientsPage page="viewTherapist" viewClients={viewClients} />;
     }
     return <h2 className="list-header">No clients assigned</h2>;
   };
@@ -60,7 +68,10 @@ export default function ViewTherapist() {
                 </div>
               </>
             ) : (
-              ''
+              <p>
+                Supervisor: {therapistSupervisor?.firstName}{' '}
+                {therapistSupervisor?.lastName}
+              </p>
             )}
           </div>
           <div className="therapist-clients">{renderAssignedClients()}</div>

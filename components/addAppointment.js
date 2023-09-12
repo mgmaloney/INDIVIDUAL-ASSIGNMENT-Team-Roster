@@ -19,7 +19,10 @@ import {
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
 import { getNoteByAptId, deleteNote } from '../utils/databaseCalls/noteData';
-import { getAllTherapists } from '../utils/databaseCalls/therapistData';
+import {
+  getAllTherapists,
+  getTherapistByTherapistId,
+} from '../utils/databaseCalls/therapistData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -55,14 +58,7 @@ const style = (theme) => ({
   }`,
 });
 
-export default function AddAppointment({
-  // openModal,
-  // setOpenModal,
-  selectedCalDate,
-  onAptUpdate,
-  // selectedApt,
-  // setSelectedApt,
-}) {
+export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
   const { openModal, setOpenModal, selectedApt, setSelectedApt } =
@@ -97,14 +93,14 @@ export default function AddAppointment({
   }, [therapistClients]);
 
   useEffect(() => {
-    if (selectedApt?.appointmentId) {
+    if (selectedApt.appointmentId) {
       setStartDate(new Date(selectedApt.start));
       setEndDate(new Date(selectedApt.end));
       setAptRadio(selectedApt.type);
       setAptName(selectedApt.title);
       setLength(selectedApt.length);
     }
-  }, [selectedApt]);
+  }, [selectedApt.appointmentId]);
 
   useEffect(() => {
     if (selectedApt?.clientId) {
@@ -113,8 +109,10 @@ export default function AddAppointment({
   }, [selectedApt?.clientId]);
 
   useEffect(() => {
-    if (therapist.admin && selectedApt?.therapistId) {
-      setSelectedTherapistObj(selectedApt.therapistId);
+    if (selectedApt?.therapistId) {
+      getTherapistByTherapistId(selectedApt.therapistId).then(
+        setSelectedTherapistObj,
+      );
     }
   }, [therapist?.admin, selectedApt?.therapistId]);
 
@@ -130,7 +128,7 @@ export default function AddAppointment({
 
   // creates an appointment name with First name and last initial
   useEffect(() => {
-    if (selectedClientObj.lastName) {
+    if (selectedClientObj?.lastName) {
       const { lastName } = selectedClientObj;
       const lastNameLetter = lastName?.charAt();
       const aptNam = `${selectedClientObj.firstName} ${lastNameLetter}.`;
