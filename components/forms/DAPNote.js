@@ -88,7 +88,7 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="D"
                 value={formInput.D}
-                disabled={noteObj.signedByTherapist || saved}
+                disabled={noteObj?.signedByTherapist || saved}
                 required
               />
             </label>
@@ -100,7 +100,7 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="A"
                 value={formInput.A}
-                disabled={noteObj.signedByTherapist || saved}
+                disabled={noteObj?.signedByTherapist || saved}
                 required
               />
             </label>
@@ -112,7 +112,7 @@ export default function DAPForm({ noteObj }) {
                 type="textarea"
                 name="P"
                 value={formInput.P}
-                disabled={noteObj.signedByTherapist || saved}
+                disabled={noteObj?.signedByTherapist || saved}
                 required
               />
             </label>
