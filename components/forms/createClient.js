@@ -283,7 +283,10 @@ export default function AddClient() {
                   >
                     {therapists &&
                       therapists.map((therapistOption) => (
-                        <option value={therapistOption.therapistId}>
+                        <option
+                          value={therapistOption.therapistId}
+                          key={therapistOption.therapistId}
+                        >
                           {therapistOption.firstName} {therapistOption.lastName}
                         </option>
                       ))}

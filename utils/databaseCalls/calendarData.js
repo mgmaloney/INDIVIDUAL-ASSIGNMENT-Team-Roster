@@ -56,7 +56,6 @@ const getAppointmentsByClientId = async (clientId) => {
     );
     const appointmentsJSON = await response.json();
     const appointmentsArr = Object.values(appointmentsJSON);
-    console.warn('aptArr', appointmentsArr);
     return appointmentsArr;
   } catch (e) {
     console.warn(e);
@@ -101,6 +100,18 @@ const deleteAppointment = async (appointmentId) => {
   }
 };
 
+const getAppointmentByAppointmentId = async (appointmentId) => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/appointments/${appointmentId}.json`,
+    );
+    return data;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
 export {
   getAppointments,
   getAppointmentsByTherapistId,
@@ -108,4 +119,5 @@ export {
   updateAppointment,
   createAppointment,
   deleteAppointment,
+  getAppointmentByAppointmentId,
 };
