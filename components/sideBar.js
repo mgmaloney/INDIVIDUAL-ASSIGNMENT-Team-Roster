@@ -28,6 +28,13 @@ export default function SideBar() {
         ) : (
           ''
         )}
+        {therapist?.supervisor ? (
+          <Link passHref href="/supervisees">
+            Supervisees
+          </Link>
+        ) : (
+          ''
+        )}
         <Link passHref href="/reminders">
           Reminders
         </Link>

@@ -8,7 +8,10 @@ import { useRouter } from 'next/router';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { getAllSupervisors } from '../../utils/databaseCalls/supervisorData';
-import { createTherapist } from '../../utils/databaseCalls/therapistData';
+import {
+  createTherapist,
+  updateTherapist,
+} from '../../utils/databaseCalls/therapistData';
 import TherapistContext from '../../utils/context/therapistContext';
 import OpenTherapistModalContext from '../../utils/context/openTherapistModalContext';
 
@@ -88,7 +91,11 @@ export default function CreateTherapistUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createTherapist(formData);
+    if (!editingTherapist.therapistId) {
+      await createTherapist({ ...formData, supervisor: isSupervisor });
+    } else {
+      await updateTherapist({ ...formData, supervisor: isSupervisor });
+    }
     router.reload();
   };
 

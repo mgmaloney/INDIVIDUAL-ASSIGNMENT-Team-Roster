@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import OpenTherapistModalContext from '../../utils/context/openTherapistModalContext';
 import { getSingleSupervisor } from '../../utils/databaseCalls/supervisorData';
 import { updateTherapist } from '../../utils/databaseCalls/therapistData';
+import TherapistContext from '../../utils/context/therapistContext';
 
 export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
+  const { therapist } = useContext(TherapistContext);
   const { setEditingTherapist, setOpenTherapistModal } = useContext(
     OpenTherapistModalContext,
   );
@@ -82,14 +84,16 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
             </Link>
           )}
         </div>
-        <select onChange={handleActive} className="active-select">
-          <option value="active" selected={therapistObj.active}>
-            {therapistObj.active ? 'Active' : 'Mark Active'}
-          </option>
-          <option value="inactive" selected={!therapistObj.active}>
-            {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
-          </option>
-        </select>
+        {therapist.admin && (
+          <select onChange={handleActive} className="active-select">
+            <option value="active" selected={therapistObj.active}>
+              {therapistObj.active ? 'Active' : 'Mark Active'}
+            </option>
+            <option value="inactive" selected={!therapistObj.active}>
+              {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
+            </option>
+          </select>
+        )}
       </div>
     </>
   );
