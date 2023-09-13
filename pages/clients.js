@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
-import { getClientsByTherapistId } from '../utils/databaseCalls/clientData';
+import {
+  getAllClients,
+  getClientsByTherapistId,
+} from '../utils/databaseCalls/clientData';
 import {
   getSupervisees,
   getTherapistByTherapistId,
@@ -20,6 +23,7 @@ export default function ClientsPage({ viewClients, page }) {
   const [showingSuperviseeClients, setShowingSuperviseeClients] =
     useState(false);
   const [supervisee, setSupervisee] = useState({});
+  const [allClients, setAllClients] = useState([]);
 
   useEffect(() => {
     const initialShowingClients = [];
@@ -50,6 +54,31 @@ export default function ClientsPage({ viewClients, page }) {
       getSupervisees(therapist.therapistId).then(setSuperVisees);
     }
   }, [therapist.therapistId, therapist.supervisor]);
+
+  useEffect(
+    () => async () => {
+      const allPracticeCts = await getAllClients();
+      console.warn('apc', allPracticeCts);
+      if (therapist.supervisor) {
+        const superviseeAndTherapistCts = [];
+        allPracticeCts.forEach((client) => {
+          if (client.therapistId === therapist.therapistId) {
+            superviseeAndTherapistCts.push(client);
+          }
+          for (let i = 0; i < supervisees.length; i++) {
+            if (client.therapistId === supervisees[i].therapistId) {
+              superviseeAndTherapistCts.push(client);
+            }
+          }
+        });
+        setAllClients(superviseeAndTherapistCts);
+      } else if (therapist.admin) {
+        console.warn('running');
+        setAllClients(allPracticeCts);
+      }
+    },
+    [therapist, supervisees, therapist.admin],
+  );
 
   const handleActiveSort = async (e) => {
     const updatedShowingClients = [];
@@ -126,14 +155,25 @@ export default function ClientsPage({ viewClients, page }) {
 
   const handleSearch = (e) => {
     const filteredClients = [];
-    pageSpecificClients.forEach((client) => {
-      if (
-        client.firstName.toLowerCase().includes(e.target.value) ||
-        client.lastName.toLowerCase().includes(e.target.value)
-      ) {
-        filteredClients.push(client);
-      }
-    });
+    if (!therapist.admin && !therapist.supervisor) {
+      pageSpecificClients.forEach((client) => {
+        if (
+          client.firstName.toLowerCase().includes(e.target.value) ||
+          client.lastName.toLowerCase().includes(e.target.value)
+        ) {
+          filteredClients.push(client);
+        }
+      });
+    } else {
+      allClients.forEach((client) => {
+        if (
+          client.firstName.toLowerCase().includes(e.target.value) ||
+          client.lastName.toLowerCase().includes(e.target.value)
+        ) {
+          filteredClients.push(client);
+        }
+      });
+    }
     setShowingClients(filteredClients);
   };
 
