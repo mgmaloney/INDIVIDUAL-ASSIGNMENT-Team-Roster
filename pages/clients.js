@@ -54,7 +54,7 @@ export default function ClientsPage({ viewClients, page }) {
   }, [therapist.therapistId, therapist.supervisor]);
 
   useEffect(() => {
-
+    
   }, [])
 
   useEffect(() => {
