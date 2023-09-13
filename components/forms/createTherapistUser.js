@@ -92,7 +92,11 @@ export default function CreateTherapistUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!editingTherapist.therapistId) {
-      await createTherapist({ ...formData, supervisor: isSupervisor });
+      await createTherapist({
+        ...formData,
+        supervisor: isSupervisor,
+        active: true,
+      });
     } else {
       await updateTherapist({ ...formData, supervisor: isSupervisor });
     }

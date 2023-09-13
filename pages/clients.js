@@ -4,6 +4,10 @@ import ClientDetailsCard from '../components/cards/clientDetails';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
 import { getClientsByTherapistId } from '../utils/databaseCalls/clientData';
+import {
+  getSupervisees,
+  getTherapistByTherapistId,
+} from '../utils/databaseCalls/therapistData';
 
 export default function ClientsPage({ viewClients, page }) {
   const { therapist } = useContext(TherapistContext);
@@ -11,7 +15,13 @@ export default function ClientsPage({ viewClients, page }) {
   const [pageSpecificClients, setPageSpecificClients] = useState([]);
   const [showingClients, setShowingClients] = useState([]);
   const [adminsClients, setAdminsClients] = useState([]);
+  const [supervisees, setSuperVisees] = useState([]);
   const [showingAdminClients, setShowingAdminClients] = useState(false);
+  const [showingSuperviseeClients, setShowingSuperviseeClients] =
+    useState(false);
+  const [supervisee, setSupervisee] = useState({});
+  const [superviseeClients, setSuperviseeClients] = useState([])
+  const [allClients, setAllClients] = useState([])
 
   useEffect(() => {
     const initialShowingClients = [];
@@ -29,7 +39,7 @@ export default function ClientsPage({ viewClients, page }) {
     } else {
       setPageSpecificClients(therapistClients);
     }
-  }, [therapist]);
+  }, [therapistClients]);
 
   useEffect(() => {
     if (therapist.admin) {
@@ -37,7 +47,21 @@ export default function ClientsPage({ viewClients, page }) {
     }
   }, [therapist]);
 
-  const handleActiveSort = (e) => {
+  useEffect(() => {
+    if (therapist.supervisor) {
+      getSupervisees(therapist.therapistId).then(setSuperVisees);
+    }
+  }, [therapist.therapistId, therapist.supervisor]);
+
+  useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
+
+  }, [therapistClients, pageSpecificClients, viewClients, superviseeClients])
+
+  const handleActiveSort = async (e) => {
     const updatedShowingClients = [];
     if (e.target.value === 'active') {
       pageSpecificClients.forEach((client) => {
@@ -58,6 +82,7 @@ export default function ClientsPage({ viewClients, page }) {
     } else if (e.target.value === 'all') {
       setShowingClients(pageSpecificClients);
       setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
     } else if (e.target.value === 'your-active-clients') {
       const adminActiveClients = [];
       adminsClients.forEach((client) => {
@@ -79,6 +104,31 @@ export default function ClientsPage({ viewClients, page }) {
     } else if (e.target.value === 'all-your-clients') {
       setShowingClients(adminsClients);
       setShowingAdminClients(true);
+    } else if (e.target.value.split('--')[1] === 'supervisee-active') {
+      const [superviseeId] = e.target.value.split('--');
+      getTherapistByTherapistId(superviseeId).then(setSupervisee);
+      const activeSuperviseeClients = [];
+      const superviseeCts = await getClientsByTherapistId(superviseeId);
+      superviseeCts.forEach((client) => {
+        if (client.active) {
+          activeSuperviseeClients.push(client);
+          setShowingClients([...activeSuperviseeClients]);
+        }
+      });
+      setShowingClients(activeSuperviseeClients);
+      setShowingSuperviseeClients(true);
+    } else if (e.target.value.split('--')[1] === 'supervisee-inactive') {
+      const [superviseeId] = e.target.value.split('--');
+      getTherapistByTherapistId(superviseeId).then(setSupervisee);
+      const inactiveSuperviseeClients = [];
+      const superviseeCts = await getClientsByTherapistId(superviseeId);
+      superviseeCts.forEach((client) => {
+        if (!client.active) {
+          inactiveSuperviseeClients.push(client);
+        }
+      });
+      setShowingClients(inactiveSuperviseeClients);
+      setShowingSuperviseeClients(true);
     }
   };
 
@@ -102,6 +152,9 @@ export default function ClientsPage({ viewClients, page }) {
     if (therapist.admin && !showingAdminClients) {
       return 'Practice Clients: ';
     }
+    if (therapist.supervisor && showingSuperviseeClients) {
+      return `${supervisee.firstName} ${supervisee.lastName}'s Clients: `;
+    }
     return 'Your Clients: ';
   };
 
@@ -112,9 +165,11 @@ export default function ClientsPage({ viewClients, page }) {
         <div className="search-sort">
           <select className="active-sort" onChange={handleActiveSort}>
             <option value="active" defaultValue="active">
-              Active Clients
+              {therapist?.supervisor ? 'Your' : ''} Active Clients
             </option>
-            <option value="inactive">Inactive Clients</option>
+            <option value="inactive">
+              {therapist?.supervisor ? 'Your' : ''} Inactive Clients
+            </option>
             {therapist?.admin ? (
               <>
                 <option value="your-active-clients">Your Active Clients</option>
@@ -126,7 +181,34 @@ export default function ClientsPage({ viewClients, page }) {
             ) : (
               ''
             )}
-            <option value="all">All Clients</option>
+            {therapist?.supervisor ? (
+              <>
+                {supervisees &&
+                  supervisees.map((superviseeForOption) => (
+                    <>
+                      <option
+                        value={`${superviseeForOption.therapistId}--supervisee-active`}
+                        key={superviseeForOption.therapistId}
+                      >
+                        {`${superviseeForOption.firstName} ${superviseeForOption.lastName}'s Active
+                        Clients`}
+                      </option>
+                      <option
+                        value={`${superviseeForOption.therapistId}--supervisee-inactive`}
+                        key={superviseeForOption.therapistId + 1}
+                      >
+                        {`${superviseeForOption.firstName} ${superviseeForOption.lastName}'s Inactive
+                        Clients`}
+                      </option>
+                    </>
+                  ))}
+              </>
+            ) : (
+              ''
+            )}
+            <option value="all">
+              All {therapist.supervisor ? 'Your' : ''} Clients
+            </option>
           </select>
           <input
             type="search"
