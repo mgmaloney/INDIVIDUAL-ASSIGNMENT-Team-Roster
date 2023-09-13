@@ -20,8 +20,6 @@ export default function ClientsPage({ viewClients, page }) {
   const [showingSuperviseeClients, setShowingSuperviseeClients] =
     useState(false);
   const [supervisee, setSupervisee] = useState({});
-  const [superviseeClients, setSuperviseeClients] = useState([])
-  const [allClients, setAllClients] = useState([])
 
   useEffect(() => {
     const initialShowingClients = [];
@@ -53,14 +51,6 @@ export default function ClientsPage({ viewClients, page }) {
     }
   }, [therapist.therapistId, therapist.supervisor]);
 
-  useEffect(() => {
-    
-  }, [])
-
-  useEffect(() => {
-
-  }, [therapistClients, pageSpecificClients, viewClients, superviseeClients])
-
   const handleActiveSort = async (e) => {
     const updatedShowingClients = [];
     if (e.target.value === 'active') {
@@ -71,6 +61,7 @@ export default function ClientsPage({ viewClients, page }) {
       });
       setShowingClients(updatedShowingClients);
       setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
     } else if (e.target.value === 'inactive') {
       pageSpecificClients.forEach((client) => {
         if (client.active === false) {
@@ -79,6 +70,7 @@ export default function ClientsPage({ viewClients, page }) {
       });
       setShowingClients(updatedShowingClients);
       setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
     } else if (e.target.value === 'all') {
       setShowingClients(pageSpecificClients);
       setShowingAdminClients(false);
