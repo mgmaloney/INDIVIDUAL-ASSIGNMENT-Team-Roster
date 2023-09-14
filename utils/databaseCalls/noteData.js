@@ -63,19 +63,30 @@ const getNoteByAptId = async (appointmentId) => {
   }
 };
 
-const getUnsignedAppointmentNotesTherapist = async () => {
+const getAllUnsignedAppointmentNotes = async () => {
   try {
     const { data } = await axios.get(
       `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=false`,
     );
-    if (data.length() > 0) {
-      return Object.values(data);
+    const notesArr = Object.values(data);
+    if (notesArr.length > 0) {
+      return notesArr;
     }
     return [];
   } catch (e) {
     console.warn(e);
     return 'call failed';
   }
+};
+const getUnsignedAppointmentNotesTherapist = async (therapistId) => {
+  const allUnsignedNotes = await getAllUnsignedAppointmentNotes();
+  const unsignedTherapistNotes = [];
+  allUnsignedNotes.forEach((note) => {
+    if (note.therapistId === therapistId) {
+      unsignedTherapistNotes.push(note);
+    }
+  });
+  return unsignedTherapistNotes;
 };
 
 const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
@@ -136,15 +147,54 @@ const deleteNote = async (noteId) => {
   }
 };
 
+const getPsychotherapyNoteByAppointmentId = async (appointmentId) => {
+  try {
+    const { data } = await axios.get(
+      `${dbURL}/psychotherapynotes/${appointmentId}.json`,
+    );
+    return data;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
+const updatePsychotherapyNote = async (payload) => {
+  try {
+    const response = await axios.patch(
+      `${dbURL}/psychotherapynotes/${payload.firebaseKey}.json`,
+    );
+    return response;
+  } catch (e) {
+    console.warn(e);
+    return 'patch failed';
+  }
+};
+
+const createPyschotherapyNote = async () => {
+  try {
+    const { data } = await axios.post(`${dbURL}/psychotherapynotes.json`);
+    const firebaseKey = await data.name;
+    updatePsychotherapyNote({ firebaseKey });
+    return firebaseKey;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
 
 export {
   getAppointmentNoteByNoteId,
   getAllClientNotes,
   getNoteByAptId,
+  getAllUnsignedAppointmentNotes,
   getUnsignedAppointmentNotesTherapist,
   getUnsignedAppointmentNotesSuperVisor,
   getAllClientAppointmentNotes,
   updateNote,
   createNote,
   deleteNote,
+  getPsychotherapyNoteByAppointmentId,
+  createPyschotherapyNote,
+  updatePsychotherapyNote,
 };

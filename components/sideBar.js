@@ -35,6 +35,12 @@ export default function SideBar() {
         ) : (
           ''
         )}
+        <div>
+          <Link passHref href="/unsignednotes">
+            Unsigned Notes
+          </Link>
+          <p className="badge">1</p>
+        </div>
         <Link passHref href="/reminders">
           Reminders
         </Link>
