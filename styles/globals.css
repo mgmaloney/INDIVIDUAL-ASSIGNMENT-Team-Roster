@@ -385,8 +385,23 @@ body {
 
 .unsigned-note-card {
   border: solid black 1px;
+  margin: 1rem 0rem;
 }
 
 .unsigned-thera-status {
   display: flex;
+}
+
+.page-numbers-container {
+  display: flex;
+}
+
+.page-number {
+  margin: 2rem;
+  color: #267ccb;
+  text-decoration: underline;
+}
+
+.page-number:hover {
+  cursor: pointer;
 }
