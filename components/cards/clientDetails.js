@@ -69,7 +69,11 @@ export default function ClientDetailsCard({ clientObj, page }) {
             <>
               <div className="client-info-div">
                 <h4 className="client-info">CLIENT INFO</h4>
-                <button type="button" className="edit-client-info">
+                <button
+                  type="button"
+                  className="edit-client-info"
+                  onClick={handleEdit}
+                >
                   Edit
                 </button>
               </div>
