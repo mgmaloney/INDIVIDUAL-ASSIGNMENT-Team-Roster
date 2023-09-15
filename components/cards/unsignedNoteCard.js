@@ -33,18 +33,26 @@ export default function UnsignedNoteCard({ noteObj }) {
   return (
     <>
       <div className="unsigned-note-card">
-        <p onClick={handleClick}>
-          {client.firstName} {client.lastName}{' '}
-          {format(new Date(noteObj.dateTime), 'MM/dd/yyyy H:mm a')}
-        </p>
+        <div className="unsigned-thera-status">
+          <p onClick={handleClick}>
+            {client.firstName} {client.lastName}{' '}
+            {format(new Date(noteObj.dateTime), 'MM/dd/yyyy H:mm a')}
+          </p>
+          {therapist.admin ? (
+            <>
+              <p>
+                Clinician {clinician.firstName} {clinician.lastName}{' '}
+                {noteObj.signedByTherapist ? 'Signed' : 'Signature Needed'}
+              </p>
+            </>
+          ) : (
+            ''
+          )}
+        </div>
         {therapist.admin ? (
           <>
             <p>
-              Clinician {clinician.firstName} {clinician.lastName}{' '}
-              {noteObj.signedByTherapist ? 'Signed' : 'Signature Needed'}
-            </p>
-            <p>
-              Supevisor {supervisor.firstName} {supervisor.lastName}{' '}
+              Supervisor {supervisor.firstName} {supervisor.lastName}{' '}
               {noteObj.signedByTherapist ? (
                 ''
               ) : (
