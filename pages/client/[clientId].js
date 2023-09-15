@@ -36,9 +36,9 @@ export default function ClientOverView() {
 
   const changeModalState = () => {
     if (openModal) {
-      setOpenModal(false);
+      setOpenClientModal(false);
     } else {
-      setOpenModal(true);
+      setOpenClientModal(true);
     }
   };
 

@@ -221,7 +221,9 @@ export default function AddClient() {
                   Select an option
                 </option>
                 {statesAndAbbrevs.map((state) => (
-                  <option value={state.abbreviation}>{state.name}</option>
+                  <option key={state.name + 1} value={state.abbreviation}>
+                    {state.name}
+                  </option>
                 ))}
               </select>
             </label>
