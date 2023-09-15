@@ -19,6 +19,7 @@ import TherapistContext from '../../utils/context/therapistContext';
 import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarData';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
 import UpcomingAppointments from '../../components/upcomingAppointments';
+import OpenAptModalContext from '../../utils/context/selectedAptContext';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -27,18 +28,20 @@ export default function ClientOverView() {
   const { setOpenClientModal, setEditingClient } = useContext(
     OpenClientModalContext,
   );
+  const { openModal, setOpenModal, setSelectedApt } =
+    useContext(OpenAptModalContext);
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
   const [sortedNotes, setSortedNotes] = useState([]);
   const [clientApts, setClientApts] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
 
   const changeModalState = () => {
     if (openModal) {
-      setOpenClientModal(false);
+      setOpenModal(false);
     } else {
-      setOpenClientModal(true);
+      setOpenModal(true);
+      setSelectedApt({ clientId: client.clientId });
     }
   };
 
