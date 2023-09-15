@@ -38,6 +38,11 @@ body {
   color: #267ccb;
 }
 
+.badge {
+  background-color: red;
+  color: white;
+}
+
 .main-wrapper {
   display: flex;
   flex-direction: row;

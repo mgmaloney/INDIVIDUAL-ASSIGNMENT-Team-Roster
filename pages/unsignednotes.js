@@ -16,13 +16,13 @@ export default function UnsignedNotes() {
   const [pageSelects, setPageSelects] = useState([]);
 
   useEffect(() => {
+    if (therapist.admin) {
+      getAllUnsignedAppointmentNotes().then(setUnsignedNotes);
+    }
     if (therapist.supervisor) {
       getUnsignedAppointmentNotesSuperVisor(therapist.therapistId).then(
         setUnsignedNotes,
       );
-    }
-    if (therapist.admin) {
-      getAllUnsignedAppointmentNotes().then(setUnsignedNotes);
     } else {
       getUnsignedAppointmentNotesTherapist(therapist.therapistId).then(
         setUnsignedNotes,
@@ -35,7 +35,7 @@ export default function UnsignedNotes() {
     setNumberOfPages(Math.ceil(pageCalc));
   }, [unsignedNotes]);
 
-    useEffect(() => {
+  useEffect(() => {
     for (let i = 1; i <= numberOfPages; i++) {
       setPageSelects((prevState) => [...prevState, i]);
     }
@@ -53,8 +53,6 @@ export default function UnsignedNotes() {
   const handlePageClick = (e) => {
     setPage(e.target.id);
   };
-
-
 
   return (
     <>
