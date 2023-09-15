@@ -26,6 +26,8 @@ export default function UnsignedNotes() {
     }
   }, [therapist.admin, therapist.supervisor]);
 
+  
+
   return (
     <>
       <h2>Unsigned Notes: </h2>

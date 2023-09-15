@@ -382,3 +382,11 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.unsigned-note-card {
+  border: solid black 1px;
+}
+
+.unsigned-thera-status {
+  display: flex;
+}
