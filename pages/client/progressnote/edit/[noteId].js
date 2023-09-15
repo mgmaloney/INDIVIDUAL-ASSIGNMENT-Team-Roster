@@ -19,27 +19,29 @@ export default function EditDAPNote() {
   }, [noteId]);
 
   useEffect(() => {
-    getPsychotherapyNoteByAppointmentId(noteId.appointmentId).then(
-      (response) => {
-        if (response !== 'call failed') {
-          setPsychNote(response);
-        }
-      },
-    );
-  }, [noteId]);
+    getPsychotherapyNoteByAppointmentId(note.appointmentId).then((response) => {
+      if (response !== 'call failed') {
+        setPsychNote(response);
+      }
+    });
+  }, [note.appointmentId]);
 
   return (
     <>
       <div className="view-edit-note">
-        <div className="DAPForm-container">
-          <DAPForm noteObj={note} />
-        </div>
-        <div className="psychnote-container">
-          <PsychotherapyNoteForm
-            psychoNoteObj={psychNote}
-            clientId={note.clientId}
-            appointmentId={note.appointmentId}
-          />
+        <div className="note-containers">
+          <div className="DAPForm-container">
+            <DAPForm noteObj={note} />
+          </div>
+          <div className="psychnote-container">
+            {note.clientId && note.appointmentId && (
+              <PsychotherapyNoteForm
+                psychNoteObj={psychNote}
+                clientId={note.clientId}
+                appointmentId={note.appointmentId}
+              />
+            )}
+          </div>
         </div>
         <AppointmentDetails noteObj={note} />
       </div>

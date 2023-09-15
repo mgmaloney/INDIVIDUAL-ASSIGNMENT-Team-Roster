@@ -150,9 +150,10 @@ const deleteNote = async (noteId) => {
 const getPsychotherapyNoteByAppointmentId = async (appointmentId) => {
   try {
     const { data } = await axios.get(
-      `${dbURL}/psychotherapynotes/${appointmentId}.json`,
+      `${dbURL}/psychotherapynotes.json?orderBy="appointmentId"&equalTo="${appointmentId}"`,
     );
-    return data;
+    const dataArr = Object.values(data);
+    return dataArr[0];
   } catch (e) {
     console.warn(e);
     return 'call failed';
@@ -163,6 +164,7 @@ const updatePsychotherapyNote = async (payload) => {
   try {
     const response = await axios.patch(
       `${dbURL}/psychotherapynotes/${payload.firebaseKey}.json`,
+      payload,
     );
     return response;
   } catch (e) {
@@ -171,11 +173,14 @@ const updatePsychotherapyNote = async (payload) => {
   }
 };
 
-const createPyschotherapyNote = async () => {
+const createPyschotherapyNote = async (payload) => {
   try {
-    const { data } = await axios.post(`${dbURL}/psychotherapynotes.json`);
+    const { data } = await axios.post(
+      `${dbURL}/psychotherapynotes.json`,
+      payload,
+    );
     const firebaseKey = await data.name;
-    updatePsychotherapyNote({ firebaseKey });
+    await updatePsychotherapyNote({ firebaseKey });
     return firebaseKey;
   } catch (e) {
     console.warn(e);

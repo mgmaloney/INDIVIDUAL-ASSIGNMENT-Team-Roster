@@ -377,3 +377,8 @@ body {
 .DAPForm-container {
   margin-right: 1rem;
 }
+
+.psychnote {
+  display: flex;
+  flex-direction: column;
+}

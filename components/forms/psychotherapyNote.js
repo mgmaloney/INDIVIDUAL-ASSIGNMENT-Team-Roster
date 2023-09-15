@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   createPyschotherapyNote,
@@ -12,8 +12,25 @@ export default function PsychotherapyNoteForm({
   psychNoteObj,
 }) {
   const { therapist } = useContext(TherapistContext);
-  const [formInput, setFormInput] = useState({});
+
+  const initialState = {
+    therapistId: '',
+    clientId,
+    appointmentId,
+    noteContent: '',
+  };
+
+  const [formInput, setFormInput] = useState({
+    ...initialState,
+    therapistId: therapist?.therapistId,
+  });
   const [editing, setEditing] = useState(true);
+
+  useEffect(() => {
+    if (psychNoteObj.firebaseKey) {
+      setFormInput({ ...formInput, noteContent: psychNoteObj.noteContent });
+    }
+  }, [psychNoteObj.firebaseKey]);
 
   const handleEditing = () => {
     if (editing) {
@@ -28,7 +45,8 @@ export default function PsychotherapyNoteForm({
     setFormInput((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (psychNoteObj.firebaseKey) {
       await updatePsychotherapyNote({
         firebaseKey: psychNoteObj.firebaseKey,
@@ -46,8 +64,8 @@ export default function PsychotherapyNoteForm({
 
   return (
     <>
-      <div className="psychnote">
-        <form onSubmit={handleSubmit}>
+      <div>
+        <form className="psychnote" onSubmit={handleSubmit}>
           <label className="psychnote-label">
             Psychotherapy Note:
             <textarea
@@ -55,14 +73,15 @@ export default function PsychotherapyNoteForm({
               onChange={handleChange}
               className="psychnote"
               disabled={!editing}
+              value={formInput.noteContent}
             />
           </label>
           {editing ? (
-            <button onClick={handleEditing} className="done-btn" type="submit">
+            <button onClick={handleEditing} className="done-btn" type="button">
               Save
             </button>
           ) : (
-            <button onClick={handleEditing} className="done-btn" type="button">
+            <button onClick={handleEditing} className="done-btn" type="submit">
               Edit
             </button>
           )}
@@ -85,11 +104,5 @@ PsychotherapyNoteForm.propTypes = {
 };
 
 PsychotherapyNoteForm.defaultProps = {
-  psychNoteObj: PropTypes.shape({
-    firebaseKey: PropTypes.string,
-    clientId: PropTypes.string,
-    appointmentId: PropTypes.string,
-    therapistId: PropTypes.string,
-    noteContent: PropTypes.string,
-  }),
+  psychNoteObj: PropTypes.shape({}),
 };

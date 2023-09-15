@@ -30,9 +30,9 @@ export default function UnsignedNotes() {
     <>
       <h2>Unsigned Notes: </h2>
       {unsignedNotes &&
-        unsignedNotes.map((unsignedNote) => {
-          <UnsignedNoteCard noteObj={unsignedNote} />;
-        })}
+        unsignedNotes.map((unsignedNote) => (
+          <UnsignedNoteCard noteObj={unsignedNote} />
+        ))}
     </>
   );
 }
