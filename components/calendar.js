@@ -108,12 +108,15 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
         }
         const nonSuperviseeOrSupervisor = therapists.find(
           (searchedTherapist) =>
-            searchedTherapist.therapistId === appointment.therapistId,
+            searchedTherapist.therapistId === appointment.therapistId &&
+            searchedTherapist.therapistId !== therapist.therapistId,
         );
-        privacyScreened.push({
-          ...appointment,
-          title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
-        });
+        if (nonSuperviseeOrSupervisor) {
+          privacyScreened.push({
+            ...appointment,
+            title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
+          });
+        }
       });
       setFormattedApts(privacyScreened);
     }
@@ -198,8 +201,10 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
             setOpenModal(true);
           }}
           onSelectEvent={(appointment) => {
-            setSelectedApt(appointment);
-            setOpenModal(true);
+            if (!appointment.title.includes('Session')) {
+              setSelectedApt(appointment);
+              setOpenModal(true);
+            }
           }}
         />
       </div>
