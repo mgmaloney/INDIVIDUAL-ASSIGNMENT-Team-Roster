@@ -79,23 +79,25 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
     } else if (!therapist.admin && therapist.supervisor) {
       selectedTherapistApts.forEach((appointment) => {
         const isSuperviseeApt = supervisees.find(
-          (superviseeId) => appointment.therapistId === superviseeId,
+          (searchingSupervisee) =>
+            appointment.therapistId === searchingSupervisee.therapistId,
         );
         if (
           isSuperviseeApt ||
           appointment.therapistId === therapist.therapistId
         ) {
           privacyScreened.push(appointment);
-        }
-        const nonSuperviseeOrSupervisor = therapists.find(
-          (searchedTherapist) =>
-            searchedTherapist.therapistId === appointment.therapistId,
-        );
-        if (nonSuperviseeOrSupervisor) {
-          privacyScreened.push({
-            ...appointment,
-            title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
-          });
+        } else {
+          const nonSuperviseeOrSupervisor = therapists.find(
+            (searchedTherapist) =>
+              searchedTherapist.therapistId === appointment.therapistId,
+          );
+          if (nonSuperviseeOrSupervisor) {
+            privacyScreened.push({
+              ...appointment,
+              title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
+            });
+          }
         }
       });
       setFormattedApts(privacyScreened);
