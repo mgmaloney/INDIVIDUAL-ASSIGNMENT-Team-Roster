@@ -4,7 +4,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CalendarComp from '../components/calendar';
 import AddAppointment from '../components/addAppointment';
-import { getAppointmentsByTherapistId } from '../utils/databaseCalls/calendarData';
+import {
+  getAppointments,
+  getAppointmentsByTherapistId,
+} from '../utils/databaseCalls/calendarData';
 import TherapistContext from '../utils/context/therapistContext';
 
 function Home() {
@@ -13,12 +16,20 @@ function Home() {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
+    getAppointments().then(setAppointments);
   }, [therapist]);
 
   const onAptUpdate = () => {
-    getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
+    getAppointments().then(setAppointments);
   };
+
+  // useEffect(() => {
+  //   getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
+  // }, [therapist]);
+
+  // const onAptUpdate = () => {
+  //   getAppointmentsByTherapistId(therapist?.therapistId).then(setAppointments);
+  // };
 
   return (
     <>
