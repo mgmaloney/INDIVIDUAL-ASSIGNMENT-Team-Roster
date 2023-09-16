@@ -211,13 +211,25 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
         await deleteAppointment(selectedApt.appointmentId);
         handleClose();
         onAptUpdate();
+      } else if (
+        aptNote.content.D === '' &&
+        aptNote.content.A === '' &&
+        aptNote.content.P === ''
+      ) {
+        await deleteAppointment(selectedApt.appointmentId);
+        handleClose();
+        onAptUpdate();
       } else if (aptNote.signedByTherapist) {
         alert(
           'Appointments with already signed note cannot be deleted.  If this is an error, please contact your administrator.',
         );
         handleClose();
         onAptUpdate();
-      } else if (aptNote.content.D || aptNote.content.A || aptNote.content.P) {
+      } else if (
+        aptNote.content.D !== '' ||
+        aptNote.content.A !== '' ||
+        aptNote.content.P !== ''
+      ) {
         if (
           window.confirm(
             'Assosciated appointment note already has content. If appointment is deleted, the assosciated note will also be deleted. Are you sure you want to delete this appointment?',
