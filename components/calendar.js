@@ -128,6 +128,10 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
 
   const [therapistName, setTherapistName] = useState([]);
 
+  useEffect(() => {
+    setTherapistName([`${therapist.firstName} ${therapist.lastName}`]);
+  }, [therapist]);
+
   const handleChange = (event) => {
     const {
       target: { value },
