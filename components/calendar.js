@@ -73,10 +73,11 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
         }
       });
     });
+    const privacyScreened = [];
     if (therapist.admin) {
       setFormattedApts(selectedTherapistApts);
     } else if (!therapist.admin && therapist.supervisor) {
-      const privacyArr = selectedTherapistApts.map((appointment) => {
+      selectedTherapistApts.forEach((appointment) => {
         const isSuperviseeApt = supervisees.find(
           (superviseeId) => appointment.therapistId === superviseeId,
         );
@@ -84,37 +85,37 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
           isSuperviseeApt ||
           appointment.therapistId === therapist.therapistId
         ) {
-          return appointment;
+          privacyScreened.push(appointment);
         }
         const nonSuperviseeOrSupervisor = therapists.find(
           (searchedTherapist) =>
-            searchedTherapist.therapistId === appointment.appointmentId,
+            searchedTherapist.therapistId === appointment.therapistId,
         );
         if (nonSuperviseeOrSupervisor) {
-          return {
+          privacyScreened.push({
             ...appointment,
             title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
-          };
+          });
         }
       });
-      setFormattedApts(privacyArr);
+      setFormattedApts(privacyScreened);
     } else {
-      const privacyArr = selectedTherapistApts.map((appointment) => {
+      selectedTherapistApts.forEach((appointment) => {
         if (appointment.therapistId === therapist.therapistId) {
-          return appointment;
+          privacyScreened.push(appointment);
         }
         const nonSuperviseeOrSupervisor = therapists.find(
           (searchedTherapist) =>
-            searchedTherapist.therapistId === appointment.appointmentId,
+            searchedTherapist.therapistId === appointment.therapistId,
         );
-        return {
+        privacyScreened.push({
           ...appointment,
           title: `${nonSuperviseeOrSupervisor.firstName[0]}${nonSuperviseeOrSupervisor.lastName[0]}: Session`,
-        };
+        });
       });
-      setFormattedApts(privacyArr);
+      setFormattedApts(privacyScreened);
     }
-  }, [appointments, selectedTherapistIds, therapists, therapist]);
+  }, [appointments, selectedTherapistIds, therapists, therapist, supervisees]);
 
   useEffect(() => {
     getAllTherapists().then(setTherapists);
@@ -123,7 +124,6 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
   const [therapistName, setTherapistName] = useState([]);
 
   const handleChange = (event) => {
-    console.warn('eventtargetId', event.target.id);
     const {
       target: { value },
     } = event;
@@ -187,7 +187,7 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
         <Calendar
           localizer={localizer}
           events={formattedApts.length > 0 ? formattedApts : []}
-          startAccessor={(event) => new Date(event.start)}
+          startAccessor={(event) => new Date(event?.start)}
           endAccessor="end"
           style={{ height: 500, margin: '50px' }}
           selectable
