@@ -207,7 +207,11 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
 
   const handleDelete = async () => {
     if (window.confirm(`Delete this appointment?`)) {
-      if (aptNote.signedByTherapist) {
+      if (!aptNote) {
+        await deleteAppointment(selectedApt.appointmentId);
+        handleClose();
+        onAptUpdate();
+      } else if (aptNote.signedByTherapist) {
         alert(
           'Appointments with already signed note cannot be deleted.  If this is an error, please contact your administrator.',
         );
@@ -224,10 +228,6 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
           handleClose();
           onAptUpdate();
         }
-      } else {
-        await deleteAppointment(selectedApt.appointmentId);
-        handleClose();
-        onAptUpdate();
       }
     }
   };

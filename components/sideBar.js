@@ -42,7 +42,7 @@ export default function SideBar() {
         ) : (
           ''
         )}
-        {therapist?.admin || therapist.supervisor ? (
+        {therapist?.admin ? (
           <Link passHref href="/therapists">
             Therapists
           </Link>
