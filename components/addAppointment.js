@@ -217,6 +217,7 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
         aptNote.content.P === ''
       ) {
         await deleteAppointment(selectedApt.appointmentId);
+        await deleteNote(aptNote.noteId);
         handleClose();
         onAptUpdate();
       } else if (aptNote.signedByTherapist) {

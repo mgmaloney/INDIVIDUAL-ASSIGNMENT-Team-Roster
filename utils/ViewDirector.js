@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
 import { useAuth } from './context/authContext';
-import { signOut } from './auth';
 import {
   getAllTherapists,
   getTherapistByUid,
@@ -29,7 +27,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   pageProps,
 }) => {
   const { user, userLoading } = useAuth();
-  const [therapist, setTherapist] = useState(null);
+  const [therapist, setTherapist] = useState({});
   const [therapistClients, setTherapistClients] = useState([]);
   const [editingClient, setEditingClient] = useState({});
   const [openClientModal, setOpenClientModal] = useState(false);
@@ -37,7 +35,6 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [openTherapistModal, setOpenTherapistModal] = useState(false);
   const [selectedApt, setSelectedApt] = useState({});
   const [openModal, setOpenModal] = useState(false);
-  const [therapistLoading, setTherapistLoading] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -50,15 +47,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }, [user]);
 
   useEffect(() => {
-    if (therapist === null) {
-      setTherapistLoading(true);
-    } else {
-      setTherapistLoading(false);
-    }
-  }, [therapist]);
-
-  useEffect(() => {
-    if (therapist?.admin) {
+    if (therapist.admin) {
       getAllClients().then(setTherapistClients);
     } else {
       getClientsByTherapistId(therapist?.therapistId).then(setTherapistClients);
@@ -84,7 +73,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }, [user]);
 
   // if user state is null, then show loader
-  if (userLoading || therapistLoading) {
+  if (userLoading) {
     return <Loading />;
   }
 
@@ -93,7 +82,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   }
 
   // what the user should see if they are logged in
-  if (user && !isNewUser && therapist && therapist.active) {
+  if (user && !isNewUser && therapist) {
     return (
       <>
         <TherapistContext.Provider value={{ therapist }}>
@@ -144,18 +133,6 @@ const ViewDirectorBasedOnUserAuthStatus = ({
             </OpenClientModalContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
-      </>
-    );
-  }
-  if (user && !isNewUser && therapist && !therapist.active) {
-    return (
-      <>
-        <h1 className="inactive-user">
-          Your account has been deactivated. Please contact your administrator
-        </h1>
-        <Button variant="danger" onClick={signOut}>
-          Leave this page.
-        </Button>
       </>
     );
   }
