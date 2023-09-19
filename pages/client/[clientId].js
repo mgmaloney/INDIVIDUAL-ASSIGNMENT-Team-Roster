@@ -85,7 +85,8 @@ export default function ClientOverView() {
       if (
         aptNotes.some(
           (note) => note.appointmentId === appointment.appointmentId,
-        ) === false
+        ) === false &&
+        new Date(appointment.start).getTime() < Date.now()
       ) {
         const newNotePayload = {
           title: `Appointment`,
