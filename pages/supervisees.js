@@ -62,20 +62,26 @@ export default function Supervisees() {
 
   return (
     <>
-      <h1 className="list-header">Supervisees: </h1>
-      <select className="active-sort" onChange={handleActiveSort}>
-        <option value="active" defaultValue="active">
-          Active Supervisees
-        </option>
-        <option value="inactive">Inactive Supervisees</option>
-        <option value="all">All Supervisees</option>
-      </select>
-      <input
-        type="search"
-        placeholder="Search..."
-        className="search-clients"
-        onChange={handleSearch}
-      />
+      <div className="header-search">
+        <div className="list-header-div">
+          <h1 className="list-header">Supervisees: </h1>
+        </div>
+        <div className="search-sort">
+          <select className="active-sort" onChange={handleActiveSort}>
+            <option value="active" defaultValue="active">
+              Active Supervisees
+            </option>
+            <option value="inactive">Inactive Supervisees</option>
+            <option value="all">All Supervisees</option>
+          </select>
+          <input
+            type="search"
+            placeholder="Search..."
+            className="search-clients"
+            onChange={handleSearch}
+          />
+        </div>
+      </div>
       <div className="therapists">
         {showingSupervisees &&
           showingSupervisees.map((supervisee) => (

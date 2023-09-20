@@ -58,7 +58,6 @@ export default function ClientsPage({ viewClients, page }) {
   useEffect(
     () => async () => {
       const allPracticeCts = await getAllClients();
-      console.warn('apc', allPracticeCts);
       if (therapist.supervisor) {
         const superviseeAndTherapistCts = [];
         allPracticeCts.forEach((client) => {
@@ -193,7 +192,9 @@ export default function ClientsPage({ viewClients, page }) {
   return (
     <>
       <div className="header-search">
-        <h3 className="list-header">{clientsLabel()}</h3>
+        <div className="list-header-div">
+          <h3 className="list-header">{clientsLabel()}</h3>
+        </div>
         <div className="search-sort">
           <select className="active-sort" onChange={handleActiveSort}>
             <option value="active" defaultValue="active">

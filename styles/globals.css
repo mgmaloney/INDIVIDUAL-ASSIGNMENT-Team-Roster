@@ -1,5 +1,3 @@
-@import 'bootstrap/dist/css/bootstrap.css';
-
 html,
 body {
   padding: 0;
@@ -27,15 +25,42 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
-  width: 13rem;
-  height: 100vh;
-  border-right: rgba(128, 128, 128, 0.103) 2px solid;
+  background-color: #e1daec71;
+  width: 18rem;
+  height: 200vh;
+  border-right: #e1daec19 2px solid;
+  padding: 1rem 0rem;
 }
 
 .sidebar-main * {
   margin: 0.5rem 3rem;
   color: #267ccb;
+}
+
+.navbar {
+  background-color: #a5b1e8 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  list-style-type: none;
+  width: 25rem;
+}
+
+.nav-btns {
+  display: flex;
+}
+.nav-btn {
+  border: transparent solid 1px;
+  background-color: transparent;
+  font-size: 1rem;
 }
 
 .badge {
@@ -46,18 +71,26 @@ body {
 .main-wrapper {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
-.container {
-  margin: 0rem;
-  max-width: 110%;
+.main-container {
+  margin: 2rem 4rem;
+  width: 90%;
+}
+
+.email {
+  color: #267ccb;
+  text-decoration: underline;
 }
 
 .client-card-clients {
-  border: solid 1px black;
+  border-top: solid 2px #e1daecaf;
+  border-bottom: solid 2px #e1daecaf;
   display: flex;
   justify-content: space-between;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
+  width: 100%;
 }
 
 .contact-and-clinician-clients {
@@ -67,13 +100,35 @@ body {
   padding: 1rem;
 }
 
-.client-name {
+.contact-and-clinician-client {
+  width: max-content;
+}
+
+.contact-and-clinician-client * {
+  margin: 0.5rem 0rem;
+}
+
+.edit-client-info {
+  color: #267ccb;
+  text-decoration: underline;
+  background-color: transparent;
+  border: transparent;
+  border-radius: 10%;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0.25rem;
+  padding: 0rem;
+}
+
+.overview-name,
+.client-name,
+.therapist-name {
   font-weight: bold;
   color: #267ccb;
+  text-decoration: underline;
 }
 
 .client-name:hover {
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -87,25 +142,49 @@ body {
   align-items: center;
 }
 
-.client-info-overview {
-  padding: 1rem;
-  max-height: 27rem;
+.client-overview-sidebar {
+  border-top: solid 2px #e1daecaf;
+  border-bottom: solid 2px #e1daecaf;
 }
 
 .note-card {
-  border: solid 1px black;
+  border-top: solid 3px #e1daecaf;
+  border-bottom: solid 3px #e1daecaf;
   padding: 1rem;
   width: 98%;
   max-height: 20rem;
   margin: 1rem 0rem;
 }
 
+.note-card * {
+  margin: 0.5rem;
+}
+
 .note-card-showing-more {
-  border: solid 1px black;
+  border-top: solid 3px #e1daecaf;
+  border-bottom: solid 3px #e1daecaf;
   padding: 1rem;
   width: 98%;
   margin: 1rem 0rem;
   max-height: fit-content;
+}
+
+.note-card-showing-more * {
+  margin: 0.5rem;
+}
+
+.note-title {
+  font-size: 1.25rem;
+  text-decoration: underline;
+  color: #267ccb;
+}
+
+.note-title:hover {
+  text-decoration: underline;
+}
+
+.note-date {
+  font-size: 1rem;
 }
 
 .DAP-div {
@@ -113,8 +192,21 @@ body {
   overflow: hidden;
 }
 
-.show-more-btn {
-  margin: 1rem 0rem 0.5rem 0rem;
+.add-progress-note-btn:hover {
+  text-decoration: underline;
+}
+
+.show-more-btn,
+.done-btn {
+  color: white;
+  background-color: #a5b1e8;
+  border: transparent;
+  border-radius: 10%;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.ov-header-note {
+  width: 100%;
 }
 
 .overview-name {
@@ -123,24 +215,28 @@ body {
 
 .overview-name * {
   margin: 0rem 1rem 1rem 0rem;
+  color: #267ccb;
+  font-size: 2rem;
 }
 
 .client-nav-link,
+.therapist-nav-link,
 .therapist {
   font-weight: bold;
   font-size: medium;
   color: #267ccb;
   text-decoration: underline;
-  margin: 0.07rem 1.5rem 1rem 0rem;
+  margin: 0rem 1rem;
   cursor: pointer;
 }
 
-.edit-clients-page {
+.edit-clients-page,
+.edit-therapists-page {
   border: none;
   background-color: white;
   margin: 0px;
   padding: 0px;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .edit-clients-page:hover {
@@ -149,18 +245,32 @@ body {
 
 .client-nav {
   display: flex;
+  align-items: center;
+  height: 1rem;
+  margin-bottom: 1rem;
 }
 
 .birth-age {
   display: flex;
-  margin-top: 0.25rem;
   margin-right: 2rem;
+  font-size: 1.25rem;
+}
+
+.birth-age * {
+  font-size: 1rem;
 }
 
 .client-info-overview {
-  border: solid black 1px;
+  border: solid 2px #e1daecaf;
+  padding: 1rem;
+  max-height: 27rem;
   display: flex;
   flex-direction: column;
+}
+
+.client-info {
+  color: #267ccb;
+  margin: 0rem;
 }
 
 .main-client-overview {
@@ -176,10 +286,15 @@ body {
   width: 70rem;
 }
 
+.schedule-edit {
+  display: flex;
+}
+
 .chart-note-form {
   width: 98%;
-  border: solid 1px black;
-  margin-bottom: 1rem;
+  border-top: solid 3px #e1daecaf;
+  border-bottom: solid 3px #e1daecaf;
+  margin: 1.5rem 0rem;
   padding: 1rem;
 }
 
@@ -192,10 +307,19 @@ body {
 .chart-note-textarea {
   width: 100%;
   height: 100px;
+  border-left: #267ccb;
+  border-right: #267ccb;
 }
 
 .add-note-btn {
-  height: 10%;
+  height: 50%;
+  color: white;
+  font-weight: bold;
+  background-color: #a5b1e8;
+  border-radius: 10%;
+  border: transparent;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 .chartnote-date-btn {
@@ -203,10 +327,7 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
-
-.datetime-chart {
-  background-color: white;
+  margin-top: 0.5rem;
 }
 
 .DAP-container {
@@ -217,16 +338,18 @@ body {
 .DAP-label {
   display: flex;
   flex-direction: column;
+  margin: 0.5rem 0rem;
+  font-weight: 600;
+}
+
+.DAP-text {
+  height: 5rem;
+  margin: 1rem 0rem 0rem 0rem;
 }
 
 .DAP-form-btns {
   display: flex;
-}
-
-.DAP-div {
-}
-
-.done-btn {
+  justify-content: flex-end;
 }
 
 .signed-n-shared {
@@ -235,16 +358,18 @@ body {
 }
 
 .upcoming-apts {
-  border: 1px solid black;
-  margin: 2rem 0rem;
+  border: solid 2px #e1daecaf;
+  margin: 0.5rem 0rem;
+  padding: 0.25rem;
 }
 
 .therapist-card {
-  border: 1px solid black;
-  margin: 2rem 0rem;
+  border-top: solid 2px #e1daecaf;
+  border-bottom: solid 2px #e1daecaf;
   display: flex;
   justify-content: space-between;
-  width: 85%;
+  margin: 1rem 0.5rem;
+  width: 100%;
 }
 
 .therapists {
@@ -254,13 +379,18 @@ body {
   align-items: center;
 }
 
+.name-edit {
+  margin: 1rem 0rem;
+}
+
 .therapist-card * {
-  margin: 1rem;
+  margin: 0.5rem 0rem;
 }
 
 .list-header {
   margin-top: 0rem;
   font-weight: bold;
+  font-size: 2rem;
   color: #267ccb;
 }
 
@@ -297,12 +427,41 @@ body {
   align-items: center;
 }
 
-.active-sort {
-  margin: 1rem;
+.list-header-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-header {
+  margin: 0rem;
+}
+
+.search-sort {
+  height: max-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.active-sort,
+.search-clients {
+  margin: 0rem 0.5rem;
+  height: 2rem;
+  font-size: 1rem;
+}
+
+.active-select-container {
+  margin: 1rem 0rem;
+}
+
+.active-select {
+  height: 2rem;
+  font-size: 1rem;
 }
 
 .side-component-label {
-  margin-bottom: 0rem;
+  margin: 1rem 0rem;
   color: #267ccb;
   font-weight: bold;
 }
@@ -377,15 +536,37 @@ body {
 .view-edit-note {
   display: flex;
   margin-top: 2rem;
+  width: 100%;
+}
+
+.note-containers {
+  width: 100%;
 }
 
 .DAPForm-container {
   margin-right: 1rem;
 }
 
+.progress-note {
+  color: #267ccb;
+  margin-left: 2rem;
+  font-size: 1.75rem;
+}
+
 .psychnote {
   display: flex;
   flex-direction: column;
+}
+
+.psychnote-label {
+  margin: 0.5rem 0rem;
+  font-weight: 600;
+}
+
+.psychnote-text {
+  height: 4rem;
+  width: 100%;
+  margin: 1rem 0rem;
 }
 
 .unsigned-note-card {
@@ -409,4 +590,39 @@ body {
 
 .page-number:hover {
   cursor: pointer;
+}
+
+.rbc-event-content {
+  max-height: min-content;
+  font-size: 1rem;
+}
+
+.rbc-calendar {
+  height: 50rem !important;
+  max-width: 100% !important;
+  margin-top: 1rem !important;
+}
+
+.rbc-btn-group {
+  font-size: 1.5rem;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: -webkit-fill-available;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem 2.5rem;
+}
+
+.provider-filters {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 2rem 0rem 0rem;
 }

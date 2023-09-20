@@ -120,7 +120,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                       <AddClient />
                       <div className="main-wrapper">
                         <SideBar />
-                        <div className="container">
+                        <div className="main-container">
                           <Component {...pageProps} />
                         </div>
                       </div>

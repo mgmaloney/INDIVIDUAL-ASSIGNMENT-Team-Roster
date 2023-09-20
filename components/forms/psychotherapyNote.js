@@ -71,7 +71,7 @@ export default function PsychotherapyNoteForm({
             <textarea
               name="noteContent"
               onChange={handleChange}
-              className="psychnote"
+              className="psychnote psychnote-text"
               disabled={!editing}
               value={formInput.noteContent}
             />

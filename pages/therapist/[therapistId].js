@@ -41,7 +41,11 @@ export default function ViewTherapist() {
     if (viewClients.length > 0) {
       return <ClientsPage page="viewTherapist" viewClients={viewClients} />;
     }
-    return <h2 className="list-header">No clients assigned</h2>;
+    return (
+      <div className="list-header-div">
+        <h2 className="list-header">No clients assigned</h2>
+      </div>
+    );
   };
 
   return (
@@ -54,7 +58,9 @@ export default function ViewTherapist() {
                 {therapist?.firstName} {therapist?.lastName}
               </h1>
               <p className="view-therapist-email">
-                <a href={`mailto: ${therapist?.email}`}>{therapist?.email}</a>
+                <a href={`mailto:${therapist?.email}`} className="email">
+                  {therapist?.email}
+                </a>
               </p>
             </div>
             {therapist?.supervisor ? (

@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+
 import { signOut } from '../utils/auth';
 import OpenClientModalContext from '../utils/context/openClientModalContext';
 import OpenTherapistModalContext from '../utils/context/openTherapistModalContext';
@@ -26,34 +26,43 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container>
+    <>
+      <nav className="navbar">
         <Link passHref href="/">
-          <Navbar.Brand>PHIEL</Navbar.Brand>
+          Phiel
         </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
-            <Link passHref href="/">
-              <Nav.Link>Home</Nav.Link>
-            </Link>
-            <Button variant="danger" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-            <Button variant="danger" onClick={handleClientModalOpen}>
-              Add Client
-            </Button>
+        <ul className="nav-list">
+          <div className="nav-btns">
+            <li>
+              <button type="button" className="nav-btn" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="nav-btn"
+                onClick={handleClientModalOpen}
+              >
+                Add Client
+              </button>
+            </li>
             {therapist?.admin ? (
-              <Button variant="danger" onClick={handleTherapistModalOpen}>
-                Add Therapist
-              </Button>
+              <li>
+                <button
+                  type="button"
+                  className="nav-btn"
+                  onClick={handleTherapistModalOpen}
+                >
+                  Add Therapist
+                </button>
+              </li>
             ) : (
               ''
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </div>
+        </ul>
+      </nav>
+    </>
   );
 }

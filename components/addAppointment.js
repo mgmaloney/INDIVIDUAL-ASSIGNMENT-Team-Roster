@@ -292,7 +292,12 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                     return '';
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Add Client" size="small" />
+                    <TextField
+                      {...params}
+                      label="Add Client"
+                      size="small"
+                      required
+                    />
                   )}
                   onChange={(event, newValue) => {
                     setSelectedClientObj(newValue);
@@ -302,7 +307,7 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                   }
                 />
               ) : (
-                <input type="text" placeholder="Add title" />
+                <input type="text" placeholder="Add title" required />
               )}
               {therapist.admin ? (
                 <div className="select-therapist">
@@ -321,6 +326,7 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                         {...params}
                         label="Select Therapist"
                         size="small"
+                        required
                       />
                     )}
                     onChange={(event, newValue) => {
@@ -350,6 +356,7 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                       type="text"
                       value={length}
                       onChange={(e) => setLength(e.target.value)}
+                      required
                     />
                     min
                   </label>
