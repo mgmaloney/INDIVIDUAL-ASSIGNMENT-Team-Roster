@@ -73,7 +73,9 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
         </div>
         <div className="therapist-email">
           <p>
-            <a href={`mailto: ${therapistObj.email}`}>{therapistObj.email}</a>
+            <a href={`mailto:${therapistObj.email}`} className="email">
+              {therapistObj.email}
+            </a>
           </p>
           {therapistObj.supervisorId && (
             <Link
@@ -85,14 +87,16 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
           )}
         </div>
         {therapist.admin && (
-          <select onChange={handleActive} className="active-select">
-            <option value="active" selected={therapistObj.active}>
-              {therapistObj.active ? 'Active' : 'Mark Active'}
-            </option>
-            <option value="inactive" selected={!therapistObj.active}>
-              {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
-            </option>
-          </select>
+          <div className="active-select-container">
+            <select onChange={handleActive} className="active-select">
+              <option value="active" selected={therapistObj.active}>
+                {therapistObj.active ? 'Active' : 'Mark Active'}
+              </option>
+              <option value="inactive" selected={!therapistObj.active}>
+                {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
+              </option>
+            </select>
+          </div>
         )}
       </div>
     </>

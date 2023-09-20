@@ -60,20 +60,26 @@ export default function Therapists() {
 
   return (
     <>
-      <h1 className="list-header">Therapists: </h1>
-      <select className="active-sort" onChange={handleActiveSort}>
-        <option value="active" defaultValue="active">
-          Active Therapists
-        </option>
-        <option value="inactive">Inactive Therapists</option>
-        <option value="all">All Therapists</option>
-      </select>
-      <input
-        type="search"
-        placeholder="Search..."
-        className="search-clients"
-        onChange={handleSearch}
-      />
+      <div className="header-search">
+        <div className="list-header-div">
+          <h1 className="list-header">Therapists: </h1>
+        </div>
+        <div className="search-sort">
+          <select className="active-sort" onChange={handleActiveSort}>
+            <option value="active" defaultValue="active">
+              Active Therapists
+            </option>
+            <option value="inactive">Inactive Therapists</option>
+            <option value="all">All Therapists</option>
+          </select>
+          <input
+            type="search"
+            placeholder="Search..."
+            className="search-clients"
+            onChange={handleSearch}
+          />
+        </div>
+      </div>
       <div className="therapists">
         {showingTherapists &&
           showingTherapists.map((therapist) => (

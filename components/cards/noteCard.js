@@ -50,6 +50,7 @@ export default function NoteCard({
       return (
         <p
           type="button"
+          className="add-progress-note-btn"
           onClick={() =>
             router.push(`/client/progressnote/edit/${noteObj.noteId}`)
           }

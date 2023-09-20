@@ -156,61 +156,64 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
 
   return (
     <>
-      <div className="calendar">
-        <div className="provider-filters">
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-checkbox-label">
-              Provider:{' '}
-            </InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={therapistName}
-              onChange={handleChange}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(', ')}
-              MenuProps={MenuProps}
-            >
-              {therapists.map((therapistItem) => (
-                <MenuItem
-                  key={therapistItem.therapistId}
-                  id={therapistItem.therapistId}
-                  value={`${therapistItem.firstName} ${therapistItem.lastName}`}
-                >
-                  <Checkbox
-                    checked={
-                      therapistName.indexOf(
-                        `${therapistItem.firstName} ${therapistItem.lastName}`,
-                      ) > -1
-                    }
-                  />
-                  <ListItemText
-                    primary={`${therapistItem.firstName} ${therapistItem.lastName}`}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-        <Calendar
-          localizer={localizer}
-          events={formattedApts.length > 0 ? formattedApts : []}
-          startAccessor={(event) => new Date(event?.start)}
-          endAccessor="end"
-          style={{ height: 500, margin: '50px' }}
-          selectable
-          onSelectSlot={(slotInfo) => {
-            setSelectedCalDate(slotInfo.slots[0]);
-            setOpenModal(true);
-          }}
-          onSelectEvent={(appointment) => {
-            if (!appointment.title.includes('Session')) {
-              setSelectedApt(appointment);
+      <div className="calendar-container">
+        <div className="calendar">
+          <div className="provider-filters">
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="demo-multiple-checkbox-label">
+                Provider:{' '}
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={therapistName}
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+                size="small"
+              >
+                {therapists.map((therapistItem) => (
+                  <MenuItem
+                    key={therapistItem.therapistId}
+                    id={therapistItem.therapistId}
+                    value={`${therapistItem.firstName} ${therapistItem.lastName}`}
+                  >
+                    <Checkbox
+                      checked={
+                        therapistName.indexOf(
+                          `${therapistItem.firstName} ${therapistItem.lastName}`,
+                        ) > -1
+                      }
+                    />
+                    <ListItemText
+                      primary={`${therapistItem.firstName} ${therapistItem.lastName}`}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <Calendar
+            localizer={localizer}
+            events={formattedApts.length > 0 ? formattedApts : []}
+            startAccessor={(event) => new Date(event?.start)}
+            endAccessor="end"
+            style={{ height: 500, margin: '50px' }}
+            selectable
+            onSelectSlot={(slotInfo) => {
+              setSelectedCalDate(slotInfo.slots[0]);
               setOpenModal(true);
-            }
-          }}
-        />
+            }}
+            onSelectEvent={(appointment) => {
+              if (!appointment.title.includes('Session')) {
+                setSelectedApt(appointment);
+                setOpenModal(true);
+              }
+            }}
+          />
+        </div>
       </div>
     </>
   );

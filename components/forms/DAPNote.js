@@ -75,7 +75,7 @@ export default function DAPForm({ noteObj }) {
             </a>
           </Link>
         )}
-        <h2>Progress Note</h2>
+        <h2 className="progress-note">Progress Note</h2>
       </div>
       <div className="main-note">
         <form className="DAP-form">

@@ -104,8 +104,14 @@ export default function ClientDetailsCard({ clientObj, page }) {
           )}
           <div>
             <p className="c-and-c-item">Phone: {clientObj.phone}</p>
-            <p href={`mailTo:${clientObj.email}`} className="c-and-c-item">
-              Email: {clientObj.email}
+            <p>
+              Email:{' '}
+              <a
+                href={`mailto:${clientObj.email}`}
+                className="c-and-c-item email"
+              >
+                {clientObj.email}
+              </a>
             </p>
           </div>
           {page !== 'clients' ? (
@@ -131,14 +137,16 @@ export default function ClientDetailsCard({ clientObj, page }) {
             </p>
           )}
           {page === 'clients' ? (
-            <select onChange={handleActive} className="active-select">
-              <option value="active" defaultValue={`${clientObj.active}`}>
-                {clientObj.active ? 'Active' : 'Mark Active'}
-              </option>
-              <option value="inactive" selected={!clientObj.active}>
-                {clientObj.active ? 'Mark Inactive' : 'Inactive'}
-              </option>
-            </select>
+            <div className="active-select-container">
+              <select onChange={handleActive} className="active-select">
+                <option value="active" defaultValue={`${clientObj.active}`}>
+                  {clientObj.active ? 'Active' : 'Mark Active'}
+                </option>
+                <option value="inactive" selected={!clientObj.active}>
+                  {clientObj.active ? 'Mark Inactive' : 'Inactive'}
+                </option>
+              </select>
+            </div>
           ) : (
             ''
           )}

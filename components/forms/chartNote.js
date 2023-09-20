@@ -91,6 +91,7 @@ export default function ChartNoteForm({
                 name="dateTime"
                 views={['year', 'month', 'day', 'hours', 'minutes']}
                 value={dateInput}
+                size="small"
                 onChange={(newValue) => setDateInput(newValue)}
                 required
               />

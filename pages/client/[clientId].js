@@ -155,16 +155,18 @@ export default function ClientOverView() {
                   ({calculateAge(Date.parse(client.birthDate))})
                 </h6>
               </div>
-              <p onClick={changeModalState} className="client-nav-link">
-                Schedule Now
-              </p>
-              <button
-                type="button"
-                onClick={handleEdit}
-                className="client-nav-link edit-clients-page"
-              >
-                Edit
-              </button>
+              <div className="schedule-edit">
+                <p onClick={changeModalState} className="client-nav-link">
+                  Schedule Now
+                </p>
+                <button
+                  type="button"
+                  onClick={handleEdit}
+                  className="client-nav-link edit-clients-page"
+                >
+                  Edit
+                </button>
+              </div>
             </div>
           </div>
           <ChartNoteForm clientObj={client} onNotesUpdate={onNotesUpdate} />
