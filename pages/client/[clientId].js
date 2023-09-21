@@ -145,8 +145,7 @@ export default function ClientOverView() {
         <div className="ov-header-note">
           <div className="client-page-header">
             <div className="overview-name">
-              <h2>{client.firstName}</h2>
-              <h2>{client.lastName}</h2>
+              <h2>{client.firstName} {client.lastName}</h2>
             </div>
             <div className="client-nav">
               <div className="birth-age">

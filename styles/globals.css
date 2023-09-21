@@ -20,6 +20,10 @@ body {
   background-color: white;
 }
 
+p {
+  color: #267ccb;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
@@ -402,13 +406,13 @@ body {
 .view-therapist-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin: 0rem 1rem;
-  width: 85%;
+  width: 95%;
+  border-bottom: solid 2px #e1daecaf;
 }
 
 .view-therapist-header * {
-  margin: 1rem 0rem;
   padding: 0.2rem;
 }
 
@@ -432,6 +436,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.list-header-div-no-clients {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1.5rem 0rem;
 }
 
 .list-header {
@@ -486,18 +497,30 @@ body {
   text-decoration: underline;
 }
 
+.is-supervisor-view-therapist {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem;
+}
+
+.is-supervisor-view-therapist * {
+  margin: 0rem;
+}
+
 .supervisees {
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  padding: 0rem 2.5rem;
 }
 
 .main-therapist-overview {
   display: flex;
   flex-direction: column;
+  width: 75%;
 }
 
 .side-components {
-  margin-top: 3rem;
 }
 
 .apt-details {

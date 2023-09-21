@@ -42,7 +42,7 @@ export default function ViewTherapist() {
       return <ClientsPage page="viewTherapist" viewClients={viewClients} />;
     }
     return (
-      <div className="list-header-div">
+      <div className="list-header-div-no-clients">
         <h2 className="list-header">No clients assigned</h2>
       </div>
     );
@@ -54,9 +54,9 @@ export default function ViewTherapist() {
         <div className="main-therapist-overview">
           <div className="view-therapist-header">
             <div className="view-therapist-name-email">
-              <h1>
+              <h2 className="list-header">
                 {therapist?.firstName} {therapist?.lastName}
-              </h1>
+              </h2>
               <p className="view-therapist-email">
                 <a href={`mailto:${therapist?.email}`} className="email">
                   {therapist?.email}
