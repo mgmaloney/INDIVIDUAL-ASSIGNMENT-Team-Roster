@@ -360,7 +360,7 @@ body {
 .upcoming-apts {
   border: solid 2px #e1daecaf;
   margin: 0.5rem 0rem;
-  padding: .75rem;
+  padding: 0.75rem;
 }
 
 .therapist-card {
@@ -467,7 +467,7 @@ body {
 }
 
 .side-component {
-  border: solid 1px black;
+  border: solid 2px #e1daecaf;
   padding: 0.5rem;
 }
 
@@ -500,8 +500,10 @@ body {
 }
 
 .apt-details {
-  border: solid black 1px;
-  padding: 0.75rem;
+  border: solid 2px #e1daecaf;
+  padding: 1rem;
+  color: #267ccb;
+  height: 50%;
 }
 
 .apt-info-span {
@@ -510,10 +512,18 @@ body {
 
 .current-apt-info {
   margin-left: 0.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.2rem;
+  border-bottom: solid 2px #e1daecaf;
+}
+.apt-info-header {
+  font-size: 1rem;
+  margin: 0rem;
 }
 
 .next-prev-head {
   font-size: 0.75rem;
+  font-weight: bold;
 }
 
 .prev-apt,
@@ -521,16 +531,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: solid black 1px;
+  border: solid 2px #e1daecaf;
+  color: #267ccb;
   padding: 0.5rem;
   margin: 0.5rem 0rem;
   cursor: pointer;
+  height: 15%;
 }
 
 .apt-arrow {
   font-size: 3rem;
   color: grey;
   opacity: 60%;
+  margin: 0rem;
 }
 
 .view-edit-note {
@@ -540,7 +553,7 @@ body {
 }
 
 .note-containers {
-  width: 100%;
+  width: 80%;
 }
 
 .DAPForm-container {
@@ -556,6 +569,7 @@ body {
 .psychnote {
   display: flex;
   flex-direction: column;
+  margin-right: 1rem;
 }
 
 .psychnote-label {
@@ -569,8 +583,12 @@ body {
   margin: 1rem 0rem;
 }
 
+.psychnote-btns {
+  display: flex;
+  justify-content: flex-end;
+}
 .unsigned-note-card {
-  border: solid black 1px;
+  border: solid 2px #e1daecaf;
   margin: 1rem 0rem;
 }
 

@@ -76,15 +76,25 @@ export default function PsychotherapyNoteForm({
               value={formInput.noteContent}
             />
           </label>
-          {editing ? (
-            <button onClick={handleEditing} className="done-btn" type="button">
-              Save
-            </button>
-          ) : (
-            <button onClick={handleEditing} className="done-btn" type="submit">
-              Edit
-            </button>
-          )}
+          <div className="psychnote-btns">
+            {editing ? (
+              <button
+                onClick={handleEditing}
+                className="done-btn"
+                type="button"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={handleEditing}
+                className="done-btn"
+                type="submit"
+              >
+                Edit
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </>
