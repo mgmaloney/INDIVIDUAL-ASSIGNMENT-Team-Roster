@@ -340,6 +340,7 @@ body {
   flex-direction: column;
   margin: 0.5rem 0rem;
   font-weight: 600;
+  color: #267ccb;
 }
 
 .DAP-text {
@@ -575,6 +576,7 @@ body {
 .psychnote-label {
   margin: 0.5rem 0rem;
   font-weight: 600;
+  color: #267ccb;
 }
 
 .psychnote-text {
@@ -588,12 +590,57 @@ body {
   justify-content: flex-end;
 }
 .unsigned-note-card {
-  border: solid 2px #e1daecaf;
-  margin: 1rem 0rem;
+  border-top: solid 2px #e1daecaf;
+  border-bottom: solid 2px #e1daecaf;
+  margin: 0.5rem 0rem;
+  display: flex;
+  justify-content: space-between;
 }
 
-.unsigned-thera-status {
+.unsigned-note-details {
+  font-size: 1.15rem;
+}
+
+.unsigned-note-details:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.unsigned-date {
+  margin: 0rem 1rem;
+}
+
+.unsigned-note-card * {
+  color: #267ccb;
+}
+.unsigned-providers {
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.unsigned-status {
+  display: flex;
+  justify-content: space-between;
+}
+.unsigned-status-supervisor {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.prov-sig {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.sig {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem 1rem;
+}
+
+.sig * {
+  margin: 0.25rem;
 }
 
 .page-numbers-container {

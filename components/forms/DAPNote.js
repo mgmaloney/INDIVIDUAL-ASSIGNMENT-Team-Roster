@@ -105,7 +105,7 @@ export default function DAPForm({ noteObj }) {
               />
             </label>
             <label className="DAP-label">
-              Plan
+              Plan:
               <textarea
                 onChange={handleChange}
                 className="DAP-text"

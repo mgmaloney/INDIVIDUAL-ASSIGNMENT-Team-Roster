@@ -33,36 +33,62 @@ export default function UnsignedNoteCard({ noteObj }) {
   return (
     <>
       <div className="unsigned-note-card">
-        <div className="unsigned-thera-status">
-          <p onClick={handleClick}>
-            {client.firstName} {client.lastName}{' '}
+        <p className="unsigned-note-details" onClick={handleClick}>
+          <strong>
+            {client.firstName} {client.lastName}
+          </strong>{' '}
+          <span className="unsigned-date">
             {format(new Date(noteObj.dateTime), 'MM/dd/yyyy H:mm a')}
-          </p>
-          {therapist.admin ? (
-            <>
-              <p>
-                Clinician {clinician.firstName} {clinician.lastName}{' '}
-                {noteObj.signedByTherapist ? 'Signed' : 'Signature Needed'}
-              </p>
-            </>
-          ) : (
-            ''
-          )}
+          </span>
+        </p>
+
+        <div className="unsigned-providers">
+          <div className="unsigned-status">
+            {therapist.admin ? (
+              <div className="prov-sig">
+                <p>
+                  <strong>Clinician:</strong> {clinician.firstName}{' '}
+                  {clinician.lastName}{' '}
+                </p>
+                <div className="sig">
+                  {noteObj.signedByTherapist ? (
+                    <p>
+                      <strong>Signed</strong>
+                    </p>
+                  ) : (
+                    <p>
+                      <em>Signature Needed</em>
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
+          <div className="unsigned-status-supervisor">
+            {therapist.admin ? (
+              <div className="prov-sig">
+                <p>
+                  <strong>Supervisor:</strong> {supervisor.firstName}{' '}
+                  {supervisor.lastName}{' '}
+                </p>
+
+                {noteObj.signedByTherapist ? (
+                  ''
+                ) : (
+                  <div className="sig">
+                    <p>
+                      <em>Waiting on Therapist Signature.</em>
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
         </div>
-        {therapist.admin ? (
-          <>
-            <p>
-              Supervisor {supervisor.firstName} {supervisor.lastName}{' '}
-              {noteObj.signedByTherapist ? (
-                ''
-              ) : (
-                <em>Waiting on Therapist Signature.</em>
-              )}
-            </p>
-          </>
-        ) : (
-          ''
-        )}
       </div>
     </>
   );
