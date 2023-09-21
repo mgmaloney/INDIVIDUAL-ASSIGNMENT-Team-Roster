@@ -82,8 +82,9 @@ export default function ViewTherapist() {
           </div>
           <div className="therapist-clients">{renderAssignedClients()}</div>
         </div>
-        <div className="side-components">
-          {therapist?.supervisor ? (
+
+        {therapist?.supervisor ? (
+          <div className="side-components">
             <div className="side-component">
               <p className="side-component-label">Supervisees: </p>
               <div className="supervisees">
@@ -98,10 +99,10 @@ export default function ViewTherapist() {
                   ))}
               </div>
             </div>
-          ) : (
-            ''
-          )}
-        </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );

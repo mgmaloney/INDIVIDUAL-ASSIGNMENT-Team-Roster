@@ -193,7 +193,7 @@ export default function ClientsPage({ viewClients, page }) {
     <>
       <div className="header-search">
         <div className="list-header-div">
-          <h3 className="list-header">{clientsLabel()}</h3>
+          <h3 className={page !== 'viewTherapist' ? "list-header" : 'list-header-therapist'}>{clientsLabel()}</h3>
         </div>
         <div className="search-sort">
           <select className="active-sort" onChange={handleActiveSort}>

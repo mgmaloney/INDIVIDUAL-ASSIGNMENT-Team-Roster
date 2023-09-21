@@ -407,13 +407,11 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 0rem 1rem;
-  width: 95%;
+  /* margin: 0rem 1rem; */
+  width: 100%;
   border-bottom: solid 2px #e1daecaf;
 }
-
 .view-therapist-header * {
-  padding: 0.2rem;
 }
 
 .therapist-body-container {
@@ -423,7 +421,7 @@ p {
 }
 
 .therapist-clients {
-  margin-left: 1.3rem;
+  /* margin-left: 1.3rem; */
 }
 
 .header-search {
@@ -436,6 +434,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 1.5rem 0rem;
 }
 
 .list-header-div-no-clients {
@@ -445,8 +444,11 @@ p {
   margin: 1.5rem 0rem;
 }
 
-.list-header {
-  margin: 0rem;
+.list-header-therapist {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #267ccb;
 }
 
 .search-sort {
@@ -480,6 +482,7 @@ p {
 
 .side-component {
   border: solid 2px #e1daecaf;
+  margin: 0rem 1.5rem;
   padding: 0.5rem;
 }
 
