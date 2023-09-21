@@ -44,7 +44,7 @@ export default function AppointmentDetails({ noteObj }) {
 
   useEffect(() => {
     setPrevNextApt();
-  }, [noteObj.noteId]);
+  }, [sortedApts, prevApt, nextApt, appointment]);
 
   const handlePrevClick = () => {
     getNoteByAptId(prevApt?.appointmentId).then((note) =>

@@ -360,7 +360,7 @@ body {
 .upcoming-apts {
   border: solid 2px #e1daecaf;
   margin: 0.5rem 0rem;
-  padding: 0.25rem;
+  padding: .75rem;
 }
 
 .therapist-card {
