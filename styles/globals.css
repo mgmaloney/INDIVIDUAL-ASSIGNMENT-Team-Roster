@@ -92,7 +92,7 @@ p {
   text-decoration: underline;
 }
 
-.client-form {
+.form-modal {
   display: flex;
   flex-direction: column;
 }
@@ -319,6 +319,8 @@ label {
 
 select {
   font-size: 1.1rem;
+  border: solid 3px #a5b1e8;
+  border-radius: 5px;
 }
 
 .submit {
@@ -329,11 +331,17 @@ select {
 .birthdate {
   font-size: 1rem;
 }
-.add-client-text {
+.form-text {
   width: -webkit-fill-available;
   font-size: 1.25rem;
   border: solid 3px #a5b1e8;
   padding: 0.1rem 1rem;
+}
+
+.modal-check {
+  width: 1rem;
+  margin: 0rem 1rem;
+  height: 1rem;
 }
 
 .edit-chartnote-form {
@@ -497,6 +505,8 @@ select {
   margin: 0rem 0.5rem;
   height: 2rem;
   font-size: 1rem;
+  border: solid 3px #a5b1e8;
+  border-radius: 5px;
 }
 
 .active-select-container {

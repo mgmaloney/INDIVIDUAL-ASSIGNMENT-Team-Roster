@@ -134,11 +134,11 @@ export default function AddClient() {
           <h2 id="unstyled-modal-title" className="modal-title">
             Add New Client
           </h2>
-          <form className="client-form" onSubmit={handleSubmit}>
+          <form className="form-modal" onSubmit={handleSubmit}>
             <label>
               First Name:{'    '}
               <input
-                className="add-client-text"
+                className="form-text"
                 type="text"
                 name="firstName"
                 value={formInput?.firstName}
@@ -149,7 +149,7 @@ export default function AddClient() {
             <label>
               Last Name:{'    '}
               <input
-                className="add-client-text"
+                className="form-text"
                 type="text"
                 name="lastName"
                 value={formInput?.lastName}
@@ -160,7 +160,7 @@ export default function AddClient() {
             <label>
               Phone Number:{'    '}
               <input
-                className="add-client-text"
+                className="form-text"
                 type="tel"
                 name="phone"
                 value={formInput?.phone}
@@ -173,7 +173,7 @@ export default function AddClient() {
               <input
                 type="email"
                 name="email"
-                className="add-client-text"
+                className="form-text"
                 value={formInput?.email}
                 onChange={handleChange}
                 required
@@ -184,7 +184,7 @@ export default function AddClient() {
               <input
                 type="text"
                 name="address1"
-                className="addressLine add-client-text"
+                className="addressLine form-text"
                 value={formInput?.address1}
                 onChange={handleChange}
                 required
@@ -195,7 +195,7 @@ export default function AddClient() {
               <input
                 type="text"
                 name="address2"
-                className="addressLine add-client-text"
+                className="addressLine form-text"
                 value={formInput?.address2}
                 onChange={handleChange}
               />
@@ -205,7 +205,7 @@ export default function AddClient() {
               <input
                 type="text"
                 name="city"
-                className="addressLine add-client-text"
+                className="addressLine form-text"
                 value={formInput?.city}
                 onChange={handleChange}
               />
@@ -214,7 +214,7 @@ export default function AddClient() {
               State:{'    '}
               <select
                 name="state"
-                className="stateSelect add-client-text"
+                className="stateSelect form-text"
                 value={formInput?.state}
                 onChange={handleChange}
                 required
@@ -232,7 +232,7 @@ export default function AddClient() {
             <label>
               Zipcode:{'    '}
               <input
-                className="add-client-text"
+                className="form-text"
                 name="zipcode"
                 type="text"
                 pattern="[0-9]*"
@@ -246,7 +246,7 @@ export default function AddClient() {
               <input
                 type="date"
                 name="birthDate"
-                className="add-client-text birthdate"
+                className="form-text birthdate"
                 value={formInput?.birthDate}
                 onChange={handleChange}
                 required
@@ -255,7 +255,7 @@ export default function AddClient() {
             <label>
               Sex:{'    '}
               <select
-                className="add-client-text"
+                className="form-text"
                 name="sex"
                 onChange={handleChange}
                 required
@@ -270,7 +270,7 @@ export default function AddClient() {
             <label>
               Gender:{'    '}
               <select
-                className="add-client-text"
+                className="form-text"
                 name="gender"
                 onChange={handleChange}
                 required
@@ -293,7 +293,7 @@ export default function AddClient() {
                   Assign Therapist:
                   <select
                     id="therapist-select-add-client"
-                    className="add-client-text"
+                    className="form-text"
                     name="therapistId"
                     onChange={handleChange}
                   >
