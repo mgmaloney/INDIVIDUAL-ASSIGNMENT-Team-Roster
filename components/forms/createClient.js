@@ -33,8 +33,9 @@ const StyledBackdrop = styled(Backdrop)`
 const style = (theme) => ({
   width: 400,
   borderRadius: '12px',
-  padding: '16px 32px 24px 32px',
+  padding: '0px 20px 24px 20px',
   backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : 'white',
+  color: '#267ccb',
   boxShadow: `0px 2px 24px ${
     theme.palette.mode === 'dark' ? '#000' : '#383838'
   }`,
@@ -135,7 +136,7 @@ export default function AddClient() {
           </h2>
           <form className="client-form" onSubmit={handleSubmit}>
             <label>
-              First Name
+              First Name:{'    '}
               <input
                 className="add-client-text"
                 type="text"
@@ -146,7 +147,7 @@ export default function AddClient() {
               />
             </label>
             <label>
-              Last Name
+              Last Name:{'    '}
               <input
                 className="add-client-text"
                 type="text"
@@ -157,7 +158,7 @@ export default function AddClient() {
               />
             </label>
             <label>
-              Phone Number
+              Phone Number:{'    '}
               <input
                 className="add-client-text"
                 type="tel"
@@ -168,51 +169,52 @@ export default function AddClient() {
               />
             </label>
             <label>
-              Email
+              Email:{'    '}
               <input
                 type="email"
                 name="email"
+                className="add-client-text"
                 value={formInput?.email}
                 onChange={handleChange}
                 required
               />
             </label>
             <label>
-              Address Line 1
+              Address Line 1:{'    '}
               <input
                 type="text"
                 name="address1"
-                className="addressLine"
+                className="addressLine add-client-text"
                 value={formInput?.address1}
                 onChange={handleChange}
                 required
               />
             </label>
             <label>
-              Address Line 2
+              Address Line 2:{'    '}
               <input
                 type="text"
                 name="address2"
-                className="addressLine"
+                className="addressLine add-client-text"
                 value={formInput?.address2}
                 onChange={handleChange}
               />
             </label>
             <label>
-              City
+              City:{'    '}
               <input
                 type="text"
                 name="city"
-                className="addressLine"
+                className="addressLine add-client-text"
                 value={formInput?.city}
                 onChange={handleChange}
               />
             </label>
             <label>
-              State
+              State:{'    '}
               <select
                 name="state"
-                className="stateSelect"
+                className="stateSelect add-client-text"
                 value={formInput?.state}
                 onChange={handleChange}
                 required
@@ -228,7 +230,7 @@ export default function AddClient() {
               </select>
             </label>
             <label>
-              Zipcode
+              Zipcode:{'    '}
               <input
                 className="add-client-text"
                 name="zipcode"
@@ -240,18 +242,24 @@ export default function AddClient() {
               />
             </label>
             <label>
-              Birthdate
+              Birthdate:{'    '}
               <input
                 type="date"
                 name="birthDate"
+                className="add-client-text birthdate"
                 value={formInput?.birthDate}
                 onChange={handleChange}
                 required
               />
             </label>
             <label>
-              Sex
-              <select name="sex" onChange={handleChange} required>
+              Sex:{'    '}
+              <select
+                className="add-client-text"
+                name="sex"
+                onChange={handleChange}
+                required
+              >
                 <option disabled selected={!formInput?.sex}>
                   Select an option
                 </option>
@@ -260,8 +268,13 @@ export default function AddClient() {
               </select>
             </label>
             <label>
-              Gender
-              <select name="gender" onChange={handleChange} required>
+              Gender:{'    '}
+              <select
+                className="add-client-text"
+                name="gender"
+                onChange={handleChange}
+                required
+              >
                 <option disabled selected={!formInput?.gender}>
                   Select an option
                 </option>
@@ -280,6 +293,7 @@ export default function AddClient() {
                   Assign Therapist:
                   <select
                     id="therapist-select-add-client"
+                    className="add-client-text"
                     name="therapistId"
                     onChange={handleChange}
                   >
@@ -298,9 +312,11 @@ export default function AddClient() {
                 ''
               )}
             </div>
-            <button className="done-btn" type="submit">
-              Submit
-            </button>
+            <div className="submit">
+              <button className="done-btn submit" type="submit">
+                Submit
+              </button>{' '}
+            </div>{' '}
           </form>
         </Box>
       </StyledModal>

@@ -24,6 +24,10 @@ p {
   color: #267ccb;
 }
 
+.modal-title {
+  margin-bottom: 0.25rem;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
@@ -86,6 +90,11 @@ p {
 .email {
   color: #267ccb;
   text-decoration: underline;
+}
+
+.client-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .client-card-clients {
@@ -208,6 +217,7 @@ p {
   border-radius: 10%;
   padding: 0.5rem;
   font-size: 1rem;
+  margin-top: 0.75rem;
 }
 .ov-header-note {
   width: 100%;
@@ -300,6 +310,30 @@ p {
   border-bottom: solid 3px #e1daecaf;
   margin: 1.5rem 0rem;
   padding: 1rem;
+}
+
+label {
+  font-size: 1.25rem;
+  margin: 0.3rem 0.2rem;
+}
+
+select {
+  font-size: 1.1rem;
+}
+
+.submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.birthdate {
+  font-size: 1rem;
+}
+.add-client-text {
+  width: -webkit-fill-available;
+  font-size: 1.25rem;
+  border: solid 3px #a5b1e8;
+  padding: 0.1rem 1rem;
 }
 
 .edit-chartnote-form {
