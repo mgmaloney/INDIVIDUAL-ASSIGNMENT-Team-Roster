@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useContext, useEffect, useState } from 'react';
 import TherapistContext from '../utils/context/therapistContext';
 import {
@@ -52,11 +54,12 @@ export default function UnsignedNotes() {
 
   const handlePageClick = (e) => {
     setPage(e.target.id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <>
-      <h2>Unsigned Notes: </h2>
+      <h2 className="list-header s">Unsigned Notes: </h2>
       {displayingUnsigned &&
         displayingUnsigned.map((unsignedNote) => (
           <UnsignedNoteCard noteObj={unsignedNote} />

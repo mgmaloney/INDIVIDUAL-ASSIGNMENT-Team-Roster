@@ -5,8 +5,6 @@ import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { getAllSupervisors } from '../../utils/databaseCalls/supervisorData';
 import {
   createTherapist,
@@ -31,8 +29,9 @@ const StyledBackdrop = styled(Backdrop)`
 const style = (theme) => ({
   width: 400,
   borderRadius: '12px',
-  padding: '16px 32px 24px 32px',
+  padding: '0px 20px 24px 20px',
   backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : 'white',
+  color: '#267ccb',
   boxShadow: `0px 2px 24px ${
     theme.palette.mode === 'dark' ? '#000' : '#383838'
   }`,
@@ -122,58 +121,54 @@ export default function CreateTherapistUser() {
       >
         <Box sx={style}>
           <h2 className="page-header">Create New Therapist Account</h2>
-          <Form onSubmit={handleSubmit}>
-            {/* FIRST NAME FIELD */}
-            <Form.Group className="mb-3" controlId="firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
+          <form className="form-modal" onSubmit={handleSubmit}>
+            <label>
+              First Name:
+              <input
+                className="form-text"
                 name="firstName"
                 required
                 value={formData.firstName}
                 onChange={handleChange}
               />
-              <Form.Text className="text-muted" />
-            </Form.Group>
-
-            {/* LAST NAME FIELD */}
-            <Form.Group className="mb-3" controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
+            </label>
+            <label>
+              Last Name:
+              <input
+                className="form-text"
                 name="lastName"
                 required
                 value={formData.lastName}
                 onChange={handleChange}
               />
-              <Form.Text className="text-muted" />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email: </Form.Label>
-              <Form.Control
+            </label>
+            <label>
+              Email:
+              <input
+                className="form-text"
                 name="email"
                 required
                 value={formData.email}
                 onChange={handleChange}
               />
-              <Form.Text className="text-muted" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="supervisorId">
-              <Form.Label>
-                Is this {editingTherapist ? '' : 'new'} therapist a supervisor?
-              </Form.Label>
-              <Form.Check
+            </label>
+            <label>
+              Is this {editingTherapist ? '' : 'new'} therapist a supervisor?
+              <input
+                className="form-text modal-check"
+                type="checkbox"
                 aria-label="Supervisor?"
                 name="isSupervisor"
-                type="switch"
                 onChange={handleSupervisor}
                 value={isSupervisor}
                 checked={isSupervisor}
               />
-            </Form.Group>
+            </label>
             {!isSupervisor ? (
-              <Form.Group className="mb-3" controlId="supervisorId">
-                <Form.Label>Choose Supervisor</Form.Label>
-                <Form.Select
+              <label>
+                Choose Supervisor:
+                <select
+                  className="form-text"
                   aria-label="Supervisor"
                   name="supervisorId"
                   onChange={handleChange}
@@ -189,16 +184,15 @@ export default function CreateTherapistUser() {
                       {`${supervisor.firstName} ${supervisor.lastName}`}
                     </option>
                   ))}
-                </Form.Select>
-              </Form.Group>
+                </select>
+              </label>
             ) : (
               ''
             )}
-
-            <Button variant="primary" type="submit">
+            <button className="done-btn" type="submit">
               Submit
-            </Button>
-          </Form>
+            </button>
+          </form>
         </Box>
       </StyledModal>
     </>

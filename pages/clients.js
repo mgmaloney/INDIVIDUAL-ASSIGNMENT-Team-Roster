@@ -193,17 +193,25 @@ export default function ClientsPage({ viewClients, page }) {
     <>
       <div className="header-search">
         <div className="list-header-div">
-          <h3 className="list-header">{clientsLabel()}</h3>
+          <h3
+            className={
+              page !== 'viewTherapist' ? 'list-header' : 'list-header-therapist'
+            }
+          >
+            {clientsLabel()}
+          </h3>
         </div>
         <div className="search-sort">
           <select className="active-sort" onChange={handleActiveSort}>
             <option value="active" defaultValue="active">
-              {therapist?.supervisor ? 'Your' : ''} Active Clients
+              {therapist?.supervisor && page !== 'viewTherapist' ? 'Your' : ''}{' '}
+              Active Clients
             </option>
             <option value="inactive">
-              {therapist?.supervisor ? 'Your' : ''} Inactive Clients
+              {therapist?.supervisor && page !== 'viewTherapist' ? 'Your' : ''}{' '}
+              Inactive Clients
             </option>
-            {therapist?.admin ? (
+            {therapist?.admin && page !== 'viewTherapist' ? (
               <>
                 <option value="your-active-clients">Your Active Clients</option>
                 <option value="your-inactive-clients">

@@ -63,13 +63,17 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
               {therapistObj.firstName} {therapistObj.lastName}
             </p>
           </Link>
-          <button
-            type="button"
-            className="therapist-nav-link edit-therapists-page"
-            onClick={handleEdit}
-          >
-            Edit
-          </button>
+          {therapist?.admin ? (
+            <button
+              type="button"
+              className="therapist-nav-link edit-therapists-page"
+              onClick={handleEdit}
+            >
+              Edit
+            </button>
+          ) : (
+            ''
+          )}
         </div>
         <div className="therapist-email">
           <p>

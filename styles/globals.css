@@ -20,6 +20,14 @@ body {
   background-color: white;
 }
 
+p {
+  color: #267ccb;
+}
+
+.modal-title {
+  margin-bottom: 0.25rem;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
@@ -82,6 +90,11 @@ body {
 .email {
   color: #267ccb;
   text-decoration: underline;
+}
+
+.form-modal {
+  display: flex;
+  flex-direction: column;
 }
 
 .client-card-clients {
@@ -204,6 +217,7 @@ body {
   border-radius: 10%;
   padding: 0.5rem;
   font-size: 1rem;
+  margin-top: 0.75rem;
 }
 .ov-header-note {
   width: 100%;
@@ -298,6 +312,38 @@ body {
   padding: 1rem;
 }
 
+label {
+  font-size: 1.25rem;
+  margin: 0.3rem 0.2rem;
+}
+
+select {
+  font-size: 1.1rem;
+  border: solid 3px #a5b1e8;
+  border-radius: 5px;
+}
+
+.submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.birthdate {
+  font-size: 1rem;
+}
+.form-text {
+  width: -webkit-fill-available;
+  font-size: 1.25rem;
+  border: solid 3px #a5b1e8;
+  padding: 0.1rem 1rem;
+}
+
+.modal-check {
+  width: 1rem;
+  margin: 0rem 1rem;
+  height: 1rem;
+}
+
 .edit-chartnote-form {
   border: none;
   margin: 0px;
@@ -340,6 +386,7 @@ body {
   flex-direction: column;
   margin: 0.5rem 0rem;
   font-weight: 600;
+  color: #267ccb;
 }
 
 .DAP-text {
@@ -360,7 +407,7 @@ body {
 .upcoming-apts {
   border: solid 2px #e1daecaf;
   margin: 0.5rem 0rem;
-  padding: 0.25rem;
+  padding: 0.75rem;
 }
 
 .therapist-card {
@@ -401,14 +448,12 @@ body {
 .view-therapist-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 0rem 1rem;
-  width: 85%;
+  align-items: flex-start;
+  /* margin: 0rem 1rem; */
+  width: 100%;
+  border-bottom: solid 2px #e1daecaf;
 }
-
 .view-therapist-header * {
-  margin: 1rem 0rem;
-  padding: 0.2rem;
 }
 
 .therapist-body-container {
@@ -418,7 +463,7 @@ body {
 }
 
 .therapist-clients {
-  margin-left: 1.3rem;
+  /* margin-left: 1.3rem; */
 }
 
 .header-search {
@@ -431,10 +476,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 1.5rem 0rem;
 }
 
-.list-header {
-  margin: 0rem;
+.list-header-div-no-clients {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1.5rem 0rem;
+}
+
+.list-header-therapist {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #267ccb;
 }
 
 .search-sort {
@@ -449,6 +505,8 @@ body {
   margin: 0rem 0.5rem;
   height: 2rem;
   font-size: 1rem;
+  border: solid 3px #a5b1e8;
+  border-radius: 5px;
 }
 
 .active-select-container {
@@ -467,7 +525,8 @@ body {
 }
 
 .side-component {
-  border: solid 1px black;
+  border: solid 2px #e1daecaf;
+  margin: 0rem 1.5rem;
   padding: 0.5rem;
 }
 
@@ -485,23 +544,37 @@ body {
   text-decoration: underline;
 }
 
+.is-supervisor-view-therapist {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem;
+}
+
+.is-supervisor-view-therapist * {
+  margin: 0rem;
+}
+
 .supervisees {
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  padding: 0rem 2.5rem;
 }
 
 .main-therapist-overview {
   display: flex;
   flex-direction: column;
+  width: 75%;
 }
 
 .side-components {
-  margin-top: 3rem;
 }
 
 .apt-details {
-  border: solid black 1px;
-  padding: 0.75rem;
+  border: solid 2px #e1daecaf;
+  padding: 1rem;
+  color: #267ccb;
+  height: 50%;
 }
 
 .apt-info-span {
@@ -510,10 +583,18 @@ body {
 
 .current-apt-info {
   margin-left: 0.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.2rem;
+  border-bottom: solid 2px #e1daecaf;
+}
+.apt-info-header {
+  font-size: 1rem;
+  margin: 0rem;
 }
 
 .next-prev-head {
   font-size: 0.75rem;
+  font-weight: bold;
 }
 
 .prev-apt,
@@ -521,16 +602,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: solid black 1px;
+  border: solid 2px #e1daecaf;
+  color: #267ccb;
   padding: 0.5rem;
   margin: 0.5rem 0rem;
   cursor: pointer;
+  height: 15%;
 }
 
 .apt-arrow {
   font-size: 3rem;
   color: grey;
   opacity: 60%;
+  margin: 0rem;
 }
 
 .view-edit-note {
@@ -540,7 +624,7 @@ body {
 }
 
 .note-containers {
-  width: 100%;
+  width: 80%;
 }
 
 .DAPForm-container {
@@ -556,11 +640,13 @@ body {
 .psychnote {
   display: flex;
   flex-direction: column;
+  margin-right: 1rem;
 }
 
 .psychnote-label {
   margin: 0.5rem 0rem;
   font-weight: 600;
+  color: #267ccb;
 }
 
 .psychnote-text {
@@ -569,13 +655,62 @@ body {
   margin: 1rem 0rem;
 }
 
+.psychnote-btns {
+  display: flex;
+  justify-content: flex-end;
+}
 .unsigned-note-card {
-  border: solid black 1px;
-  margin: 1rem 0rem;
+  border-top: solid 2px #e1daecaf;
+  border-bottom: solid 2px #e1daecaf;
+  margin: 0.5rem 0rem;
+  display: flex;
+  justify-content: space-between;
 }
 
-.unsigned-thera-status {
+.unsigned-note-details {
+  font-size: 1.15rem;
+}
+
+.unsigned-note-details:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.unsigned-date {
+  margin: 0rem 1rem;
+}
+
+.unsigned-note-card * {
+  color: #267ccb;
+}
+.unsigned-providers {
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.unsigned-status {
+  display: flex;
+  justify-content: space-between;
+}
+.unsigned-status-supervisor {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.prov-sig {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.sig {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem 1rem;
+}
+
+.sig * {
+  margin: 0.25rem;
 }
 
 .page-numbers-container {

@@ -32,7 +32,7 @@ export default function UpcomingAppointments({ apts }) {
         {upcomingApts.length > 0 &&
           upcomingApts?.map((apt) => (
             <p
-              className="upcoming-apt client-nav-link"
+              className="client-nav-link"
               onClick={() => {
                 setOpenModal(true);
                 setSelectedApt(apt);
@@ -41,6 +41,13 @@ export default function UpcomingAppointments({ apts }) {
               {format(new Date(apt.start), 'MM/dd/yyyy H:mm a')}
             </p>
           ))}
+        {upcomingApts.length === 0 ? (
+          <>
+            <p className="upcoming-apt">No Upcoming Appointments</p>
+          </>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );
