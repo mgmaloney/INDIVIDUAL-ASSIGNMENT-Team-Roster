@@ -51,8 +51,9 @@ const StyledBackdrop = styled(Backdrop)`
 const style = (theme) => ({
   width: 400,
   borderRadius: '12px',
-  padding: '16px 32px 24px 32px',
+  padding: '0px 20px 24px 20px',
   backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : 'white',
+  color: '#267ccb',
   boxShadow: `0px 2px 24px ${
     theme.palette.mode === 'dark' ? '#000' : '#383838'
   }`,
@@ -280,41 +281,45 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                   onChange={(e) => setAptRadio(e.target.value)}
                 />
               </label>
+
               {aptRadio === 'client' ? (
-                <Autocomplete
-                  id="client-autocomplete"
-                  options={activeClients}
-                  // sx={{ width: 50 }}
-                  getOptionLabel={(option) => {
-                    if (option.firstName) {
-                      return `${option.firstName} ${option.lastName}`;
+                <div className="select-client">
+                  <Autocomplete
+                    id="client-autocomplete"
+                    options={activeClients}
+                    // sx={{ width: 50 }}
+                    getOptionLabel={(option) => {
+                      if (option.firstName) {
+                        return `${option.firstName} ${option.lastName}`;
+                      }
+                      return '';
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Add Client"
+                        size="small"
+                        required
+                      />
+                    )}
+                    onChange={(event, newValue) => {
+                      setSelectedClientObj(newValue);
+                    }}
+                    value={
+                      selectedClientObj.clientId ? { ...selectedClientObj } : ''
                     }
-                    return '';
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Add Client"
-                      size="small"
-                      required
-                    />
-                  )}
-                  onChange={(event, newValue) => {
-                    setSelectedClientObj(newValue);
-                  }}
-                  value={
-                    selectedClientObj.clientId ? { ...selectedClientObj } : ''
-                  }
-                />
+                  />
+                </div>
               ) : (
-                <input type="text" placeholder="Add title" required />
+                <div className="other-apt-title">
+                  <input type="text" placeholder="Add title" required />
+                </div>
               )}
               {therapist.admin ? (
                 <div className="select-therapist">
                   <Autocomplete
                     id="therapists-autocomplete"
                     options={therapists}
-                    // sx={{ width: 50 }}
                     getOptionLabel={(option) => {
                       if (option.firstName) {
                         return `${option.firstName} ${option.lastName}`;
@@ -343,23 +348,30 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                 ''
               )}
               <>
-                <div className="datepick-and-mins">
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      value={startDate}
-                      onChange={(newValue) => setStartDate(newValue)}
-                      slotProps={{ textField: { size: 'small' } }}
-                    />
-                  </LocalizationProvider>
-                  <label>
-                    <input
-                      type="text"
-                      value={length}
-                      onChange={(e) => setLength(e.target.value)}
-                      required
-                    />
-                    min
-                  </label>
+                <div className="datepick-mins">
+                  <div className="datepick">
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        value={startDate}
+                        onChange={(newValue) => setStartDate(newValue)}
+                        slotProps={{
+                          textField: { size: 'small' },
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className="mins-container">
+                    <label className="mins-label">
+                      <input
+                        className="mins"
+                        type="number"
+                        value={length}
+                        onChange={(e) => setLength(e.target.value)}
+                        required
+                      />
+                      <span className="min-span">mins</span>
+                    </label>
+                  </div>
                 </div>
               </>
               <>
@@ -374,7 +386,7 @@ export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
                   )}
                   <div className="cancel-done-btns">
                     <button
-                      className="cancel-btn"
+                      className="done-btn"
                       type="button"
                       onClick={handleClose}
                     >

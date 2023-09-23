@@ -29,7 +29,7 @@ export default function NavBar() {
     <>
       <nav className="navbar">
         <Link passHref href="/">
-          Phiel
+          <span className="logo">PHIEL</span>
         </Link>
         <ul className="nav-list">
           <div className="nav-btns">
