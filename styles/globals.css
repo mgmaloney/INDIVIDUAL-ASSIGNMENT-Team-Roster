@@ -28,6 +28,32 @@ p {
   margin-bottom: 0.25rem;
 }
 
+.login-wrapper {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  padding: 7rem;
+  border: solid 5px #a5b1e8;
+  letter-spacing: 0.3rem;
+}
+
+.login-logo {
+  color: #a5b1e8;
+}
+
+.login-text {
+  color: #a5b1e8;
+  font-weight: 600;
+  font-size: 1.75rem;
+  width: 100%;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
