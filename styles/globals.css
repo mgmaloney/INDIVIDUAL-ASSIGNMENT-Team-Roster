@@ -293,6 +293,11 @@ p {
   text-decoration: underline;
 }
 
+.note-title-progress:hover {
+  color: grey;
+  cursor: pointer;
+}
+
 .note-date {
   font-size: 1rem;
 }
