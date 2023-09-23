@@ -17,6 +17,12 @@ export default function NoteCard({
   const [editingChartNote, setEditingChartNote] = useState(false);
   const [isShowingMore, setIsShowMore] = useState(false);
 
+  const handleProgressNoteClick = () => {
+    if (noteObj.type === 'appointment') {
+      router.push(`/client/progressnote/edit/${noteObj.noteId}`);
+    }
+  };
+
   const handleShowMoreClick = () => {
     if (isShowingMore) {
       setIsShowMore(false);
@@ -151,7 +157,14 @@ export default function NoteCard({
 
   return (
     <div className={isShowingMore ? 'note-card-showing-more' : 'note-card'}>
-      <h4 className="note-title">
+      <h4
+        className={
+          noteObj.type === 'appointment'
+            ? 'note-title note-title-progress'
+            : 'note-title'
+        }
+        onClick={handleProgressNoteClick}
+      >
         {noteObj.title}{' '}
         {noteObj.type === 'appointment' ? `#${numberOfApt}` : ''}
       </h4>

@@ -56,18 +56,20 @@ export default function SideBar() {
         ) : (
           ''
         )}
-        <div>
+        <div className="unsigned-notes">
           <Link passHref href="/unsignednotes">
             Unsigned Notes
           </Link>
-          <p className="badge">{unsignedNotes.length}</p>
+          <div className="badge-div">
+            <p className="badge">{unsignedNotes.length}</p>
+          </div>
         </div>
-        <Link passHref href="/reminders">
+        {/* <Link passHref href="/reminders">
           Reminders
         </Link>
         <Link passHref href="/settings">
           Settings
-        </Link>
+        </Link> */}
       </div>
     </>
   );

@@ -28,6 +28,61 @@ p {
   margin-bottom: 0.25rem;
 }
 
+.login-wrapper {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  padding: 7rem;
+  border: solid 5px #a5b1e8;
+  letter-spacing: 0.3rem;
+}
+
+.login-logo {
+  color: #a5b1e8;
+}
+
+.login-text {
+  color: #a5b1e8;
+  font-weight: 600;
+  font-size: 1.75rem;
+  width: 100%;
+}
+
+.thera-check-wrapper {
+  margin-top: 10rem;
+}
+
+.therapist-check-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.thera-check-head {
+  color: #267ccb;
+}
+
+.thera-check-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.thera-check-items label {
+  color: #267ccb;
+}
+
+.thera-check-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
@@ -43,6 +98,39 @@ p {
 .sidebar-main * {
   margin: 0.5rem 3rem;
   color: #267ccb;
+  font-size: 1.5rem;
+}
+
+.sidebar-main > a:hover,
+.unsigned-notes > a:hover {
+  color: grey;
+}
+
+.unsigned-notes {
+  margin: 0rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.unsigned-notes * {
+  margin: 0.5rem 0rem;
+  padding: 0.5rem 0rem;
+}
+
+.badge-div {
+  display: flex;
+  align-items: flex-end;
+  padding: 0rem;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 10%;
+  padding: 0rem;
+  font-size: 0.75rem;
+  margin: 0rem 0.25rem;
 }
 
 .navbar {
@@ -68,12 +156,21 @@ p {
 .nav-btn {
   border: transparent solid 1px;
   background-color: transparent;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  color: white;
 }
 
-.badge {
-  background-color: red;
+.nav-btn:hover,
+.logo:hover {
+  color: grey;
+  cursor: pointer;
+}
+
+.logo {
+  margin: 0rem 4rem;
+  font-size: 2rem;
   color: white;
+  letter-spacing: 0.3rem;
 }
 
 .main-wrapper {
@@ -194,6 +291,11 @@ p {
 
 .note-title:hover {
   text-decoration: underline;
+}
+
+.note-title-progress:hover {
+  color: grey;
+  cursor: pointer;
 }
 
 .note-date {
@@ -761,3 +863,61 @@ select {
   justify-content: flex-end;
   margin: 1rem 2rem 0rem 0rem;
 }
+
+.add-appointment-modal > div {
+  margin: 1rem 0rem;
+}
+
+.datepick-mins {
+  display: flex;
+  align-items: flex-start;
+}
+
+.mins-container {
+  display: flex;
+  margin: 0rem;
+  justify-content: space-between;
+}
+
+.mins {
+  height: 2.5rem;
+  width: 35%;
+  font-size: large;
+}
+
+input[type='num'] {
+}
+
+.mins-label {
+  margin: 0rem 0.25rem;
+  border: grey;
+}
+
+.min-span {
+  margin-left: 0.25rem;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: max-content;
+}
+
+.cancel-done-btns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-done-btns > button {
+  margin: 0rem 0.25rem;
+}
+
+.btm-apt-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .sidebar-main a {
+  background-color: #a5b1e8;
+  width: 100%;
+  height: ;
+} */
