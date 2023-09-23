@@ -104,35 +104,55 @@ export default function TherapistCheckForm() {
   if (!submitted) {
     return (
       <>
-        <h1>Please enter your information: </h1>
-        <form className="therapist-check-form" onSubmit={handleSubmit}>
-          <label>
-            First Name
-            <input type="text" name="firstName" onChange={handleChange} />
-          </label>
-          <label>
-            Last Name
-            <input type="text" name="lastName" onChange={handleChange} />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" onChange={handleChange} />
-          </label>
-          <label>
-            Practice Name
-            <input type="text" name="practiceName" onChange={handleChange} />
-          </label>
-          <label>
-            Practice Registration Password
-            <input type="password" name="regPassword" onChange={handleChange} />
-          </label>
-          <button onClick={handleSubmit} type="button">
-            Submit
-          </button>
-        </form>
-        <Button variant="danger" onClick={signOut}>
-          Leave this page.
-        </Button>
+        <div className="thera-check-wrapper">
+          <form className="therapist-check-form" onSubmit={handleSubmit}>
+            <h1 className="thera-check-head">
+              Please enter your information:{' '}
+            </h1>
+            <div className="thera-check-items">
+              <label>
+                First Name:{' '}
+                <input type="text" name="firstName" onChange={handleChange} />
+              </label>
+              <label>
+                Last Name:{' '}
+                <input type="text" name="lastName" onChange={handleChange} />
+              </label>
+              <label>
+                Email:{' '}
+                <input type="email" name="email" onChange={handleChange} />
+              </label>
+              <label>
+                Practice Name:{' '}
+                <input
+                  type="text"
+                  name="practiceName"
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Practice Registration Password:{' '}
+                <input
+                  type="password"
+                  name="regPassword"
+                  onChange={handleChange}
+                />
+              </label>
+              <div className="thera-check-btns">
+                <button type="button" className="done-btn" onClick={signOut}>
+                  Leave this page.
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  type="button"
+                  className="done-btn"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </>
     );
   }

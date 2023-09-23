@@ -54,6 +54,35 @@ p {
   width: 100%;
 }
 
+.thera-check-wrapper {
+  margin-top: 10rem;
+}
+
+.therapist-check-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.thera-check-head {
+  color: #267ccb;
+}
+
+.thera-check-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.thera-check-items label {
+  color: #267ccb;
+}
+
+.thera-check-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
 .sidebar-main {
   position: sticky;
   display: flex;
