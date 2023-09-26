@@ -20,6 +20,7 @@ import { getAppointmentsByClientId } from '../../utils/databaseCalls/calendarDat
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
 import UpcomingAppointments from '../../components/upcomingAppointments';
 import OpenAptModalContext from '../../utils/context/selectedAptContext';
+import AppointmentsContext from '../../utils/context/appointmentsContext';
 
 export default function ClientOverView() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function ClientOverView() {
   const { setOpenClientModal, setEditingClient } = useContext(
     OpenClientModalContext,
   );
+  const { appointments } = useContext(AppointmentsContext);
   const { openModal, setOpenModal, setSelectedApt } =
     useContext(OpenAptModalContext);
   const [client, setClient] = useState({});
@@ -45,22 +47,23 @@ export default function ClientOverView() {
     }
   };
 
-  const getAndSetClientAptsAndAptNotes = async () => {
-    const allClientNotes = await getAllClientNotes(clientId);
-    const clientAptNotes = await getAllClientAppointmentNotes(clientId);
-    const clientAppointments = await getAppointmentsByClientId(clientId);
-    setClientNotes(allClientNotes);
-    setAptNotes(clientAptNotes);
-    setClientApts(clientAppointments);
-  };
-
   useEffect(() => {
     getClientByClientId(clientId).then(setClient);
   }, [clientId]);
 
   useEffect(() => {
+    async function getAndSetClientAptsAndAptNotes() {
+      const allClientNotes = await getAllClientNotes(clientId);
+      const clientAptNotes = await getAllClientAppointmentNotes(clientId);
+      const clientAppointments = appointments.filter(
+        (appointment) => appointment.clientId === clientId,
+      );
+      setClientNotes(allClientNotes);
+      setAptNotes(clientAptNotes);
+      setClientApts(clientAppointments);
+    }
     getAndSetClientAptsAndAptNotes();
-  }, []);
+  }, [clientId, appointments]);
 
   useEffect(() => {
     setSortedNotes(
@@ -145,7 +148,9 @@ export default function ClientOverView() {
         <div className="ov-header-note">
           <div className="client-page-header">
             <div className="overview-name">
-              <h2>{client.firstName} {client.lastName}</h2>
+              <h2>
+                {client.firstName} {client.lastName}
+              </h2>
             </div>
             <div className="client-nav">
               <div className="birth-age">

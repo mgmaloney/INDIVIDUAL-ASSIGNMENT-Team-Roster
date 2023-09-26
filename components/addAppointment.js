@@ -103,7 +103,14 @@ export default function AddAppointment({ selectedCalDate }) {
       setAptName(selectedApt.title);
       setLength(selectedApt.length);
     }
-  }, [selectedApt.appointmentId]);
+  }, [
+    selectedApt.appointmentId,
+    selectedApt.start,
+    selectedApt.end,
+    selectedApt.type,
+    selectedApt.title,
+    selectedApt.length,
+  ]);
 
   useEffect(() => {
     if (selectedApt?.clientId) {
