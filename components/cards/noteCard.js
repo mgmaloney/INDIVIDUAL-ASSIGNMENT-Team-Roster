@@ -178,7 +178,7 @@ export default function NoteCard({
               type="button"
               onClick={handleShowMoreClick}
             >
-              Show More
+              {isShowingMore ? 'Show Less' : 'Show More'}
             </button>
           )}
         </>

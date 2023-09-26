@@ -32,7 +32,7 @@ export default function UpcomingAppointments({ apts }) {
         {upcomingApts.length > 0 &&
           upcomingApts?.map((apt) => (
             <p
-              className="client-nav-link"
+              className="client-nav-link upcoming-apt-link"
               onClick={() => {
                 setOpenModal(true);
                 setSelectedApt(apt);

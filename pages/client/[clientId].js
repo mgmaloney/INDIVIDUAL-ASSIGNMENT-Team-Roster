@@ -160,9 +160,13 @@ export default function ClientOverView() {
                 </h6>
               </div>
               <div className="schedule-edit">
-                <p onClick={changeModalState} className="client-nav-link">
+                <button
+                  type="button"
+                  onClick={changeModalState}
+                  className="client-nav-link edit-clients-page"
+                >
                   Schedule Now
-                </p>
+                </button>
                 <button
                   type="button"
                   onClick={handleEdit}
