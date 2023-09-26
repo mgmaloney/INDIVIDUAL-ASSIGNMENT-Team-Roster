@@ -92,13 +92,17 @@ export default function TherapistCard({ therapistObj, onTherapistUpdate }) {
         </div>
         {therapist.admin && (
           <div className="active-select-container">
-            <select onChange={handleActive} className="active-select">
-              <option value="active" selected={therapistObj.active}>
-                {therapistObj.active ? 'Active' : 'Mark Active'}
+            <select
+              onChange={handleActive}
+              className="active-select"
+              value={therapistObj.active ? 'active' : 'inactive'}
+            >
+              <option value="active">
+                {therapistObj.active ? 'Active' : 'Make Active'}
               </option>
-              <option value="inactive" selected={!therapistObj.active}>
-                {therapistObj.active ? 'Mark Inactive' : 'Inactive'}
-              </option>
+              <option value="inactive">
+                {therapistObj.active ? 'Make Inactive' : 'Inactive'}
+              </option>{' '}
             </select>
           </div>
         )}

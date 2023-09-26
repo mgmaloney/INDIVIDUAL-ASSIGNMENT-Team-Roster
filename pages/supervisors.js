@@ -5,44 +5,39 @@ import TherapistCard from '../components/cards/therapistCard';
 export default function Supervisors() {
   const [supervisors, setSupervisors] = useState([]);
   const [showingSupervisors, setShowingSupervisors] = useState([]);
+  const [sortState, setSortState] = useState('active');
 
   useEffect(() => {
     getAllSupervisors().then(setSupervisors);
   }, []);
 
   useEffect(() => {
-    const activeSupervisors = [];
-    supervisors.forEach((supervisor) => {
-      if (supervisor.active) {
-        activeSupervisors.push(supervisor);
-      }
-    });
-    setShowingSupervisors(activeSupervisors);
-  }, [supervisors]);
-
-  const onSupervisorUpdate = () => {
-    getAllSupervisors().then(setSupervisors);
-  };
-
-  const handleActiveSort = (e) => {
     const updatedShowingSupervisors = [];
-    if (e.target.value === 'active') {
+    if (sortState === 'active') {
       supervisors.forEach((client) => {
         if (client.active) {
           updatedShowingSupervisors.push(client);
         }
       });
       setShowingSupervisors(updatedShowingSupervisors);
-    } else if (e.target.value === 'inactive') {
+    } else if (sortState === 'inactive') {
       supervisors.forEach((client) => {
         if (client.active === false) {
           updatedShowingSupervisors.push(client);
         }
       });
       setShowingSupervisors(updatedShowingSupervisors);
-    } else if (e.target.value === 'all') {
+    } else if (sortState === 'all') {
       setShowingSupervisors(supervisors);
     }
+  }, [supervisors, sortState]);
+
+  const onSupervisorUpdate = () => {
+    getAllSupervisors().then(setSupervisors);
+  };
+
+  const handleActiveSort = (e) => {
+    setSortState(e.target.value);
   };
 
   const handleSearch = (e) => {
