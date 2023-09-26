@@ -405,6 +405,9 @@ p {
 .schedule-edit {
   display: flex;
 }
+.schedule-edit * {
+  margin: 0rem 0.5rem;
+}
 
 .chart-note-form {
   width: 98%;
@@ -495,6 +498,10 @@ select {
   margin: 1rem 0rem;
 }
 
+.DAP-text-note {
+  height: 100%;
+}
+
 .DAP-text {
   height: 5rem;
   margin: 1rem 0rem 0rem 0rem;
@@ -517,7 +524,10 @@ select {
 .upcoming-apts {
   border: solid 2px #e1daecaf;
   margin: 0.5rem 0rem;
-  padding: 0.75rem;
+  padding: 0rem 0.75rem 0.5rem 0.75rem;
+}
+.upcoming-apt-link {
+  margin: 0rem 0rem 0.5rem 0rem;
 }
 
 .therapist-card {

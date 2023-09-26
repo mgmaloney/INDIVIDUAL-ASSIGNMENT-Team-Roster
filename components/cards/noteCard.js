@@ -70,11 +70,11 @@ export default function NoteCard({
         <>
           <div className={isShowingMore ? 'DAP-div-show-more' : 'DAP-div'}>
             <h5 className="DAP-head">Data: </h5>
-            <p className="DAP-text">{noteObj.content.D}</p>
+            <p className="DAP-text-note">{noteObj.content.D}</p>
             <h5 className="DAP-head">Assessment and Response: </h5>
-            <p className="DAP-text">{noteObj.content.A}</p>
+            <p className="DAP-text-note">{noteObj.content.A}</p>
             <h5 className="DAP-head">Plan: </h5>
-            <p className="DAP-text">{noteObj.content.P}</p>
+            <p className="DAP-text-note">{noteObj.content.P}</p>
           </div>
         </>
       );
@@ -178,7 +178,7 @@ export default function NoteCard({
               type="button"
               onClick={handleShowMoreClick}
             >
-              Show More
+              {isShowingMore ? 'Show Less' : 'Show More'}
             </button>
           )}
         </>
