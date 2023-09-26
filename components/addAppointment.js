@@ -23,6 +23,7 @@ import {
   getAllTherapists,
   getTherapistByTherapistId,
 } from '../utils/databaseCalls/therapistData';
+import AppointmentsContext from '../utils/context/appointmentsContext';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -59,9 +60,10 @@ const style = (theme) => ({
   }`,
 });
 
-export default function AddAppointment({ selectedCalDate, onAptUpdate }) {
+export default function AddAppointment({ selectedCalDate }) {
   const { therapist } = useContext(TherapistContext);
   const { therapistClients } = useContext(TherapistClientsContext);
+  const { onAptUpdate } = useContext(AppointmentsContext);
   const { openModal, setOpenModal, selectedApt, setSelectedApt } =
     useContext(OpenAptModalContext);
   const [therapists, setTherapists] = useState([]);

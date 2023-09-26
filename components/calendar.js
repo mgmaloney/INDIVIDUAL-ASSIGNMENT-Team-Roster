@@ -21,6 +21,7 @@ import {
   getSupervisees,
 } from '../utils/databaseCalls/therapistData';
 import TherapistContext from '../utils/context/therapistContext';
+import AppointmentsContext from '../utils/context/appointmentsContext';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,7 +46,8 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-export default function CalendarComp({ setSelectedCalDate, appointments }) {
+export default function CalendarComp({ setSelectedCalDate }) {
+  const { appointments } = useContext(AppointmentsContext);
   const { therapist } = useContext(TherapistContext);
   const { setOpenModal, setSelectedApt } = useContext(OpenAptModalContext);
   const [formattedApts, setFormattedApts] = useState([]);
@@ -221,5 +223,4 @@ export default function CalendarComp({ setSelectedCalDate, appointments }) {
 
 CalendarComp.propTypes = {
   setSelectedCalDate: PropTypes.func.isRequired,
-  appointments: PropTypes.shape([]).isRequired,
 };

@@ -24,7 +24,7 @@ export default function SideBar() {
         setUnsignedNotes,
       );
     }
-  }, [therapist.admin, therapist.supervisor]);
+  }, [therapist.admin, therapist.supervisor, therapist.therapistId]);
 
   return (
     <>

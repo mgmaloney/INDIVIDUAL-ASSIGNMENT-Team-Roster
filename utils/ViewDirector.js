@@ -15,12 +15,14 @@ import {
   getAllClients,
   getClientsByTherapistId,
 } from './databaseCalls/clientData';
+import { getAppointments } from './databaseCalls/calendarData';
 import TherapistClientsContext from './context/therapistClientsContext';
 import OpenClientModalContext from './context/openClientModalContext';
 import OpenTherapistModalContext from './context/openTherapistModalContext';
 import CreateTherapistUser from '../components/forms/createTherapistUser';
 import TherapistCheckForm from '../components/forms/therapistCheck';
 import OpenAptModalContext from './context/selectedAptContext';
+import AppointmentsContext from './context/appointmentsContext';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -35,6 +37,15 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [openTherapistModal, setOpenTherapistModal] = useState(false);
   const [selectedApt, setSelectedApt] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    getAppointments().then(setAppointments);
+  }, [therapist]);
+
+  const onAptUpdate = () => {
+    getAppointments().then(setAppointments);
+  };
 
   useEffect(() => {
     if (user) {
@@ -89,48 +100,50 @@ const ViewDirectorBasedOnUserAuthStatus = ({
           <TherapistClientsContext.Provider
             value={{ therapistClients, setTherapistClients }}
           >
-            <OpenClientModalContext.Provider
-              value={{
-                openClientModal,
-                setOpenClientModal,
-                editingClient,
-                setEditingClient,
-              }}
-            >
-              <OpenTherapistModalContext.Provider
+            <AppointmentsContext.Provider value={{ appointments, onAptUpdate }}>
+              <OpenClientModalContext.Provider
                 value={{
-                  openTherapistModal,
-                  setOpenTherapistModal,
-                  editingTherapist,
-                  setEditingTherapist,
+                  openClientModal,
+                  setOpenClientModal,
+                  editingClient,
+                  setEditingClient,
                 }}
               >
-                <OpenAptModalContext.Provider
+                <OpenTherapistModalContext.Provider
                   value={{
-                    openModal,
-                    setOpenModal,
-                    selectedApt,
-                    setSelectedApt,
+                    openTherapistModal,
+                    setOpenTherapistModal,
+                    editingTherapist,
+                    setEditingTherapist,
                   }}
                 >
-                  {!isNewUser ? (
-                    <>
-                      <NavBar />
-                      <CreateTherapistUser />
-                      <AddClient />
-                      <div className="main-wrapper">
-                        <SideBar />
-                        <div className="main-container">
-                          <Component {...pageProps} />
+                  <OpenAptModalContext.Provider
+                    value={{
+                      openModal,
+                      setOpenModal,
+                      selectedApt,
+                      setSelectedApt,
+                    }}
+                  >
+                    {!isNewUser ? (
+                      <>
+                        <NavBar />
+                        <CreateTherapistUser />
+                        <AddClient />
+                        <div className="main-wrapper">
+                          <SideBar />
+                          <div className="main-container">
+                            <Component {...pageProps} />
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </OpenAptModalContext.Provider>
-              </OpenTherapistModalContext.Provider>
-            </OpenClientModalContext.Provider>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </OpenAptModalContext.Provider>
+                </OpenTherapistModalContext.Provider>
+              </OpenClientModalContext.Provider>
+            </AppointmentsContext.Provider>
           </TherapistClientsContext.Provider>
         </TherapistContext.Provider>
       </>

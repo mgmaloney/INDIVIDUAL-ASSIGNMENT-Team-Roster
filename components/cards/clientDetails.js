@@ -36,7 +36,7 @@ export default function ClientDetailsCard({ clientObj, page }) {
     } else if (!clientObj.active && e.target.value === 'active') {
       if (
         window.confirm(
-          `Make ${clientObj.firstName} ${clientObj.lastName} inactive?`,
+          `Make ${clientObj.firstName} ${clientObj.lastName} active?`,
         )
       ) {
         await updateClient({ clientId: clientObj.clientId, active: true });
