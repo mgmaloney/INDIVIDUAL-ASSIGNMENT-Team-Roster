@@ -491,6 +491,10 @@ select {
   color: #267ccb;
 }
 
+.DAP-head {
+  margin: 1rem 0rem;
+}
+
 .DAP-text {
   height: 5rem;
   margin: 1rem 0rem 0rem 0rem;
@@ -499,6 +503,10 @@ select {
 .DAP-form-btns {
   display: flex;
   justify-content: flex-end;
+}
+
+.DAP-form-btns * {
+  margin: 0rem 0.5rem 0rem 0rem;
 }
 
 .signed-n-shared {
