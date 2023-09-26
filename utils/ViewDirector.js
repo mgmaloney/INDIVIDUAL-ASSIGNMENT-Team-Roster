@@ -16,6 +16,11 @@ import {
   getClientsByTherapistId,
 } from './databaseCalls/clientData';
 import { getAppointments } from './databaseCalls/calendarData';
+import {
+  getAllUnsignedAppointmentNotes,
+  getUnsignedAppointmentNotesSuperVisor,
+  getUnsignedAppointmentNotesTherapist,
+} from './databaseCalls/noteData';
 import TherapistClientsContext from './context/therapistClientsContext';
 import OpenClientModalContext from './context/openClientModalContext';
 import OpenTherapistModalContext from './context/openTherapistModalContext';
@@ -23,6 +28,7 @@ import CreateTherapistUser from '../components/forms/createTherapistUser';
 import TherapistCheckForm from '../components/forms/therapistCheck';
 import OpenAptModalContext from './context/selectedAptContext';
 import AppointmentsContext from './context/appointmentsContext';
+import UnsignedNotesContext from './context/unsignedNotesContext';
 
 const ViewDirectorBasedOnUserAuthStatus = ({
   component: Component,
@@ -38,6 +44,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const [selectedApt, setSelectedApt] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [unsignedNotes, setUnsignedNotes] = useState([]);
 
   useEffect(() => {
     getAppointments().then(setAppointments);
@@ -46,6 +53,36 @@ const ViewDirectorBasedOnUserAuthStatus = ({
   const onAptUpdate = () => {
     getAppointments().then(setAppointments);
   };
+
+  const onSignedUpdate = () => {
+    if (therapist.admin) {
+      getAllUnsignedAppointmentNotes().then(setUnsignedNotes);
+    }
+    if (therapist.supervisor) {
+      getUnsignedAppointmentNotesSuperVisor(therapist.therapistId).then(
+        setUnsignedNotes,
+      );
+    } else {
+      getUnsignedAppointmentNotesTherapist(therapist.therapistId).then(
+        setUnsignedNotes,
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (therapist.admin) {
+      getAllUnsignedAppointmentNotes().then(setUnsignedNotes);
+    }
+    if (therapist.supervisor) {
+      getUnsignedAppointmentNotesSuperVisor(therapist.therapistId).then(
+        setUnsignedNotes,
+      );
+    } else {
+      getUnsignedAppointmentNotesTherapist(therapist.therapistId).then(
+        setUnsignedNotes,
+      );
+    }
+  }, [therapist.admin, therapist.supervisor, therapist.therapistId]);
 
   useEffect(() => {
     if (user) {
@@ -125,21 +162,25 @@ const ViewDirectorBasedOnUserAuthStatus = ({
                       setSelectedApt,
                     }}
                   >
-                    {!isNewUser ? (
-                      <>
-                        <NavBar />
-                        <CreateTherapistUser />
-                        <AddClient />
-                        <div className="main-wrapper">
-                          <SideBar />
-                          <div className="main-container">
-                            <Component {...pageProps} />
+                    <UnsignedNotesContext.Provider
+                      value={{ unsignedNotes, onSignedUpdate }}
+                    >
+                      {!isNewUser ? (
+                        <>
+                          <NavBar />
+                          <CreateTherapistUser />
+                          <AddClient />
+                          <div className="main-wrapper">
+                            <SideBar />
+                            <div className="main-container">
+                              <Component {...pageProps} />
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </UnsignedNotesContext.Provider>
                   </OpenAptModalContext.Provider>
                 </OpenTherapistModalContext.Provider>
               </OpenClientModalContext.Provider>

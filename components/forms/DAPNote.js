@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import {
@@ -7,12 +7,14 @@ import {
   updateNote,
 } from '../../utils/databaseCalls/noteData';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
+import UnsignedNotesContext from '../../utils/context/unsignedNotesContext';
 
 export default function DAPForm({ noteObj }) {
   const [note, setNote] = useState(noteObj);
   const [saved, setSaved] = useState(false);
   const [formInput, setFormInput] = useState({});
   const [client, setClient] = useState();
+  const { onSignedUpdate } = useContext(UnsignedNotesContext);
 
   useEffect(() => {
     setFormInput({
@@ -63,6 +65,7 @@ export default function DAPForm({ noteObj }) {
     alert('Note signed and shared!');
     const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
     setNote(updatedNote);
+    await onSignedUpdate();
   };
 
   return (
