@@ -478,6 +478,10 @@ select {
   margin-top: 0.5rem;
 }
 
+.DAP-text-card {
+  height: 100%;
+}
+
 .DAP-container {
   display: flex;
   flex-direction: column;
