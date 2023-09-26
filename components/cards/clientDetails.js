@@ -138,12 +138,16 @@ export default function ClientDetailsCard({ clientObj, page }) {
           )}
           {page === 'clients' ? (
             <div className="active-select-container">
-              <select onChange={handleActive} className="active-select">
-                <option value="active" defaultValue={`${clientObj.active}`}>
-                  {clientObj.active ? 'Active' : 'Mark Active'}
+              <select
+                onChange={handleActive}
+                className="active-select"
+                defaultValue={clientObj.active ? 'active' : 'inactive'}
+              >
+                <option value="active">
+                  {clientObj.active ? 'Active' : 'Make Active'}
                 </option>
-                <option value="inactive" selected={!clientObj.active}>
-                  {clientObj.active ? 'Mark Inactive' : 'Inactive'}
+                <option value="inactive">
+                  {clientObj.active ? 'Make Inactive' : 'Inactive'}
                 </option>
               </select>
             </div>
