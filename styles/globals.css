@@ -481,6 +481,10 @@ select {
   margin-top: 0.5rem;
 }
 
+.DAP-text-card {
+  height: 100%;
+}
+
 .DAP-container {
   display: flex;
   flex-direction: column;
@@ -573,17 +577,11 @@ select {
   width: 100%;
   border-bottom: solid 2px #e1daecaf;
 }
-.view-therapist-header * {
-}
 
 .therapist-body-container {
   display: flex;
   justify-content: space-between;
   width: 85%;
-}
-
-.therapist-clients {
-  /* margin-left: 1.3rem; */
 }
 
 .header-search {
@@ -685,9 +683,6 @@ select {
   display: flex;
   flex-direction: column;
   width: 75%;
-}
-
-.side-components {
 }
 
 .apt-details {
@@ -903,9 +898,6 @@ select {
   font-size: large;
 }
 
-input[type='num'] {
-}
-
 .mins-label {
   margin: 0rem 0.25rem;
   border: grey;
@@ -933,9 +925,3 @@ input[type='num'] {
   justify-content: space-between;
   align-items: center;
 }
-
-/* .sidebar-main a {
-  background-color: #a5b1e8;
-  width: 100%;
-  height: ;
-} */
