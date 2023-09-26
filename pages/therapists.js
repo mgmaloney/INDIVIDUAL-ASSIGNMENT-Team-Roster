@@ -5,44 +5,39 @@ import TherapistCard from '../components/cards/therapistCard';
 export default function Therapists() {
   const [therapists, setTherapists] = useState([]);
   const [showingTherapists, setShowingTherapists] = useState([]);
+  const [sortState, setSortState] = useState('active');
 
   useEffect(() => {
     getAllTherapists().then(setTherapists);
   }, []);
 
   useEffect(() => {
-    const activeTherapists = [];
-    therapists.forEach((therapist) => {
-      if (therapist.active) {
-        activeTherapists.push(therapist);
-      }
-    });
-    setShowingTherapists(activeTherapists);
-  }, [therapists]);
-
-  const onTherapistUpdate = () => {
-    getAllTherapists().then(setTherapists);
-  };
-
-  const handleActiveSort = (e) => {
     const updatedShowingTherapists = [];
-    if (e.target.value === 'active') {
+    if (sortState === 'active') {
       therapists.forEach((client) => {
         if (client.active) {
           updatedShowingTherapists.push(client);
         }
       });
       setShowingTherapists(updatedShowingTherapists);
-    } else if (e.target.value === 'inactive') {
+    } else if (sortState === 'inactive') {
       therapists.forEach((client) => {
         if (client.active === false) {
           updatedShowingTherapists.push(client);
         }
       });
       setShowingTherapists(updatedShowingTherapists);
-    } else if (e.target.value === 'all') {
+    } else if (sortState === 'all') {
       setShowingTherapists(therapists);
     }
+  }, [therapists, sortState]);
+
+  const onTherapistUpdate = () => {
+    getAllTherapists().then(setTherapists);
+  };
+
+  const handleActiveSort = (e) => {
+    setSortState(e.target.value);
   };
 
   const handleSearch = (e) => {
