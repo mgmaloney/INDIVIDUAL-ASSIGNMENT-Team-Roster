@@ -104,19 +104,18 @@ const ViewDirectorBasedOnUserAuthStatus = ({
 
   const [isNewUser, setIsNewUser] = useState();
 
-  const isNewUserCheck = async () => {
-    const therapists = await getAllTherapists();
-    const matchingTherapist = therapists.find(
-      (therapistChecking) => therapistChecking.uid === user?.uid,
-    );
-    if (matchingTherapist) {
-      setIsNewUser(false);
-    } else {
-      setIsNewUser(true);
-    }
-  };
-
   useEffect(() => {
+    async function isNewUserCheck() {
+      const therapists = await getAllTherapists();
+      const matchingTherapist = therapists.find(
+        (therapistChecking) => therapistChecking.uid === user?.uid,
+      );
+      if (matchingTherapist) {
+        setIsNewUser(false);
+      } else {
+        setIsNewUser(true);
+      }
+    }
     isNewUserCheck();
   }, [user]);
 
