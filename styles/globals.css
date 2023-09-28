@@ -153,6 +153,7 @@ p {
 .nav-btns {
   display: flex;
 }
+
 .nav-btn {
   border: transparent solid 1px;
   background-color: transparent;

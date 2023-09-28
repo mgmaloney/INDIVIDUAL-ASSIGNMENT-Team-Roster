@@ -34,11 +34,6 @@ export default function NavBar() {
         <ul className="nav-list">
           <div className="nav-btns">
             <li>
-              <button type="button" className="nav-btn" onClick={handleSignOut}>
-                Sign Out
-              </button>
-            </li>
-            <li>
               <button
                 type="button"
                 className="nav-btn"
@@ -60,6 +55,11 @@ export default function NavBar() {
             ) : (
               ''
             )}
+            <li>
+              <button type="button" className="nav-btn" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            </li>
           </div>
         </ul>
       </nav>

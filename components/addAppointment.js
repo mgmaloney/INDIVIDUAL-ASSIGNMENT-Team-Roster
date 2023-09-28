@@ -7,7 +7,7 @@ import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { Autocomplete, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { addMinutes } from 'date-fns';
+import { addMinutes, addWeeks } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
@@ -24,6 +24,7 @@ import {
   getTherapistByTherapistId,
 } from '../utils/databaseCalls/therapistData';
 import AppointmentsContext from '../utils/context/appointmentsContext';
+import { createAptSeries } from '../utils/databaseCalls/aptSeriesData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -75,7 +76,10 @@ export default function AddAppointment({ selectedCalDate }) {
   const [selectedTherapistObj, setSelectedTherapistObj] = useState({});
   const [aptName, setAptName] = useState('');
   const [length, setLength] = useState(50);
+  const [isRecurring, setIsRecurring] = useState(false);
   const [aptNote, setAptNote] = useState({});
+  const [frequency, setFrequency] = useState(1);
+  const [events, setEvents] = useState(1);
 
   const handleClose = () => {
     setOpenModal(false);
@@ -169,9 +173,39 @@ export default function AddAppointment({ selectedCalDate }) {
         clientId: selectedClientObj.clientId,
         type: aptRadio,
       };
-      await updateAppointment(payload);
-      handleClose();
-      onAptUpdate();
+      if (isRecurring && !selectedApt.aptSeriesId) {
+        const seriesPayload = {
+          frequency,
+          instances: events,
+          startDate,
+        };
+        const aptSeriesId = await createAptSeries(seriesPayload);
+        await updateAppointment({ ...payload, aptSeriesId, seriesInstance: 1 });
+        const { appointmentId, ...payloadWithoutAptId } = payload;
+        const seriesAptPromises = [];
+        for (let i = 1; i <= events; i++) {
+          const aptPayload = {
+            ...payloadWithoutAptId,
+            aptSeriesId,
+            seriesInstance: i + 1,
+            start: addWeeks(startDate, i * frequency),
+            end: addWeeks(endDate, i * frequency),
+          };
+          const aptPromise = new Promise((resolve, reject) => {
+            createAppointment(aptPayload).then(resolve).catch(reject);
+          });
+          seriesAptPromises.push(aptPromise);
+        }
+        Promise.all(seriesAptPromises)
+          .then((response) => console.warn(response))
+          .catch((error) => console.warn(error));
+        handleClose();
+        onAptUpdate();
+      } else {
+        await updateAppointment(payload);
+        handleClose();
+        onAptUpdate();
+      }
     } else if (selectedApt?.appointmentId && !therapist.admin) {
       const payload = {
         appointmentId: selectedApt.appointmentId,
@@ -183,6 +217,7 @@ export default function AddAppointment({ selectedCalDate }) {
         clientId: selectedClientObj.clientId,
         type: aptRadio,
       };
+
       await updateAppointment(payload);
       handleClose();
       onAptUpdate();
@@ -253,6 +288,30 @@ export default function AddAppointment({ selectedCalDate }) {
         }
       }
     }
+  };
+
+  const handleIsRecurring = () => {
+    if (isRecurring) {
+      setIsRecurring(false);
+    } else {
+      setIsRecurring(true);
+    }
+  };
+
+  const handleFrequency = (e) => {
+    setFrequency(Number(e.target.value));
+  };
+
+  const handleEvents = (e) => {
+    setEvents(Number(e.target.value));
+  };
+
+  const createInstanceOptions = (num) => {
+    const options = [];
+    for (let i = 1; i <= num; i++) {
+      options.push(i);
+    }
+    return options;
   };
 
   // still want to add repeating and full day apt options
@@ -381,6 +440,50 @@ export default function AddAppointment({ selectedCalDate }) {
                       <span className="min-span">mins</span>
                     </label>
                   </div>
+                </div>
+                <div className="recurring-apt-select">
+                  <div className="recurring-checkbox">
+                    <label>
+                      Is this appointment recurring?
+                      <input
+                        type="checkbox"
+                        value={isRecurring}
+                        checked={isRecurring}
+                        onChange={handleIsRecurring}
+                      />
+                    </label>
+                  </div>
+                  {isRecurring && (
+                    <>
+                      <div className="recurring-select-container">
+                        <div className="frequency-container">
+                          <select
+                            className="recurring-select frequency"
+                            onChange={handleFrequency}
+                          >
+                            <option value={1}>Every Week</option>
+                            <option value={2}>Every 2 Weeks</option>
+                            <option value={3}>Every 3 Weeks</option>
+                            <option value={4}>Every 4 Weeks</option>
+                          </select>
+                        </div>
+                        <div className="ends-after-container">
+                          <label>
+                            Ends After
+                            <select
+                              className="recurring-select num-events"
+                              onChange={handleEvents}
+                            >
+                              {createInstanceOptions(50).map((num) => (
+                                <option value={num}>{num}</option>
+                              ))}
+                            </select>
+                            Events
+                          </label>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </>
               <>
