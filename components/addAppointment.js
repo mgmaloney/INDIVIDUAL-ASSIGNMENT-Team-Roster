@@ -9,7 +9,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { addMinutes, addWeeks } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
 import OpenAptModalContext from '../utils/context/selectedAptContext';
@@ -26,7 +25,6 @@ import {
 } from '../utils/databaseCalls/therapistData';
 import AppointmentsContext from '../utils/context/appointmentsContext';
 import { createAptSeries } from '../utils/databaseCalls/aptSeriesData';
-import { clientCredentials } from '../utils/client';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -219,7 +217,7 @@ export default function AddAppointment({ selectedCalDate }) {
         clientId: selectedClientObj.clientId,
         type: aptRadio,
       };
-      
+
       await updateAppointment(payload);
       handleClose();
       onAptUpdate();
