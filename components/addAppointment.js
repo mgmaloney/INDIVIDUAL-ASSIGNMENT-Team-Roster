@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable import/no-extraneous-dependencies */
 import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
@@ -7,14 +9,17 @@ import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { Autocomplete, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { addMinutes, addWeeks } from 'date-fns';
+import { addMinutes, addWeeks, isEqual } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
+import Link from 'next/link';
 import TherapistClientsContext from '../utils/context/therapistClientsContext';
 import TherapistContext from '../utils/context/therapistContext';
 import OpenAptModalContext from '../utils/context/selectedAptContext';
 import {
   createAppointment,
+  deleteAllAptsInSeriesAndSeries,
   deleteAppointment,
+  getAllAppointmentsInSeries,
   updateAppointment,
 } from '../utils/databaseCalls/calendarData';
 import { getClientByClientId } from '../utils/databaseCalls/clientData';
@@ -24,7 +29,11 @@ import {
   getTherapistByTherapistId,
 } from '../utils/databaseCalls/therapistData';
 import AppointmentsContext from '../utils/context/appointmentsContext';
-import { createAptSeries } from '../utils/databaseCalls/aptSeriesData';
+import {
+  createAptSeries,
+  getAptSeries,
+  updateAptSeries,
+} from '../utils/databaseCalls/aptSeriesData';
 
 const selectedAptDefaultState = {
   appointmentId: '',
@@ -80,12 +89,16 @@ export default function AddAppointment({ selectedCalDate }) {
   const [aptNote, setAptNote] = useState({});
   const [frequency, setFrequency] = useState(1);
   const [events, setEvents] = useState(1);
+  const [aptSeries, setAptSeries] = useState({});
 
   const handleClose = () => {
     setOpenModal(false);
     if (setSelectedApt) {
       setSelectedApt(selectedAptDefaultState);
       setSelectedClientObj({});
+      setEvents(1);
+      setFrequency(1);
+      setIsRecurring(false);
     }
   };
 
@@ -115,6 +128,12 @@ export default function AddAppointment({ selectedCalDate }) {
     selectedApt.title,
     selectedApt.length,
   ]);
+
+  useEffect(() => {
+    if (selectedApt.aptSeriesId) {
+      setIsRecurring(true);
+    }
+  }, [selectedApt.aptSeriesId]);
 
   useEffect(() => {
     if (selectedApt?.clientId) {
@@ -160,6 +179,17 @@ export default function AddAppointment({ selectedCalDate }) {
     getAllTherapists().then(setTherapists);
   }, []);
 
+  useEffect(() => {
+    if (selectedApt.aptSeriesId) {
+      getAptSeries(selectedApt.aptSeriesId).then(setAptSeries);
+    }
+  }, [selectedApt, selectedApt.appointmentId, selectedApt.aptSeriesId]);
+
+  useEffect(() => {
+    setEvents(aptSeries.instances);
+    setFrequency(aptSeries.frequency);
+  }, [aptSeries]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (selectedApt?.appointmentId && therapist.admin) {
@@ -201,7 +231,96 @@ export default function AddAppointment({ selectedCalDate }) {
           .catch((error) => console.warn(error));
         handleClose();
         onAptUpdate();
-      } else {
+      } else if (isRecurring && selectedApt.aptSeriesId) {
+        if (
+          !isEqual(selectedApt.start, startDate) ||
+          selectedApt.length !== length ||
+          frequency !== aptSeries.frequency ||
+          events !== aptSeries.instances
+        ) {
+          console.warn('there is a difference');
+          const updatedSeriesPayload = {
+            ...aptSeries,
+            frequency,
+            instances: events,
+          };
+          await updateAptSeries(updatedSeriesPayload);
+          const seriesAptPromises = [];
+          const updatedAptPayload = {
+            ...selectedApt,
+            start: startDate,
+            end: endDate,
+            length,
+          };
+          await updateAppointment(updatedAptPayload);
+          const seriesApts = await getAllAppointmentsInSeries(
+            selectedApt.aptSeriesId,
+          );
+          console.warn(seriesApts, 'seriesApts');
+          let j = selectedApt.seriesInstance;
+          seriesApts.forEach(async (apt) => {
+            if (aptSeries.instances === events) {
+              if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                j <= aptSeries.instances
+              ) {
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, j * frequency),
+                  end: addWeeks(updatedAptPayload.end, j * frequency),
+                  length,
+                };
+                const aptPromise = new Promise((resolve, reject) => {
+                  updateAppointment(aptPayload).then(resolve).catch(reject);
+                });
+                seriesAptPromises.push(aptPromise);
+                j += 1;
+                console.warn('j updating', j);
+              }
+            } else if (aptSeries.instances !== events) {
+              console.warn('this is running');
+              if (apt.seriesInstance > events) {
+                console.warn('deleting');
+                await deleteAppointment(apt.appointmentId);
+              } else if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                j <= events
+              ) {
+                console.warn('is any of this running?');
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, j * frequency),
+                  end: addWeeks(updatedAptPayload.end, j * frequency),
+                };
+                console.warn('aptPayload', aptPayload);
+                updateAppointment(aptPayload).then((j += 1));
+                console.warn('j updating', j);
+              }
+            }
+          });
+          console.warn('j', j);
+          const { appointmentId, ...restOfPayload } = updatedAptPayload;
+          while (j < events) {
+            const aptPayload = {
+              ...restOfPayload,
+              start: addWeeks(updatedAptPayload.start, j * frequency),
+              end: addWeeks(updatedAptPayload.end, j * frequency),
+              seriesInstance: j + 1,
+              length,
+            };
+            const aptPromise = new Promise((resolve, reject) => {
+              createAppointment(aptPayload).then(resolve).catch(reject);
+            });
+            seriesAptPromises.push(aptPromise);
+            j += 1;
+          }
+          Promise.all(seriesAptPromises)
+            .then((response) => console.warn(response))
+            .catch((error) => console.warn(error));
+          handleClose();
+          onAptUpdate();
+        }
+      } else if (!isRecurring) {
         await updateAppointment(payload);
         handleClose();
         onAptUpdate();
@@ -217,11 +336,110 @@ export default function AddAppointment({ selectedCalDate }) {
         clientId: selectedClientObj.clientId,
         type: aptRadio,
       };
-
-      await updateAppointment(payload);
-      handleClose();
-      onAptUpdate();
-    } else if (!therapist.admin) {
+      if (isRecurring && !selectedApt.aptSeriesId) {
+        const seriesPayload = {
+          frequency,
+          instances: events,
+          startDate,
+        };
+        const aptSeriesId = await createAptSeries(seriesPayload);
+        await updateAppointment({ ...payload, aptSeriesId, seriesInstance: 1 });
+        const { appointmentId, ...payloadWithoutAptId } = payload;
+        const seriesAptPromises = [];
+        for (let i = 1; i <= events; i++) {
+          const aptPayload = {
+            ...payloadWithoutAptId,
+            aptSeriesId,
+            seriesInstance: i + 1,
+            start: addWeeks(startDate, i * frequency),
+            end: addWeeks(endDate, i * frequency),
+          };
+          const aptPromise = new Promise((resolve, reject) => {
+            createAppointment(aptPayload).then(resolve).catch(reject);
+          });
+          seriesAptPromises.push(aptPromise);
+        }
+        Promise.all(seriesAptPromises)
+          .then((response) => console.warn(response))
+          .catch((error) => console.warn(error));
+        handleClose();
+        onAptUpdate();
+      } else if (isRecurring && selectedApt.aptSeriesId) {
+        if (
+          !isEqual(selectedApt.start, startDate) ||
+          selectedApt.length !== length ||
+          frequency !== aptSeries.frequency ||
+          events !== aptSeries.instances
+        ) {
+          const updatedSeriesPayload = {
+            ...aptSeries,
+            frequency,
+            instances: events,
+          };
+          await updateAptSeries(updatedSeriesPayload);
+          const seriesAptPromises = [];
+          const updatedAptPayload = {
+            ...selectedApt,
+            start: startDate,
+            end: endDate,
+            length,
+          };
+          await updateAppointment(updatedAptPayload);
+          const seriesApts = await getAllAppointmentsInSeries(
+            selectedApt.seriesId,
+          );
+          let j = selectedApt.seriesInstance + 1;
+          seriesApts.forEach(async (apt) => {
+            if (aptSeries.instances === events) {
+              if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                j <= aptSeries.instances
+              ) {
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, j * frequency),
+                  end: addWeeks(updatedAptPayload.end, j * frequency),
+                };
+                const aptPromise = new Promise((resolve, reject) => {
+                  createAppointment(aptPayload).then(resolve).catch(reject);
+                });
+                seriesAptPromises.push(aptPromise);
+                j += 1;
+              }
+            } else if (aptSeries.instances !== events) {
+              if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                j <= events
+              ) {
+                if (apt.seriesInstance > events) {
+                  await deleteAppointment(apt.appointmentId);
+                } else {
+                  const aptPayload = {
+                    ...apt,
+                    start: addWeeks(updatedAptPayload.start, j * frequency),
+                    end: addWeeks(updatedAptPayload.end, j * frequency),
+                  };
+                  const aptPromise = new Promise((resolve, reject) => {
+                    createAppointment(aptPayload).then(resolve).catch(reject);
+                  });
+                  seriesAptPromises.push(aptPromise);
+                  j += 1;
+                }
+              }
+            }
+          });
+          Promise.all(seriesAptPromises)
+            .then((response) => console.warn(response))
+            .catch((error) => console.warn(error));
+          handleClose();
+          onAptUpdate();
+        }
+      } else if (!isRecurring) {
+        await updateAppointment(payload);
+        handleClose();
+        onAptUpdate();
+      }
+    } else if (!therapist.admin && !isRecurring) {
       const payload = {
         title: aptName,
         start: startDate,
@@ -234,7 +452,7 @@ export default function AddAppointment({ selectedCalDate }) {
       await createAppointment(payload);
       handleClose();
       onAptUpdate();
-    } else if (therapist.admin) {
+    } else if (therapist.admin && !isRecurring) {
       const payload = {
         title: aptName,
         start: startDate,
@@ -247,11 +465,97 @@ export default function AddAppointment({ selectedCalDate }) {
       await createAppointment(payload);
       handleClose();
       onAptUpdate();
+    } else if (
+      !selectedApt.appointmentId &&
+      !selectedApt.aptSeriesId &&
+      therapist.admin &&
+      isRecurring
+    ) {
+      const payload = {
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: selectedTherapistObj.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      const seriesPayload = {
+        frequency,
+        instances: events,
+        startDate,
+      };
+      const aptSeriesId = await createAptSeries(seriesPayload);
+      await createAppointment({ ...payload, aptSeriesId, seriesInstance: 1 });
+      const seriesAptPromises = [];
+      for (let i = 1; i < events; i++) {
+        const aptPayload = {
+          ...payload,
+          aptSeriesId,
+          seriesInstance: i + 1,
+          start: addWeeks(startDate, i * frequency),
+          end: addWeeks(endDate, i * frequency),
+        };
+        const aptPromise = new Promise((resolve, reject) => {
+          createAppointment(aptPayload).then(resolve).catch(reject);
+        });
+        seriesAptPromises.push(aptPromise);
+      }
+      Promise.all(seriesAptPromises)
+        .then((response) => console.warn(response))
+        .catch((error) => console.warn(error));
+      handleClose();
+      onAptUpdate();
+    } else if (!therapist.admin && isRecurring) {
+      const payload = {
+        title: aptName,
+        start: startDate,
+        end: endDate,
+        length,
+        therapistId: therapist.therapistId,
+        clientId: selectedClientObj.clientId,
+        type: aptRadio,
+      };
+      const seriesPayload = {
+        frequency,
+        instances: events,
+        startDate,
+      };
+      const aptSeriesId = await createAptSeries(seriesPayload);
+      await createAppointment({ ...payload, aptSeriesId, seriesInstance: 1 });
+      const seriesAptPromises = [];
+      for (let i = 1; i < events; i++) {
+        const aptPayload = {
+          ...payload,
+          aptSeriesId,
+          seriesInstance: i + 1,
+          start: addWeeks(startDate, i * frequency),
+          end: addWeeks(endDate, i * frequency),
+        };
+        const aptPromise = new Promise((resolve, reject) => {
+          createAppointment(aptPayload).then(resolve).catch(reject);
+        });
+        seriesAptPromises.push(aptPromise);
+      }
+      Promise.all(seriesAptPromises)
+        .then((response) => console.warn(response))
+        .catch((error) => console.warn(error));
+      handleClose();
+      onAptUpdate();
     }
   };
 
   const handleDelete = async () => {
     if (window.confirm(`Delete this appointment?`)) {
+      if (selectedApt.aptSeriesId) {
+        if (
+          window.confirm(
+            'This is appointment is part of a series. Deleting it will delete all appointments in the series. Continue?',
+          )
+        ) {
+          await deleteAllAptsInSeriesAndSeries(selectedApt.aptSeriesId);
+        }
+      }
       if (!aptNote) {
         await deleteAppointment(selectedApt.appointmentId);
         handleClose();
@@ -324,64 +628,85 @@ export default function AddAppointment({ selectedCalDate }) {
       >
         <>
           <Box sx={style}>
-            <h2 id="unstyled-modal-title">New Appointment</h2>
+            {selectedApt.appointmentId ? (
+              <Link
+                passHref
+                className="client-name-apt-modal"
+                href={`/client/${selectedClientObj.clientId}`}
+              >
+                <h2
+                  onClick={handleClose}
+                  className="client-name-apt-modal"
+                >{`${selectedClientObj.firstName} ${selectedClientObj.lastName}`}</h2>
+              </Link>
+            ) : (
+              <h2 id="unstyled-modal-title">New Appointment</h2>
+            )}
             <form className="add-appointment-modal" onSubmit={handleSubmit}>
-              <label>
-                Client Appointment
-                <input
-                  type="radio"
-                  className="apt-radio"
-                  id="apt-type-client"
-                  name="apt-type-radio"
-                  value="client"
-                  onChange={(e) => setAptRadio(e.target.value)}
-                  defaultChecked
-                />
-              </label>
-              <label>
-                Other
-                <input
-                  type="radio"
-                  className="apt-radio"
-                  id="apt-type-other"
-                  name="apt-type-radio"
-                  value="other"
-                  onChange={(e) => setAptRadio(e.target.value)}
-                />
-              </label>
-
-              {aptRadio === 'client' ? (
-                <div className="select-client">
-                  <Autocomplete
-                    id="client-autocomplete"
-                    options={activeClients}
-                    // sx={{ width: 50 }}
-                    getOptionLabel={(option) => {
-                      if (option.firstName) {
-                        return `${option.firstName} ${option.lastName}`;
-                      }
-                      return '';
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Add Client"
-                        size="small"
-                        required
-                      />
-                    )}
-                    onChange={(event, newValue) => {
-                      setSelectedClientObj(newValue);
-                    }}
-                    value={
-                      selectedClientObj.clientId ? { ...selectedClientObj } : ''
-                    }
-                  />
-                </div>
+              {selectedApt.appointmentId ? (
+                ''
               ) : (
-                <div className="other-apt-title">
-                  <input type="text" placeholder="Add title" required />
-                </div>
+                <>
+                  <label>
+                    Client Appointment
+                    <input
+                      type="radio"
+                      className="apt-radio"
+                      id="apt-type-client"
+                      name="apt-type-radio"
+                      value="client"
+                      onChange={(e) => setAptRadio(e.target.value)}
+                      defaultChecked
+                    />
+                  </label>
+                  <label>
+                    Other
+                    <input
+                      type="radio"
+                      className="apt-radio"
+                      id="apt-type-other"
+                      name="apt-type-radio"
+                      value="other"
+                      onChange={(e) => setAptRadio(e.target.value)}
+                    />
+                  </label>
+
+                  {aptRadio === 'client' ? (
+                    <div className="select-client">
+                      <Autocomplete
+                        id="client-autocomplete"
+                        options={activeClients}
+                        // sx={{ width: 50 }}
+                        getOptionLabel={(option) => {
+                          if (option.firstName) {
+                            return `${option.firstName} ${option.lastName}`;
+                          }
+                          return '';
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Add Client"
+                            size="small"
+                            required
+                          />
+                        )}
+                        onChange={(event, newValue) => {
+                          setSelectedClientObj(newValue);
+                        }}
+                        value={
+                          selectedClientObj.clientId
+                            ? { ...selectedClientObj }
+                            : ''
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div className="other-apt-title">
+                      <input type="text" placeholder="Add title" required />
+                    </div>
+                  )}
+                </>
               )}
               {therapist.admin ? (
                 <div className="select-therapist">
@@ -460,6 +785,7 @@ export default function AddAppointment({ selectedCalDate }) {
                           <select
                             className="recurring-select frequency"
                             onChange={handleFrequency}
+                            value={frequency}
                           >
                             <option value={1}>Every Week</option>
                             <option value={2}>Every 2 Weeks</option>
@@ -473,6 +799,7 @@ export default function AddAppointment({ selectedCalDate }) {
                             <select
                               className="recurring-select num-events"
                               onChange={handleEvents}
+                              value={events}
                             >
                               {createInstanceOptions(50).map((num) => (
                                 <option value={num}>{num}</option>
@@ -519,25 +846,7 @@ export default function AddAppointment({ selectedCalDate }) {
 }
 
 AddAppointment.propTypes = {
-  openModal: PropTypes.bool.isRequired,
-  setOpenModal: PropTypes.func.isRequired,
   selectedCalDate: PropTypes.string.isRequired,
-  onAptUpdate: PropTypes.func.isRequired,
-  selectedApt: PropTypes.shape({
-    appointmentId: PropTypes.string,
-    title: PropTypes.string,
-    start: PropTypes.string,
-    end: PropTypes.string,
-    length: PropTypes.number,
-    therapistId: PropTypes.string,
-    clientId: PropTypes.string,
-    type: PropTypes.string,
-  }),
-  setSelectedApt: PropTypes.func.isRequired,
-};
-
-AddAppointment.defaultProps = {
-  selectedApt: selectedAptDefaultState,
 };
 
 Backdrop.propTypes = {

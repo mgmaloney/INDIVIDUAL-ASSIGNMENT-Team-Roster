@@ -21,7 +21,7 @@ const createAptSeries = async (payload) => {
     const { data } = await axios.post(`${dbURL}/aptSeries.json`, payload);
     const aptSeriesId = data.name;
     updateAptSeries({ aptSeriesId });
-    return aptSeriesId
+    return aptSeriesId;
   } catch (e) {
     console.warn(e);
     return 'call failed';
@@ -39,4 +39,15 @@ const deleteAptSeries = async (aptSeriesId) => {
   }
 };
 
-export { updateAptSeries, createAptSeries, deleteAptSeries };
+const getAptSeries = async (aptSeriesId) => {
+  try {
+    const { data } = await axios.get(`${dbURL}/aptSeries/${aptSeriesId}.json`);
+    console.warn('aptseries', data);
+    return data;
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
+export { getAptSeries, updateAptSeries, createAptSeries, deleteAptSeries };

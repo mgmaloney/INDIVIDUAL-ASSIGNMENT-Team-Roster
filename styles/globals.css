@@ -28,6 +28,13 @@ p {
   margin-bottom: 0.25rem;
 }
 
+.client-name-apt-modal {
+  color: #267ccb;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 2rem !important;
+}
+
 .login-wrapper {
   display: flex;
 

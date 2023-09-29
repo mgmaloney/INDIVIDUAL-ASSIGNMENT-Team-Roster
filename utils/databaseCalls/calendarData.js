@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { clientCredentials } from '../client';
+import { deleteAptSeries } from './aptSeriesData';
 
 const dbURL = clientCredentials.databaseURL;
 
@@ -63,6 +64,25 @@ const getAppointmentsByClientId = async (clientId) => {
   }
 };
 
+const getAllAppointmentsInSeries = async (aptSeriesId) => {
+  try {
+    const allApts = await getAppointments();
+    const aptsInSeries = allApts.filter(
+      (apt) => apt.aptSeriesId === aptSeriesId,
+    );
+    if (aptsInSeries.length > 0) {
+      aptsInSeries.sort(
+        (a, b) => a.seriesInstance - new Date(b.seriesInstance).getTime(),
+      );
+      return aptsInSeries;
+    }
+    return [];
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
 const updateAppointment = async (payload) => {
   try {
     const response = await axios.patch(
@@ -100,6 +120,20 @@ const deleteAppointment = async (appointmentId) => {
   }
 };
 
+const deleteAllAptsInSeriesAndSeries = async (aptSeriesId) => {
+  try {
+    const aptsInSeries = await getAllAppointmentsInSeries(aptSeriesId);
+    aptsInSeries.forEach((apt) => {
+      deleteAppointment(apt.appointmentId);
+    });
+    await deleteAptSeries(aptSeriesId);
+    return 'delete apts and aptSeries success';
+  } catch (e) {
+    console.warn(e);
+    return 'call failed';
+  }
+};
+
 const getAppointmentByAppointmentId = async (appointmentId) => {
   try {
     const { data } = await axios.get(
@@ -116,8 +150,10 @@ export {
   getAppointments,
   getAppointmentsByTherapistId,
   getAppointmentsByClientId,
+  getAllAppointmentsInSeries,
   updateAppointment,
   createAppointment,
   deleteAppointment,
+  deleteAllAptsInSeriesAndSeries,
   getAppointmentByAppointmentId,
 };
