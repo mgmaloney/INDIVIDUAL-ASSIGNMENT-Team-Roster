@@ -60,7 +60,7 @@ const StyledBackdrop = styled(Backdrop)`
 `;
 
 const style = (theme) => ({
-  width: 400,
+  width: 425,
   borderRadius: '12px',
   padding: '0px 20px 24px 20px',
   backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : 'white',
@@ -860,6 +860,7 @@ export default function AddAppointment({ selectedCalDate }) {
                         value={isRecurring}
                         checked={isRecurring}
                         onChange={handleIsRecurring}
+                        className="modal-check recurring-check"
                       />
                     </label>
                   </div>
@@ -879,7 +880,7 @@ export default function AddAppointment({ selectedCalDate }) {
                           </select>
                         </div>
                         <div className="ends-after-container">
-                          <label>
+                          <label className="ends-after">
                             Ends After
                             <select
                               className="recurring-select num-events"
@@ -887,7 +888,12 @@ export default function AddAppointment({ selectedCalDate }) {
                               value={events}
                             >
                               {createInstanceOptions(50).map((num) => (
-                                <option value={num}>{num}</option>
+                                <option
+                                  key={`instanceOption${num}`}
+                                  value={num}
+                                >
+                                  {num}
+                                </option>
                               ))}
                             </select>
                             Events

@@ -915,6 +915,24 @@ select {
   margin-left: 0.25rem;
 }
 
+.recurring-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.recurring-select-container {
+  margin-top: 0.5rem;
+  display: flex;
+}
+
+.ends-after {
+  margin: 0rem 0.5rem;
+}
+
+.num-events {
+  margin-left: 0.5rem;
+}
+
 .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
   width: max-content;
 }
