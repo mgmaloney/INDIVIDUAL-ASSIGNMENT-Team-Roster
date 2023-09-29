@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 import { getTherapistByTherapistId } from '../../utils/databaseCalls/therapistData';
 import OpenClientModalContext from '../../utils/context/openClientModalContext';
 import {
+  getAllClients,
   getClientsByTherapistId,
   updateClient,
 } from '../../utils/databaseCalls/clientData';
 import TherapistClientsContext from '../../utils/context/therapistClientsContext';
+import TherapistContext from '../../utils/context/therapistContext';
 
 export default function ClientDetailsCard({ clientObj, page }) {
   const [clientTherapist, setClientTherapist] = useState({});
+  const { therapist } = useContext(TherapistContext);
   const { setTherapistClients } = useContext(TherapistClientsContext);
   const { setOpenClientModal, setEditingClient } = useContext(
     OpenClientModalContext,
@@ -29,9 +32,13 @@ export default function ClientDetailsCard({ clientObj, page }) {
         )
       ) {
         await updateClient({ clientId: clientObj.clientId, active: false });
-        getClientsByTherapistId(clientObj.therapistId).then(
-          setTherapistClients,
-        );
+        if (therapist.admin) {
+          getAllClients().then(setTherapistClients);
+        } else {
+          getClientsByTherapistId(clientObj.therapistId).then(
+            setTherapistClients,
+          );
+        }
       }
     } else if (!clientObj.active && e.target.value === 'active') {
       if (
@@ -40,9 +47,13 @@ export default function ClientDetailsCard({ clientObj, page }) {
         )
       ) {
         await updateClient({ clientId: clientObj.clientId, active: true });
-        getClientsByTherapistId(clientObj.therapistId).then(
-          setTherapistClients,
-        );
+        if (therapist.admin) {
+          getAllClients().then(setTherapistClients);
+        } else {
+          getClientsByTherapistId(clientObj.therapistId).then(
+            setTherapistClients,
+          );
+        }
       }
     }
   };

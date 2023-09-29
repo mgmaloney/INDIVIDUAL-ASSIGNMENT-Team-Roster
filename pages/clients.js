@@ -100,7 +100,13 @@ export default function ClientsPage({ viewClients, page }) {
       }
     }
     showCtsSortStatus();
-  }, [pageSpecificClients, adminsClients, sortState, supervisee.superviseeId]);
+  }, [
+    pageSpecificClients,
+    adminsClients,
+    sortState,
+    supervisee.superviseeId,
+    therapistClients,
+  ]);
 
   useEffect(() => {
     if (viewClients) {
@@ -114,7 +120,7 @@ export default function ClientsPage({ viewClients, page }) {
     if (therapist.admin) {
       getClientsByTherapistId(therapist.therapistId).then(setAdminsClients);
     }
-  }, [therapist]);
+  }, [therapist, therapistClients]);
 
   useEffect(() => {
     if (therapist.supervisor) {
