@@ -238,7 +238,6 @@ export default function AddAppointment({ selectedCalDate }) {
           frequency !== aptSeries.frequency ||
           events !== aptSeries.instances
         ) {
-          console.warn('there is a difference');
           const updatedSeriesPayload = {
             ...aptSeries,
             frequency,
@@ -256,8 +255,8 @@ export default function AddAppointment({ selectedCalDate }) {
           const seriesApts = await getAllAppointmentsInSeries(
             selectedApt.aptSeriesId,
           );
-          console.warn(seriesApts, 'seriesApts');
           let j = selectedApt.seriesInstance;
+          let k = 1;
           seriesApts.forEach(async (apt) => {
             if (aptSeries.instances === events) {
               if (
@@ -275,9 +274,11 @@ export default function AddAppointment({ selectedCalDate }) {
                 });
                 seriesAptPromises.push(aptPromise);
                 j += 1;
-                console.warn('j updating', j);
               }
-            } else if (aptSeries.instances !== events) {
+            } else if (
+              aptSeries.instances !== events &&
+              selectedApt.seriesInstance === 1
+            ) {
               console.warn('this is running');
               if (apt.seriesInstance > events) {
                 console.warn('deleting');
@@ -286,33 +287,65 @@ export default function AddAppointment({ selectedCalDate }) {
                 apt.seriesInstance > selectedApt.seriesInstance &&
                 j <= events
               ) {
-                console.warn('is any of this running?');
                 const aptPayload = {
                   ...apt,
                   start: addWeeks(updatedAptPayload.start, j * frequency),
                   end: addWeeks(updatedAptPayload.end, j * frequency),
                 };
-                console.warn('aptPayload', aptPayload);
                 updateAppointment(aptPayload).then((j += 1));
-                console.warn('j updating', j);
+              }
+            } else if (
+              aptSeries.instances !== events &&
+              selectedApt.seriesInstance > 1
+            ) {
+              console.warn('this is running');
+              if (apt.seriesInstance > events) {
+                console.warn('deleting');
+                await deleteAppointment(apt.appointmentId);
+              } else if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                k <= events
+              ) {
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, k * frequency),
+                  end: addWeeks(updatedAptPayload.end, k * frequency),
+                };
+                updateAppointment(aptPayload).then((k += 1));
               }
             }
           });
-          console.warn('j', j);
           const { appointmentId, ...restOfPayload } = updatedAptPayload;
-          while (j < events) {
-            const aptPayload = {
-              ...restOfPayload,
-              start: addWeeks(updatedAptPayload.start, j * frequency),
-              end: addWeeks(updatedAptPayload.end, j * frequency),
-              seriesInstance: j + 1,
-              length,
-            };
-            const aptPromise = new Promise((resolve, reject) => {
-              createAppointment(aptPayload).then(resolve).catch(reject);
-            });
-            seriesAptPromises.push(aptPromise);
-            j += 1;
+          if (selectedApt.seriesInstance === 1) {
+            while (j < events) {
+              const aptPayload = {
+                ...restOfPayload,
+                start: addWeeks(updatedAptPayload.start, j * frequency),
+                end: addWeeks(updatedAptPayload.end, j * frequency),
+                seriesInstance: j + 1,
+                length,
+              };
+              const aptPromise = new Promise((resolve, reject) => {
+                createAppointment(aptPayload).then(resolve).catch(reject);
+              });
+              seriesAptPromises.push(aptPromise);
+              j += 1;
+            }
+          } else if (selectedApt.seriesInstance > 1) {
+            while (k + 1 < events) {
+              const aptPayload = {
+                ...restOfPayload,
+                start: addWeeks(updatedAptPayload.start, k * frequency),
+                end: addWeeks(updatedAptPayload.end, k * frequency),
+                seriesInstance: k + 2,
+                length,
+              };
+              const aptPromise = new Promise((resolve, reject) => {
+                createAppointment(aptPayload).then(resolve).catch(reject);
+              });
+              seriesAptPromises.push(aptPromise);
+              k += 1;
+            }
           }
           Promise.all(seriesAptPromises)
             .then((response) => console.warn(response))
@@ -386,9 +419,10 @@ export default function AddAppointment({ selectedCalDate }) {
           };
           await updateAppointment(updatedAptPayload);
           const seriesApts = await getAllAppointmentsInSeries(
-            selectedApt.seriesId,
+            selectedApt.aptSeriesId,
           );
-          let j = selectedApt.seriesInstance + 1;
+          let j = selectedApt.seriesInstance;
+          let k = 1;
           seriesApts.forEach(async (apt) => {
             if (aptSeries.instances === events) {
               if (
@@ -399,35 +433,86 @@ export default function AddAppointment({ selectedCalDate }) {
                   ...apt,
                   start: addWeeks(updatedAptPayload.start, j * frequency),
                   end: addWeeks(updatedAptPayload.end, j * frequency),
+                  length,
                 };
                 const aptPromise = new Promise((resolve, reject) => {
-                  createAppointment(aptPayload).then(resolve).catch(reject);
+                  updateAppointment(aptPayload).then(resolve).catch(reject);
                 });
                 seriesAptPromises.push(aptPromise);
                 j += 1;
               }
-            } else if (aptSeries.instances !== events) {
-              if (
+            } else if (
+              aptSeries.instances !== events &&
+              selectedApt.seriesInstance === 1
+            ) {
+              console.warn('this is running');
+              if (apt.seriesInstance > events) {
+                console.warn('deleting');
+                await deleteAppointment(apt.appointmentId);
+              } else if (
                 apt.seriesInstance > selectedApt.seriesInstance &&
                 j <= events
               ) {
-                if (apt.seriesInstance > events) {
-                  await deleteAppointment(apt.appointmentId);
-                } else {
-                  const aptPayload = {
-                    ...apt,
-                    start: addWeeks(updatedAptPayload.start, j * frequency),
-                    end: addWeeks(updatedAptPayload.end, j * frequency),
-                  };
-                  const aptPromise = new Promise((resolve, reject) => {
-                    createAppointment(aptPayload).then(resolve).catch(reject);
-                  });
-                  seriesAptPromises.push(aptPromise);
-                  j += 1;
-                }
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, j * frequency),
+                  end: addWeeks(updatedAptPayload.end, j * frequency),
+                };
+                updateAppointment(aptPayload).then((j += 1));
+              }
+            } else if (
+              aptSeries.instances !== events &&
+              selectedApt.seriesInstance > 1
+            ) {
+              console.warn('this is running');
+              if (apt.seriesInstance > events) {
+                console.warn('deleting');
+                await deleteAppointment(apt.appointmentId);
+              } else if (
+                apt.seriesInstance > selectedApt.seriesInstance &&
+                k <= events
+              ) {
+                const aptPayload = {
+                  ...apt,
+                  start: addWeeks(updatedAptPayload.start, k * frequency),
+                  end: addWeeks(updatedAptPayload.end, k * frequency),
+                };
+                updateAppointment(aptPayload).then((k += 1));
               }
             }
           });
+          const { appointmentId, ...restOfPayload } = updatedAptPayload;
+          if (selectedApt.seriesInstance === 1) {
+            while (j < events) {
+              const aptPayload = {
+                ...restOfPayload,
+                start: addWeeks(updatedAptPayload.start, j * frequency),
+                end: addWeeks(updatedAptPayload.end, j * frequency),
+                seriesInstance: j + 1,
+                length,
+              };
+              const aptPromise = new Promise((resolve, reject) => {
+                createAppointment(aptPayload).then(resolve).catch(reject);
+              });
+              seriesAptPromises.push(aptPromise);
+              j += 1;
+            }
+          } else if (selectedApt.seriesInstance > 1) {
+            while (k + 1 < events) {
+              const aptPayload = {
+                ...restOfPayload,
+                start: addWeeks(updatedAptPayload.start, k * frequency),
+                end: addWeeks(updatedAptPayload.end, k * frequency),
+                seriesInstance: k + 2,
+                length,
+              };
+              const aptPromise = new Promise((resolve, reject) => {
+                createAppointment(aptPayload).then(resolve).catch(reject);
+              });
+              seriesAptPromises.push(aptPromise);
+              k += 1;
+            }
+          }
           Promise.all(seriesAptPromises)
             .then((response) => console.warn(response))
             .catch((error) => console.warn(error));
@@ -634,10 +719,10 @@ export default function AddAppointment({ selectedCalDate }) {
                 className="client-name-apt-modal"
                 href={`/client/${selectedClientObj.clientId}`}
               >
-                <h2
-                  onClick={handleClose}
-                  className="client-name-apt-modal"
-                >{`${selectedClientObj.firstName} ${selectedClientObj.lastName}`}</h2>
+                <h2 onClick={handleClose} className="client-name-apt-modal">
+                  {selectedClientObj &&
+                    `${selectedClientObj.firstName} ${selectedClientObj.lastName}`}
+                </h2>
               </Link>
             ) : (
               <h2 id="unstyled-modal-title">New Appointment</h2>
