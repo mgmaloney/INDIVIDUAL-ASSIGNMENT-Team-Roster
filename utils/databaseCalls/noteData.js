@@ -92,6 +92,10 @@ const getUnsignedAppointmentNotesTherapist = async (therapistId) => {
 const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
   const unsignedNotes = [];
   try {
+    // for when incorporating the therapist user's unsigned notes
+    // const therapistUserUnsigned = await getUnsignedAppointmentNotesTherapist(
+    //   supervisorId,
+    // );
     const { data } = await axios.get(
       `${dbURL}/notes.json?orderBy="signedByTherapist"&equalTo=true`,
     );
@@ -105,6 +109,7 @@ const getUnsignedAppointmentNotesSuperVisor = async (supervisorId) => {
         unsignedNotes.push(note);
       }
     });
+    // return [...unsignedNotes, ...therapistUserUnsigned];
     return unsignedNotes;
   } catch (e) {
     console.warn(e);

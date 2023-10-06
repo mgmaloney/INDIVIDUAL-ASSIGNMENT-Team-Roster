@@ -8,8 +8,10 @@ import {
 } from '../../utils/databaseCalls/noteData';
 import { getClientByClientId } from '../../utils/databaseCalls/clientData';
 import UnsignedNotesContext from '../../utils/context/unsignedNotesContext';
+import TherapistContext from '../../utils/context/therapistContext';
 
 export default function DAPForm({ noteObj }) {
+  const { therapist } = useContext(TherapistContext);
   const [note, setNote] = useState(noteObj);
   const [saved, setSaved] = useState(false);
   const [formInput, setFormInput] = useState({});
@@ -63,6 +65,18 @@ export default function DAPForm({ noteObj }) {
     };
     await updateNote(payload);
     alert('Note signed and shared!');
+    const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
+    setNote(updatedNote);
+    await onSignedUpdate();
+  };
+
+  const handleSupervisorSign = async () => {
+    const payload = {
+      ...noteObj,
+      signedBySupervisor: true,
+    };
+    await updateNote(payload);
+    alert('Note approved and signed!');
     const updatedNote = await getAppointmentNoteByNoteId(noteObj.noteId);
     setNote(updatedNote);
     await onSignedUpdate();
@@ -151,7 +165,39 @@ export default function DAPForm({ noteObj }) {
                 )}
               </div>
             ) : (
-              <p className="signed-n-shared">Signed and Shared</p>
+              <>
+                <div>
+                  {!note.signedBySupervisor &&
+                  therapist.supervisor &&
+                  note.supervisorId === therapist.therapistId ? (
+                    <div className="sign-supervisor-wrapper">
+                      <button
+                        type="button"
+                        className="done-btn"
+                        onClick={handleSupervisorSign}
+                      >
+                        Approve and Sign
+                      </button>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
+                <>
+                  {note.signedBySupervisor && therapist.supervisor ? (
+                    <p className="signed-n-shared">Approved and Signed</p>
+                  ) : (
+                    ''
+                  )}
+                </>
+                <>
+                  {note.signedBySupervisor && therapist.admin ? (
+                    <p className="signed-n-shared">Approved and Signed</p>
+                  ) : (
+                    ''
+                  )}
+                </>
+              </>
             )}
           </div>
         </form>

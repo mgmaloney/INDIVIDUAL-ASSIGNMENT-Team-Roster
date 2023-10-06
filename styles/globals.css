@@ -28,6 +28,13 @@ p {
   margin-bottom: 0.25rem;
 }
 
+.client-name-apt-modal {
+  color: #267ccb;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 2rem !important;
+}
+
 .login-wrapper {
   display: flex;
 
@@ -126,7 +133,7 @@ p {
 .badge {
   background-color: red;
   color: white;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: 10%;
   padding: 0rem;
   font-size: 0.75rem;
