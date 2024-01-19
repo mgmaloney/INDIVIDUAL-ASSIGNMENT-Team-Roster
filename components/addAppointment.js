@@ -337,7 +337,12 @@ export default function AddAppointment({ selectedCalDate }) {
                 </div>
               ) : (
                 <div className="other-apt-title">
-                  <input type="text" placeholder="Add title" required />
+                  <input
+                    className="form-text"
+                    type="text"
+                    placeholder="Add title"
+                    required
+                  />
                 </div>
               )}
               {therapist.admin ? (
