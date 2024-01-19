@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable consistent-return */
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {

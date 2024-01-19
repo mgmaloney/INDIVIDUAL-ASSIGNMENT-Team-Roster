@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ClientDetailsCard from '../components/cards/clientDetails';

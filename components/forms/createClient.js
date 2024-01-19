@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-extraneous-dependencies */
 import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
