@@ -86,8 +86,18 @@ p {
 }
 
 .thera-check-btns {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.thera-check-result {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #a5b1e8;
 }
 
 .sidebar-main {

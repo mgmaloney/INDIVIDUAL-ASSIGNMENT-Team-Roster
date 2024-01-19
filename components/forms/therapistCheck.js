@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from 'react-bootstrap';
 import {
   getAllTherapists,
   updateTherapist,
@@ -41,7 +40,9 @@ export default function TherapistCheckForm() {
     if (practiceConfirmed) {
       return true;
     }
-    return false;
+    if (!practiceConfirmed) {
+      return false;
+    }
   };
 
   const checkTherapistExists = async () => {
@@ -55,7 +56,9 @@ export default function TherapistCheckForm() {
       setTherapist(therapistConfirmed);
       return true;
     }
-    return false;
+    if (!therapistConfirmed) {
+      return false;
+    }
   };
 
   const addUid = async () => {
@@ -71,6 +74,7 @@ export default function TherapistCheckForm() {
     if ((await practiceCheckSet()) && (await checkTherapistExists())) {
       setPassCheck(true);
     } else {
+      setSubmitted(true);
       setPassCheck(false);
     }
   };
@@ -112,20 +116,36 @@ export default function TherapistCheckForm() {
             <div className="thera-check-items">
               <label>
                 First Name:{' '}
-                <input type="text" name="firstName" onChange={handleChange} />
+                <input
+                  className="form-text"
+                  type="text"
+                  name="firstName"
+                  onChange={handleChange}
+                />
               </label>
               <label>
                 Last Name:{' '}
-                <input type="text" name="lastName" onChange={handleChange} />
+                <input
+                  className="form-text"
+                  type="text"
+                  name="lastName"
+                  onChange={handleChange}
+                />
               </label>
               <label>
                 Email:{' '}
-                <input type="email" name="email" onChange={handleChange} />
+                <input
+                  className="form-text"
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                />
               </label>
               <label>
                 Practice Name:{' '}
                 <input
                   type="text"
+                  className="form-text"
                   name="practiceName"
                   onChange={handleChange}
                 />
@@ -134,6 +154,7 @@ export default function TherapistCheckForm() {
                 Practice Registration Password:{' '}
                 <input
                   type="password"
+                  className="form-text"
                   name="regPassword"
                   onChange={handleChange}
                 />
@@ -159,22 +180,23 @@ export default function TherapistCheckForm() {
   if (submitted && !passCheck) {
     return (
       <>
-        <h1 className="not-found">
-          User not found. Please Contact Your Administator.
-        </h1>
-        <Button variant="danger" onClick={signOut}>
-          Leave this page
-        </Button>
+        <div className="thera-check-result">
+          <h1 className="thera-check">
+            User not found. Please Contact Your Administator.
+          </h1>
+          <button type="button" className="done-btn" onClick={signOut}>
+            Leave this page
+          </button>
+        </div>
       </>
     );
   }
   if (submitted && passCheck) {
     return (
-      <>
+      <div className="thera-check-result">
         <h1>Confirmed. Redirecting...</h1>
-
         {handleSuccess()}
-      </>
+      </div>
     );
   }
 }
