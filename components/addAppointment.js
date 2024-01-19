@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable import/no-extraneous-dependencies */
 import { styled, Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Modal from '@mui/base/Modal';
+import Link from 'next/link';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { Autocomplete, TextField } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -324,7 +327,20 @@ export default function AddAppointment({ selectedCalDate }) {
       >
         <>
           <Box sx={style}>
-            <h2 id="unstyled-modal-title">New Appointment</h2>
+            {selectedApt.appointmentId ? (
+              <Link
+                passHref
+                className="client-name-apt-modal"
+                href={`/client/${selectedClientObj.clientId}`}
+              >
+                <h2 onClick={handleClose} className="client-name-apt-modal">
+                  {selectedClientObj &&
+                    `${selectedClientObj.firstName} ${selectedClientObj.lastName}`}
+                </h2>
+              </Link>
+            ) : (
+              <h2 id="unstyled-modal-title">New Appointment</h2>
+            )}
             <form className="add-appointment-modal" onSubmit={handleSubmit}>
               <label>
                 Client Appointment
@@ -380,7 +396,12 @@ export default function AddAppointment({ selectedCalDate }) {
                 </div>
               ) : (
                 <div className="other-apt-title">
-                  <input type="text" placeholder="Add title" required />
+                  <input
+                    className="form-text"
+                    type="text"
+                    placeholder="Add title"
+                    required
+                  />
                 </div>
               )}
               {therapist.admin ? (

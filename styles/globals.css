@@ -28,6 +28,13 @@ p {
   margin-bottom: 0.25rem;
 }
 
+.client-name-apt-modal {
+  color: #267ccb;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 2rem !important;
+}
+
 .login-wrapper {
   display: flex;
 
@@ -79,8 +86,18 @@ p {
 }
 
 .thera-check-btns {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.thera-check-result {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #a5b1e8;
 }
 
 .sidebar-main {
@@ -126,7 +143,7 @@ p {
 .badge {
   background-color: red;
   color: white;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: 10%;
   padding: 0rem;
   font-size: 0.75rem;
