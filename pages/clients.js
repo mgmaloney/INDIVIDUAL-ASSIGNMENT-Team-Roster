@@ -28,56 +28,53 @@ export default function ClientsPage({ viewClients, page }) {
   const [sortState, setSortState] = useState('active');
 
   useEffect(() => {
-    async function showCtsSortStatus() {
-      const updatedShowingClients = [];
-      if (sortState === 'active') {
-        pageSpecificClients.forEach((client) => {
-          if (client.active) {
-            updatedShowingClients.push(client);
-          }
-        });
-        setShowingClients(updatedShowingClients);
-        setShowingAdminClients(false);
-        setShowingSuperviseeClients(false);
-      } else if (sortState === 'inactive') {
-        pageSpecificClients.forEach((client) => {
-          if (client.active === false) {
-            updatedShowingClients.push(client);
-          }
-        });
-        setShowingClients(updatedShowingClients);
-        setShowingAdminClients(false);
-        setShowingSuperviseeClients(false);
-      } else if (sortState === 'all') {
-        setShowingClients(pageSpecificClients);
-        setShowingAdminClients(false);
-        setShowingSuperviseeClients(false);
-      } else if (sortState === 'your-active-clients') {
-        const adminActiveClients = [];
-        adminsClients.forEach((client) => {
-          if (client.active) {
-            adminActiveClients.push(client);
-          }
-        });
-        setShowingClients(adminActiveClients);
-        setShowingAdminClients(true);
-      } else if (sortState === 'your-inactive-clients') {
-        const adminInactiveClients = [];
-        adminsClients.forEach((client) => {
-          if (client.active === false) {
-            adminInactiveClients.push(client);
-          }
-        });
-        setShowingClients(adminInactiveClients);
-        setShowingAdminClients(true);
-      } else if (sortState === 'all-your-clients') {
-        setShowingClients(adminsClients);
-        setShowingAdminClients(true);
-      } else if (sortState.split('--')[1] === 'supervisee-active') {
-        const activeSuperviseeClients = [];
-        const superviseeCts = await getClientsByTherapistId(
-          supervisee.superviseeId,
-        );
+    const updatedShowingClients = [];
+    if (sortState === 'active') {
+      pageSpecificClients.forEach((client) => {
+        if (client.active) {
+          updatedShowingClients.push(client);
+        }
+      });
+      setShowingClients(updatedShowingClients);
+      setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
+    } else if (sortState === 'inactive') {
+      pageSpecificClients.forEach((client) => {
+        if (client.active === false) {
+          updatedShowingClients.push(client);
+        }
+      });
+      setShowingClients(updatedShowingClients);
+      setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
+    } else if (sortState === 'all') {
+      setShowingClients(pageSpecificClients);
+      setShowingAdminClients(false);
+      setShowingSuperviseeClients(false);
+    } else if (sortState === 'your-active-clients') {
+      const adminActiveClients = [];
+      adminsClients.forEach((client) => {
+        if (client.active) {
+          adminActiveClients.push(client);
+        }
+      });
+      setShowingClients(adminActiveClients);
+      setShowingAdminClients(true);
+    } else if (sortState === 'your-inactive-clients') {
+      const adminInactiveClients = [];
+      adminsClients.forEach((client) => {
+        if (client.active === false) {
+          adminInactiveClients.push(client);
+        }
+      });
+      setShowingClients(adminInactiveClients);
+      setShowingAdminClients(true);
+    } else if (sortState === 'all-your-clients') {
+      setShowingClients(adminsClients);
+      setShowingAdminClients(true);
+    } else if (sortState.split('--')[1] === 'supervisee-active') {
+      const activeSuperviseeClients = [];
+      getClientsByTherapistId(supervisee.therapistId).then((superviseeCts) => {
         superviseeCts.forEach((client) => {
           if (client.active) {
             activeSuperviseeClients.push(client);
@@ -86,11 +83,10 @@ export default function ClientsPage({ viewClients, page }) {
         });
         setShowingClients(activeSuperviseeClients);
         setShowingSuperviseeClients(true);
-      } else if (sortState.split('--')[1] === 'supervisee-inactive') {
-        const inactiveSuperviseeClients = [];
-        const superviseeCts = await getClientsByTherapistId(
-          supervisee.superviseeId,
-        );
+      });
+    } else if (sortState.split('--')[1] === 'supervisee-inactive') {
+      const inactiveSuperviseeClients = [];
+      getClientsByTherapistId(supervisee.therapistId).then((superviseeCts) => {
         superviseeCts.forEach((client) => {
           if (!client.active) {
             inactiveSuperviseeClients.push(client);
@@ -98,15 +94,15 @@ export default function ClientsPage({ viewClients, page }) {
         });
         setShowingClients(inactiveSuperviseeClients);
         setShowingSuperviseeClients(true);
-      }
+      });
     }
-    showCtsSortStatus();
   }, [
     pageSpecificClients,
     adminsClients,
     sortState,
     supervisee.superviseeId,
     therapistClients,
+    supervisee.therapistId,
   ]);
 
   useEffect(() => {
