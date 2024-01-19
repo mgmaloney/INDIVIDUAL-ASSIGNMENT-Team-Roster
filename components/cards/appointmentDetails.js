@@ -74,30 +74,28 @@ export default function AppointmentDetails({ noteObj }) {
           </p>
           <p>{appointment?.length} Min</p>
         </div>
-        {nextApt &&
-          new Date(nextApt.start).getTime() <
-            Date.now(
-              <>
-                <p className="next-prev-head">NEXT APPOINTMENT</p>
-                <div className="next-apt" onClick={handleNextClick}>
-                  <div className="next-apt-info">
-                    <p>
-                      {nextApt?.start &&
-                        format(new Date(nextApt?.start), 'MMM d, yyyy')}
-                      ,
-                    </p>
-                    <p>
-                      {nextApt?.start &&
-                        format(new Date(nextApt?.start), 'hh:mm a')}{' '}
-                      -
-                      {nextApt?.start &&
-                        format(new Date(nextApt?.end), 'hh:mm a')}
-                    </p>{' '}
-                  </div>
-                  <p className="apt-arrow">{`>`}</p>
-                </div>
-              </>,
-            )}
+        {nextApt && new Date(nextApt.start).getTime() < Date.now() ? (
+          <>
+            <p className="next-prev-head">NEXT APPOINTMENT</p>
+            <div className="next-apt" onClick={handleNextClick}>
+              <div className="next-apt-info">
+                <p>
+                  {nextApt?.start &&
+                    format(new Date(nextApt?.start), 'MMM d, yyyy')}
+                  ,
+                </p>
+                <p>
+                  {nextApt?.start &&
+                    format(new Date(nextApt?.start), 'hh:mm a')}{' '}
+                  -{nextApt?.start && format(new Date(nextApt?.end), 'hh:mm a')}
+                </p>{' '}
+              </div>
+              <p className="apt-arrow">{`>`}</p>
+            </div>
+          </>
+        ) : (
+          ''
+        )}
         {prevApt && (
           <>
             <p className="next-prev-head">PREVIOUS APPOINTMENT</p>

@@ -145,7 +145,6 @@ export default function ClientsPage({ viewClients, page }) {
         });
         setAllClients(superviseeAndTherapistCts);
       } else if (therapist.admin) {
-        console.log(allPracticeCts);
         setAllClients(allPracticeCts);
       }
     });
