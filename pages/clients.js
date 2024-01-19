@@ -129,9 +129,8 @@ export default function ClientsPage({ viewClients, page }) {
     }
   }, [therapist.therapistId, therapist.supervisor]);
 
-  useEffect(
-    () => async () => {
-      const allPracticeCts = await getAllClients();
+  useEffect(() => {
+    getAllClients().then((allPracticeCts) => {
       if (therapist.supervisor) {
         const superviseeAndTherapistCts = [];
         allPracticeCts.forEach((client) => {
@@ -146,11 +145,11 @@ export default function ClientsPage({ viewClients, page }) {
         });
         setAllClients(superviseeAndTherapistCts);
       } else if (therapist.admin) {
+        console.log(allPracticeCts);
         setAllClients(allPracticeCts);
       }
-    },
-    [therapist, supervisees, therapist.admin],
-  );
+    });
+  }, [(therapist, supervisees, therapist.admin)]);
 
   const handleActiveSort = async (e) => {
     setSortState(e.target.value);

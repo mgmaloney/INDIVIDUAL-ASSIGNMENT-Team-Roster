@@ -141,7 +141,7 @@ p {
 }
 
 .badge {
-  background-color: red;
+  background-color: rgb(193, 47, 230);
   color: white;
   border: 2px solid transparent;
   border-radius: 10%;
@@ -255,7 +255,8 @@ p {
   text-decoration: underline;
 }
 
-.client-name:hover {
+.client-name:hover,
+.therapist-name:hover {
   cursor: pointer;
 }
 
@@ -454,10 +455,20 @@ select {
   font-size: 1rem;
 }
 .form-text {
-  width: -webkit-fill-available;
+  width: 20rem;
   font-size: 1.25rem;
   border: solid 3px #a5b1e8;
   padding: 0.1rem 1rem;
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-collection {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .modal-check {
@@ -911,7 +922,7 @@ select {
 
 .mins {
   height: 2.5rem;
-  width: 35%;
+  width: 40%;
   font-size: large;
 }
 

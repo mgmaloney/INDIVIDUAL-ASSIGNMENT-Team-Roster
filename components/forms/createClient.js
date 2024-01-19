@@ -32,7 +32,7 @@ const StyledBackdrop = styled(Backdrop)`
 `;
 
 const style = (theme) => ({
-  width: 400,
+  width: 800,
   borderRadius: '12px',
   padding: '0px 20px 24px 20px',
   backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : 'white',
@@ -136,182 +136,198 @@ export default function AddClient() {
             Add New Client
           </h2>
           <form className="form-modal" onSubmit={handleSubmit}>
-            <label>
-              First Name:{'    '}
-              <input
-                className="form-text"
-                type="text"
-                name="firstName"
-                value={formInput?.firstName}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Last Name:{'    '}
-              <input
-                className="form-text"
-                type="text"
-                name="lastName"
-                value={formInput?.lastName}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Phone Number:{'    '}
-              <input
-                className="form-text"
-                type="tel"
-                name="phone"
-                value={formInput?.phone}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Email:{'    '}
-              <input
-                type="email"
-                name="email"
-                className="form-text"
-                value={formInput?.email}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Address Line 1:{'    '}
-              <input
-                type="text"
-                name="address1"
-                className="addressLine form-text"
-                value={formInput?.address1}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Address Line 2:{'    '}
-              <input
-                type="text"
-                name="address2"
-                className="addressLine form-text"
-                value={formInput?.address2}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              City:{'    '}
-              <input
-                type="text"
-                name="city"
-                className="addressLine form-text"
-                value={formInput?.city}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              State:{'    '}
-              <select
-                name="state"
-                className="stateSelect form-text"
-                value={formInput?.state}
-                onChange={handleChange}
-                required
-              >
-                <option selected disabled value="">
-                  Select an option
-                </option>
-                {statesAndAbbrevs.map((state) => (
-                  <option key={state.name + 1} value={state.abbreviation}>
-                    {state.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Zipcode:{'    '}
-              <input
-                className="form-text"
-                name="zipcode"
-                type="text"
-                pattern="[0-9]*"
-                value={formInput?.zipcode}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Birthdate:{'    '}
-              <input
-                type="date"
-                name="birthDate"
-                className="form-text birthdate"
-                value={formInput?.birthDate}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              Sex:{'    '}
-              <select
-                className="form-text"
-                name="sex"
-                onChange={handleChange}
-                required
-              >
-                <option disabled selected={!formInput?.sex}>
-                  Select an option
-                </option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-              </select>
-            </label>
-            <label>
-              Gender:{'    '}
-              <select
-                className="form-text"
-                name="gender"
-                onChange={handleChange}
-                required
-              >
-                <option disabled selected={!formInput?.gender}>
-                  Select an option
-                </option>
-                <option value="she/her">she/her</option>
-                <option value="he/him">he/him</option>
-                <option value="they/them">they/them</option>
-                <option value="other">Other</option>
-                <option value="prefer not to answer">
-                  Prefer not to Answer
-                </option>
-              </select>
-            </label>
-            <div className="select-therapist">
-              {therapist.admin ? (
+            <div className="modal-wrapper">
+              <div className="modal-collection">
                 <label>
-                  Assign Therapist:
-                  <select
-                    id="therapist-select-add-client"
+                  First Name:{'    '}
+                  <input
                     className="form-text"
-                    name="therapistId"
+                    type="text"
+                    name="firstName"
+                    value={formInput?.firstName}
                     onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Last Name:{'    '}
+                  <input
+                    className="form-text"
+                    type="text"
+                    name="lastName"
+                    value={formInput?.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="modal-collection">
+                <label>
+                  Phone Number:{'    '}
+                  <input
+                    className="form-text"
+                    type="tel"
+                    name="phone"
+                    value={formInput?.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Email:{'    '}
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-text"
+                    value={formInput?.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="modal-collection">
+                <label>
+                  Address Line 1:{'    '}
+                  <input
+                    type="text"
+                    name="address1"
+                    className="addressLine form-text"
+                    value={formInput?.address1}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Address Line 2:{'    '}
+                  <input
+                    type="text"
+                    name="address2"
+                    className="addressLine form-text"
+                    value={formInput?.address2}
+                    onChange={handleChange}
+                  />
+                </label>
+              </div>
+              <div className="modal-collection">
+                <label>
+                  City:{'    '}
+                  <input
+                    type="text"
+                    name="city"
+                    className="addressLine form-text"
+                    value={formInput?.city}
+                    onChange={handleChange}
+                  />
+                </label>
+                <label>
+                  State:{'    '}
+                  <select
+                    name="state"
+                    className="stateSelect form-text"
+                    value={formInput?.state}
+                    onChange={handleChange}
+                    required
                   >
-                    {therapists &&
-                      therapists.map((therapistOption) => (
-                        <option
-                          value={therapistOption.therapistId}
-                          key={therapistOption.therapistId}
-                        >
-                          {therapistOption.firstName} {therapistOption.lastName}
-                        </option>
-                      ))}
+                    <option selected disabled value="">
+                      Select an option
+                    </option>
+                    {statesAndAbbrevs.map((state) => (
+                      <option key={state.name + 1} value={state.abbreviation}>
+                        {state.name}
+                      </option>
+                    ))}
                   </select>
                 </label>
-              ) : (
-                ''
-              )}
+              </div>
+              <div className="modal-collection">
+                <label>
+                  Zipcode:{'    '}
+                  <input
+                    className="form-text"
+                    name="zipcode"
+                    type="text"
+                    pattern="[0-9]*"
+                    value={formInput?.zipcode}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+
+                <label>
+                  Birthdate:{'    '}
+                  <input
+                    type="date"
+                    name="birthDate"
+                    className="form-text birthdate"
+                    value={formInput?.birthDate}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="modal-collection">
+                <label>
+                  Sex:{'    '}
+                  <select
+                    className="form-text"
+                    name="sex"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled selected={!formInput?.sex}>
+                      Select an option
+                    </option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
+                </label>
+                <label>
+                  Gender:{'    '}
+                  <select
+                    className="form-text"
+                    name="gender"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled selected={!formInput?.gender}>
+                      Select an option
+                    </option>
+                    <option value="she/her">she/her</option>
+                    <option value="he/him">he/him</option>
+                    <option value="they/them">they/them</option>
+                    <option value="other">Other</option>
+                    <option value="prefer not to answer">
+                      Prefer not to Answer
+                    </option>
+                  </select>
+                </label>
+              </div>
+              <div className="select-therapist">
+                {therapist.admin ? (
+                  <label>
+                    Assign Therapist:
+                    <select
+                      id="therapist-select-add-client"
+                      className="form-text"
+                      name="therapistId"
+                      onChange={handleChange}
+                    >
+                      {therapists &&
+                        therapists.map((therapistOption) => (
+                          <option
+                            value={therapistOption.therapistId}
+                            key={therapistOption.therapistId}
+                          >
+                            {therapistOption.firstName}{' '}
+                            {therapistOption.lastName}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
             <div className="submit">
               <button className="done-btn submit" type="submit">
