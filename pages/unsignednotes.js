@@ -59,7 +59,7 @@ export default function UnsignedNotes() {
 
   return (
     <>
-      <h2 className="list-header s">Unsigned Notes: </h2>
+      <h2 className="list-header">Unsigned Notes: </h2>
       {displayingUnsigned &&
         displayingUnsigned.map((unsignedNote) => (
           <UnsignedNoteCard noteObj={unsignedNote} />

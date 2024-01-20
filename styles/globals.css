@@ -106,7 +106,8 @@ p {
   flex-direction: column;
   align-items: center;
   background-color: #e1daec71;
-  width: 18rem;
+  width: max-content;
+  min-width: 18rem;
   height: 200vh;
   border-right: #e1daec19 2px solid;
   padding: 1rem 0rem;
@@ -169,6 +170,7 @@ p {
 
 .nav-btns {
   display: flex;
+  width: 100%;
 }
 .nav-btn {
   border: transparent solid 1px;
@@ -193,12 +195,14 @@ p {
 .main-wrapper {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  justify-content: space-between;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .main-container {
   margin: 2rem 4rem;
-  width: 90%;
+  width: 82rem;
 }
 
 .email {
@@ -286,6 +290,7 @@ p {
 
 .note-card * {
   margin: 0.5rem;
+  width: 100%;
 }
 
 .note-card-showing-more {
@@ -334,13 +339,13 @@ p {
   color: white;
   background-color: #a5b1e8;
   border: transparent;
-  border-radius: 10%;
+  border-radius: 5px;
   padding: 0.5rem;
   font-size: 1rem;
   margin-top: 0.75rem;
 }
 .ov-header-note {
-  width: 100%;
+  width: 75%;
 }
 
 .overview-name {
@@ -409,6 +414,7 @@ p {
 
 .main-client-overview {
   display: flex;
+  max-width: 82rem;
 }
 
 .client-notes {
@@ -417,7 +423,7 @@ p {
 
 .notes-info {
   display: flex;
-  width: 70rem;
+  width: 100%;
 }
 
 .schedule-edit {
@@ -468,7 +474,14 @@ select {
 
 .modal-collection {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.add-client-label {
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-check {
@@ -591,6 +604,7 @@ select {
   font-weight: bold;
   font-size: 2rem;
   color: #267ccb;
+  width: max-content;
 }
 
 .view-therapist {

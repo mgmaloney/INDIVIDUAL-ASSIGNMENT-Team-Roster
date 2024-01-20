@@ -138,7 +138,7 @@ export default function AddClient() {
           <form className="form-modal" onSubmit={handleSubmit}>
             <div className="modal-wrapper">
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   First Name:{'    '}
                   <input
                     className="form-text"
@@ -149,7 +149,8 @@ export default function AddClient() {
                     required
                   />
                 </label>
-                <label>
+
+                <label className="add-client-label">
                   Last Name:{'    '}
                   <input
                     className="form-text"
@@ -162,7 +163,7 @@ export default function AddClient() {
                 </label>
               </div>
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   Phone Number:{'    '}
                   <input
                     className="form-text"
@@ -173,7 +174,7 @@ export default function AddClient() {
                     required
                   />
                 </label>
-                <label>
+                <label className="add-client-label">
                   Email:{'    '}
                   <input
                     type="email"
@@ -186,7 +187,7 @@ export default function AddClient() {
                 </label>
               </div>
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   Address Line 1:{'    '}
                   <input
                     type="text"
@@ -197,7 +198,7 @@ export default function AddClient() {
                     required
                   />
                 </label>
-                <label>
+                <label className="add-client-label">
                   Address Line 2:{'    '}
                   <input
                     type="text"
@@ -209,7 +210,7 @@ export default function AddClient() {
                 </label>
               </div>
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   City:{'    '}
                   <input
                     type="text"
@@ -219,7 +220,7 @@ export default function AddClient() {
                     onChange={handleChange}
                   />
                 </label>
-                <label>
+                <label className="add-client-label">
                   State:{'    '}
                   <select
                     name="state"
@@ -240,7 +241,7 @@ export default function AddClient() {
                 </label>
               </div>
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   Zipcode:{'    '}
                   <input
                     className="form-text"
@@ -253,7 +254,7 @@ export default function AddClient() {
                   />
                 </label>
 
-                <label>
+                <label className="add-client-label">
                   Birthdate:{'    '}
                   <input
                     type="date"
@@ -266,7 +267,7 @@ export default function AddClient() {
                 </label>
               </div>
               <div className="modal-collection">
-                <label>
+                <label className="add-client-label">
                   Sex:{'    '}
                   <select
                     className="form-text"
@@ -281,7 +282,7 @@ export default function AddClient() {
                     <option value="male">Male</option>
                   </select>
                 </label>
-                <label>
+                <label className="add-client-label">
                   Gender:{'    '}
                   <select
                     className="form-text"
@@ -304,7 +305,7 @@ export default function AddClient() {
               </div>
               <div className="select-therapist">
                 {therapist.admin ? (
-                  <label>
+                  <label className="add-client-label">
                     Assign Therapist:
                     <select
                       id="therapist-select-add-client"
