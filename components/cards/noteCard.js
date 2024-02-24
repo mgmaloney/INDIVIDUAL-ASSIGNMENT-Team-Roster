@@ -85,7 +85,7 @@ export default function NoteCard({
           {!editingChartNote ? (
             <>
               <p className="chart-note-content">{noteObj.content.chartNote}</p>
-              <button className="done-btn" type="button" onClick={handleDelete}>
+              <button className="show-more-btn" type="button" onClick={handleDelete}>
                 Delete
               </button>
             </>
@@ -143,7 +143,7 @@ export default function NoteCard({
       !editingChartNote
     ) {
       return (
-        <button onClick={handleEdit} className="done-btn" type="button">
+        <button onClick={handleEdit} className="show-more-btn" type="button">
           Edit
         </button>
       );

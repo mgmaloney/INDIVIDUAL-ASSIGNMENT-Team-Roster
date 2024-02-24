@@ -31,7 +31,7 @@ export default function ChartNoteForm({
 
   useEffect(() => {
     if (noteObj?.noteId) {
-      setFormInput({ noteText: noteObj.content.chartNote });
+      setFormInput({ noteText: noteObj.content.chartNote, noteId: noteObj.noteId });
       setDateInput(new Date(noteObj.dateTime));
     }
   }, [noteObj]);
@@ -54,6 +54,7 @@ export default function ChartNoteForm({
     if (!editingChartNote) {
       await createNote(payload);
     } else {
+      payload.noteId = formInput.noteId
       await updateNote(payload);
     }
     onNotesUpdate(clientObj.clientId);
@@ -96,7 +97,7 @@ export default function ChartNoteForm({
                 required
               />
             </LocalizationProvider>
-            <button type="submit" className="add-note-btn">
+            <button type="submit" className="show-more-btn">
               {editingChartNote ? 'Save' : '+ Add Note'}
             </button>
           </div>

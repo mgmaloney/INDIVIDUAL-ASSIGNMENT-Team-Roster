@@ -35,6 +35,7 @@ export default function ClientOverView() {
   const [client, setClient] = useState({});
   const [clientNotes, setClientNotes] = useState([]);
   const [aptNotes, setAptNotes] = useState([]);
+  const [sortedAptNotes, setSortedAptNotes] = useState([])
   const [sortedNotes, setSortedNotes] = useState([]);
   const [clientApts, setClientApts] = useState([]);
 
@@ -73,6 +74,15 @@ export default function ClientOverView() {
       ),
     );
   }, [clientNotes]);
+
+  useEffect(() => {
+    setSortedAptNotes(
+      [...aptNotes].sort(
+        (a, b) =>
+          new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime(),
+      ),
+    );
+  }, [aptNotes]);
 
   const onNotesUpdate = (clientKey) => {
     getAllClientNotes(clientKey).then(setClientNotes);
@@ -189,9 +199,10 @@ export default function ClientOverView() {
                     noteObj={note}
                     page="clientOverview"
                     onNotesUpdate={onNotesUpdate}
-                    numberOfApt={sortedNotes.length - sortedNotes.indexOf(note)}
-                  />
+                    numberOfApt={sortedAptNotes ? sortedAptNotes.length - sortedAptNotes.findIndex((aptNote) => aptNote.noteId === note.noteId) : 
+                    ''} />
                 ))}
+                
               </div>
             )}
           </div>

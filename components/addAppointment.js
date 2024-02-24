@@ -331,7 +331,7 @@ export default function AddAppointment({ selectedCalDate }) {
                       setSelectedClientObj(newValue);
                     }}
                     value={
-                      selectedClientObj.clientId ? { ...selectedClientObj } : ''
+                      selectedClientObj?.clientId ? { ...selectedClientObj } : ''
                     }
                   />
                 </div>
